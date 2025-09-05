@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
@@ -10,6 +10,11 @@
         <Compile Include="Utils\AnsiEscapeCodes.cs" />
         <Compile Include="Utils\AnsiBuilder.cs" />
         <Compile Include="Utils\TerminalInit.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Chevron9.Core\Chevron9.Core.csproj" />
+      <ProjectReference Include="..\Chevron9.Shared\Chevron9.Shared.csproj" />
     </ItemGroup>
 
 </Project>
