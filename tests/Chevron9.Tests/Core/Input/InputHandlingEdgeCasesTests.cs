@@ -20,7 +20,12 @@ public class InputHandlingEdgeCasesTests
         private Position _mousePosition;
         private readonly Dictionary<MouseButtonType, bool> _mouseButtonStates = new();
         private readonly Dictionary<MouseButtonType, bool> _mouseClickedStates = new();
+        private readonly Dictionary<MouseButtonType, bool> _mousePressedStates = new();
+        private readonly Dictionary<MouseButtonType, bool> _mouseReleasedStates = new();
         private Position _mouseWheelDelta;
+        private Position _mouseDelta;
+        private bool _isPointerInside = true;
+        private bool _hasFocus = true;
 
         public void Poll() { }
 
@@ -56,6 +61,16 @@ public class InputHandlingEdgeCasesTests
 
         public Position MouseWheelDelta() => _mouseWheelDelta;
 
+        public Position MouseDelta() => _mouseDelta;
+
+        public bool MousePressed(MouseButtonType button) => _mousePressedStates.GetValueOrDefault(button, false);
+
+        public bool MouseReleased(MouseButtonType button) => _mouseReleasedStates.GetValueOrDefault(button, false);
+
+        public bool IsPointerInside() => _isPointerInside;
+
+        public bool HasFocus() => _hasFocus;
+
         // Helper methods for test setup
         public void SetKeyState(InputKey key, bool isDown) => _keyStates[key] = isDown;
         public void SetKeyPressed(InputKey key, bool pressed) => _pressedStates[key] = pressed;
@@ -64,7 +79,12 @@ public class InputHandlingEdgeCasesTests
         public void SetMousePosition(Position position) => _mousePosition = position;
         public void SetMouseButton(MouseButtonType button, bool isDown) => _mouseButtonStates[button] = isDown;
         public void SetMouseClicked(MouseButtonType button, bool clicked) => _mouseClickedStates[button] = clicked;
+        public void SetMousePressed(MouseButtonType button, bool pressed) => _mousePressedStates[button] = pressed;
+        public void SetMouseReleased(MouseButtonType button, bool released) => _mouseReleasedStates[button] = released;
         public void SetMouseWheelDelta(Position delta) => _mouseWheelDelta = delta;
+        public void SetMouseDelta(Position delta) => _mouseDelta = delta;
+        public void SetPointerInside(bool inside) => _isPointerInside = inside;
+        public void SetHasFocus(bool focus) => _hasFocus = focus;
         public void SetComboPressed(InputKey key, InputKeyModifierType modifiers, bool pressed)
             => _comboPressedStates[(key, modifiers)] = pressed;
         public void SetComboReleased(InputKey key, InputKeyModifierType modifiers, bool released)
@@ -368,5 +388,52 @@ public class InputHandlingEdgeCasesTests
             Assert.That(input.MouseDown(button), Is.True);
             Assert.That(input.MouseClicked(button), Is.True);
         }
+    }
+
+    [Test]
+    public void InputDevice_MouseDelta_TracksMovement()
+    {
+        var input = new TestInputDevice();
+        var delta = new Position(10, -5);
+
+        input.SetMouseDelta(delta);
+
+        Assert.That(input.MouseDelta(), Is.EqualTo(delta));
+    }
+
+    [Test]
+    public void InputDevice_MousePressed_AndReleased_States()
+    {
+        var input = new TestInputDevice();
+
+        // Test mouse pressed
+        input.SetMousePressed(MouseButtonType.Left, true);
+        Assert.That(input.MousePressed(MouseButtonType.Left), Is.True);
+        Assert.That(input.MousePressed(MouseButtonType.Right), Is.False);
+
+        // Test mouse released
+        input.SetMouseReleased(MouseButtonType.Left, true);
+        Assert.That(input.MouseReleased(MouseButtonType.Left), Is.True);
+        Assert.That(input.MouseReleased(MouseButtonType.Right), Is.False);
+    }
+
+    [Test]
+    public void InputDevice_PointerInside_AndFocus_States()
+    {
+        var input = new TestInputDevice();
+
+        // Test pointer inside
+        input.SetPointerInside(true);
+        Assert.That(input.IsPointerInside(), Is.True);
+
+        input.SetPointerInside(false);
+        Assert.That(input.IsPointerInside(), Is.False);
+
+        // Test focus
+        input.SetHasFocus(true);
+        Assert.That(input.HasFocus(), Is.True);
+
+        input.SetHasFocus(false);
+        Assert.That(input.HasFocus(), Is.False);
     }
 }

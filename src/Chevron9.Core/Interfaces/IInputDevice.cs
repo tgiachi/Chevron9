@@ -91,4 +91,36 @@ public interface IInputDevice
     /// </summary>
     /// <returns>Wheel delta (X=horizontal, Y=vertical scroll)</returns>
     Position MouseWheelDelta();
+
+    /// <summary>
+    ///     Gets mouse movement delta since last Poll() call
+    /// </summary>
+    /// <returns>Mouse delta (X=horizontal, Y=vertical movement)</returns>
+    Position MouseDelta();
+
+    /// <summary>
+    ///     Checks if a mouse button was pressed this frame (transition from up to down)
+    /// </summary>
+    /// <param name="button">Mouse button to check</param>
+    /// <returns>True if button was pressed this frame</returns>
+    bool MousePressed(MouseButtonType button);
+
+    /// <summary>
+    ///     Checks if a mouse button was released this frame (transition from down to up)
+    /// </summary>
+    /// <param name="button">Mouse button to check</param>
+    /// <returns>True if button was released this frame</returns>
+    bool MouseReleased(MouseButtonType button);
+
+    /// <summary>
+    ///     Checks if the mouse pointer is currently inside the application window
+    /// </summary>
+    /// <returns>True if mouse pointer is inside the window</returns>
+    bool IsPointerInside();
+
+    /// <summary>
+    ///     Checks if the application window currently has focus
+    /// </summary>
+    /// <returns>True if application has focus</returns>
+    bool HasFocus();
 }

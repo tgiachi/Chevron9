@@ -41,6 +41,15 @@ The engine follows a layered architecture with separation of concerns:
 - **Syntax**: Pure `Assert.That(actual, Is.Expected)` format only
 - **Coverage**: Comprehensive tests for all utilities, algorithms, and core functionality
 - **Structure**: Mirrors source structure in tests/ directory
+- **Integration Tests**: Located in `tests/Integration/` for cross-component testing
+
+### Integration Testing
+Integration tests verify that multiple components work together correctly:
+
+- **SceneManagerIntegrationTests**: Tests SceneManager with Scene and Layer interactions
+- **InputIntegrationTests**: Tests InputDevice with SceneManager input handling
+- **Focus**: End-to-end workflows, component interactions, data flow between systems
+- **Purpose**: Catch issues that unit tests miss, ensure system-level functionality
 
 ## Performance Optimizations
 - **Timing**: `Stopwatch.GetTimestamp()` for high-precision, low-allocation timing
@@ -68,7 +77,7 @@ The engine follows a layered architecture with separation of concerns:
 
 ### Input Handling
 - **InputDevice**: Abstract input with modifier key support (`InputKeyModifierType`)
-- **Mouse**: `MouseButtonType`, `MouseAction` enums
+- **Mouse**: `MouseButtonType`, `MouseAction` enums, mouse delta tracking, pointer inside/focus detection
 - **Keyboard**: `InputKey` with predefined keys in `InputKeys`
 
 ### Scene Management
