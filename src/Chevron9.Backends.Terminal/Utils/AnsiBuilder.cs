@@ -1,4 +1,5 @@
 using System.Text;
+using Chevron9.Shared.Graphics;
 
 namespace Chevron9.Backends.Terminal.Utils;
 
@@ -6,7 +7,7 @@ namespace Chevron9.Backends.Terminal.Utils;
 ///     High-performance ANSI escape sequence builder using StringBuilder
 ///     Minimizes allocations and provides fluent API for building complex sequences
 /// </summary>
-public sealed class AnsiBuilder
+public sealed class AnsiBuilder : IDisposable
 {
     private readonly StringBuilder _builder;
     private bool _hasPendingSequence;
@@ -226,6 +227,37 @@ public sealed class AnsiBuilder
     }
 
     /// <summary>
+    ///     Sets text color using Color struct
+    /// </summary>
+    /// <param name="color">Color to set</param>
+    /// <returns>This AnsiBuilder for method chaining</returns>
+    public AnsiBuilder FgColor(Color color)
+    {
+        return FgColorRgb(color.R, color.G, color.B);
+    }
+
+    /// <summary>
+    ///     Sets background color using Color struct
+    /// </summary>
+    /// <param name="color">Color to set</param>
+    /// <returns>This AnsiBuilder for method chaining</returns>
+    public AnsiBuilder BgColor(Color color)
+    {
+        return BgColorRgb(color.R, color.G, color.B);
+    }
+
+    /// <summary>
+    ///     Sets both foreground and background colors using Color structs
+    /// </summary>
+    /// <param name="fgColor">Foreground color</param>
+    /// <param name="bgColor">Background color</param>
+    /// <returns>This AnsiBuilder for method chaining</returns>
+    public AnsiBuilder Colors(Color fgColor, Color bgColor)
+    {
+        return FgColor(fgColor).BgColor(bgColor);
+    }
+
+    /// <summary>
     ///     Applies text style
     /// </summary>
     /// <param name="style">ANSI style code</param>
@@ -335,4 +367,12 @@ public sealed class AnsiBuilder
     /// </summary>
     /// <param name="builder">AnsiBuilder instance</param>
     public static implicit operator string(AnsiBuilder builder) => builder.Build();
+
+    /// <summary>
+    ///     Disposes the AnsiBuilder (no-op since StringBuilder doesn't need disposal)
+    /// </summary>
+    public void Dispose()
+    {
+        // StringBuilder doesn't need disposal, but we implement IDisposable for using statements
+    }
 }
