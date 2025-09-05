@@ -10,7 +10,7 @@ public class DirectoriesExtensionTests
     {
         var path = "~/Documents/test";
         var result = path.ResolvePathAndEnvs();
-        
+
         var expectedPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Documents/test");
         Assert.That(result, Is.EqualTo(expectedPath));
     }
@@ -26,7 +26,7 @@ public class DirectoriesExtensionTests
         {
             var path = $"%{testVarName}%/subfolder";
             var result = path.ResolvePathAndEnvs();
-            
+
             Assert.That(result, Contains.Substring(testVarValue));
         }
         finally
@@ -46,7 +46,7 @@ public class DirectoriesExtensionTests
         {
             var path = $"${testVarName}/subfolder";
             var result = path.ResolvePathAndEnvs();
-            
+
             Assert.That(result, Contains.Substring(testVarValue));
         }
         finally
@@ -60,7 +60,7 @@ public class DirectoriesExtensionTests
     {
         var path = "/regular/absolute/path";
         var result = path.ResolvePathAndEnvs();
-        
+
         Assert.That(result, Is.EqualTo(path));
     }
 
@@ -68,7 +68,7 @@ public class DirectoriesExtensionTests
     public void ResolvePathAndEnvs_WithNullPath_ShouldThrowArgumentException()
     {
         string nullPath = null;
-        
+
         Assert.Throws<ArgumentException>(() => nullPath.ResolvePathAndEnvs());
     }
 
@@ -76,7 +76,7 @@ public class DirectoriesExtensionTests
     public void ResolvePathAndEnvs_WithEmptyPath_ShouldThrowArgumentException()
     {
         var emptyPath = "";
-        
+
         Assert.Throws<ArgumentException>(() => emptyPath.ResolvePathAndEnvs());
     }
 
@@ -84,7 +84,7 @@ public class DirectoriesExtensionTests
     public void ResolvePathAndEnvs_WithWhitespacePath_ShouldThrowArgumentException()
     {
         var whitespacePath = "   ";
-        
+
         Assert.Throws<ArgumentException>(() => whitespacePath.ResolvePathAndEnvs());
     }
 

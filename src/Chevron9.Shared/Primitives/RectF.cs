@@ -1,34 +1,32 @@
-using Chevron9.Shared.Graphics;
-
 namespace Chevron9.Shared.Primitives;
 
 /// <summary>
-/// Represents a rectangle with floating-point coordinates and dimensions.
+///     Represents a rectangle with floating-point coordinates and dimensions.
 /// </summary>
 public readonly struct RectF : IEquatable<RectF>
 {
     /// <summary>
-    /// The X coordinate of the top-left corner of the rectangle.
+    ///     The X coordinate of the top-left corner of the rectangle.
     /// </summary>
     public float X { get; }
 
     /// <summary>
-    /// The Y coordinate of the top-left corner of the rectangle.
+    ///     The Y coordinate of the top-left corner of the rectangle.
     /// </summary>
     public float Y { get; }
 
     /// <summary>
-    /// The width of the rectangle.
+    ///     The width of the rectangle.
     /// </summary>
     public float Width { get; }
 
     /// <summary>
-    /// The height of the rectangle.
+    ///     The height of the rectangle.
     /// </summary>
     public float Height { get; }
 
     /// <summary>
-    /// Initializes a new instance of the RectangleF struct.
+    ///     Initializes a new instance of the RectangleF struct.
     /// </summary>
     /// <param name="x">The X coordinate of the top-left corner.</param>
     /// <param name="y">The Y coordinate of the top-left corner.</param>
@@ -43,7 +41,7 @@ public readonly struct RectF : IEquatable<RectF>
     }
 
     /// <summary>
-    /// Initializes a new instance of the RectangleF struct from position and size.
+    ///     Initializes a new instance of the RectangleF struct from position and size.
     /// </summary>
     /// <param name="position">The position of the top-left corner.</param>
     /// <param name="size">The size of the rectangle.</param>
@@ -53,7 +51,7 @@ public readonly struct RectF : IEquatable<RectF>
     }
 
     /// <summary>
-    /// Initializes a new instance of the RectangleF struct from position and size.
+    ///     Initializes a new instance of the RectangleF struct from position and size.
     /// </summary>
     /// <param name="position">The position of the top-left corner.</param>
     /// <param name="size">The size of the rectangle.</param>
@@ -63,57 +61,57 @@ public readonly struct RectF : IEquatable<RectF>
     }
 
     /// <summary>
-    /// Gets an empty rectangle (0, 0, 0, 0).
+    ///     Gets an empty rectangle (0, 0, 0, 0).
     /// </summary>
     public static RectF Empty => new(0f, 0f, 0f, 0f);
 
     /// <summary>
-    /// Gets the X coordinate of the left edge of the rectangle.
+    ///     Gets the X coordinate of the left edge of the rectangle.
     /// </summary>
     public float Left => X;
 
     /// <summary>
-    /// Gets the X coordinate of the right edge of the rectangle.
+    ///     Gets the X coordinate of the right edge of the rectangle.
     /// </summary>
     public float Right => X + Width;
 
     /// <summary>
-    /// Gets the Y coordinate of the top edge of the rectangle.
+    ///     Gets the Y coordinate of the top edge of the rectangle.
     /// </summary>
     public float Top => Y;
 
     /// <summary>
-    /// Gets the Y coordinate of the bottom edge of the rectangle.
+    ///     Gets the Y coordinate of the bottom edge of the rectangle.
     /// </summary>
     public float Bottom => Y + Height;
 
     /// <summary>
-    /// Gets the position of the top-left corner as a Position.
+    ///     Gets the position of the top-left corner as a Position.
     /// </summary>
     public Position Position => new(X, Y);
 
     /// <summary>
-    /// Gets the size of the rectangle.
+    ///     Gets the size of the rectangle.
     /// </summary>
     public (float Width, float Height) Size => (Width, Height);
 
     /// <summary>
-    /// Gets the position of the center of the rectangle.
+    ///     Gets the position of the center of the rectangle.
     /// </summary>
     public Position Center => new(X + Width / 2f, Y + Height / 2f);
 
     /// <summary>
-    /// Gets the area of the rectangle.
+    ///     Gets the area of the rectangle.
     /// </summary>
     public float Area => Width * Height;
 
     /// <summary>
-    /// Gets a value indicating whether the rectangle is empty (width or height is zero or negative).
+    ///     Gets a value indicating whether the rectangle is empty (width or height is zero or negative).
     /// </summary>
     public bool IsEmpty => Width <= 0f || Height <= 0f;
 
     /// <summary>
-    /// Determines whether the specified point is contained within this rectangle.
+    ///     Determines whether the specified point is contained within this rectangle.
     /// </summary>
     /// <param name="x">The X coordinate of the point.</param>
     /// <param name="y">The Y coordinate of the point.</param>
@@ -124,7 +122,7 @@ public readonly struct RectF : IEquatable<RectF>
     }
 
     /// <summary>
-    /// Determines whether the specified point is contained within this rectangle.
+    ///     Determines whether the specified point is contained within this rectangle.
     /// </summary>
     /// <param name="point">The point to test.</param>
     /// <returns>True if the point is contained within this rectangle; otherwise, false.</returns>
@@ -134,7 +132,7 @@ public readonly struct RectF : IEquatable<RectF>
     }
 
     /// <summary>
-    /// Determines whether the specified point is contained within this rectangle.
+    ///     Determines whether the specified point is contained within this rectangle.
     /// </summary>
     /// <param name="point">The point to test.</param>
     /// <returns>True if the point is contained within this rectangle; otherwise, false.</returns>
@@ -144,7 +142,7 @@ public readonly struct RectF : IEquatable<RectF>
     }
 
     /// <summary>
-    /// Determines whether the specified rectangle is entirely contained within this rectangle.
+    ///     Determines whether the specified rectangle is entirely contained within this rectangle.
     /// </summary>
     /// <param name="other">The rectangle to test.</param>
     /// <returns>True if the rectangle is entirely contained within this rectangle; otherwise, false.</returns>
@@ -156,7 +154,7 @@ public readonly struct RectF : IEquatable<RectF>
     }
 
     /// <summary>
-    /// Determines whether this rectangle intersects with another rectangle.
+    ///     Determines whether this rectangle intersects with another rectangle.
     /// </summary>
     /// <param name="other">The rectangle to test for intersection.</param>
     /// <returns>True if the rectangles intersect; otherwise, false.</returns>
@@ -167,7 +165,7 @@ public readonly struct RectF : IEquatable<RectF>
     }
 
     /// <summary>
-    /// Determines whether this rectangle intersects with an integer rectangle.
+    ///     Determines whether this rectangle intersects with an integer rectangle.
     /// </summary>
     /// <param name="other">The rectangle to test for intersection.</param>
     /// <returns>True if the rectangles intersect; otherwise, false.</returns>
@@ -178,7 +176,7 @@ public readonly struct RectF : IEquatable<RectF>
     }
 
     /// <summary>
-    /// Returns the intersection of this rectangle with another rectangle.
+    ///     Returns the intersection of this rectangle with another rectangle.
     /// </summary>
     /// <param name="other">The rectangle to intersect with.</param>
     /// <returns>The intersection rectangle, or Empty if no intersection exists.</returns>
@@ -190,20 +188,29 @@ public readonly struct RectF : IEquatable<RectF>
         var bottom = MathF.Min(Y + Height, other.Y + other.Height);
 
         if (right <= left || bottom <= top)
+        {
             return Empty;
+        }
 
         return new RectF(left, top, right - left, bottom - top);
     }
 
     /// <summary>
-    /// Returns the union of this rectangle with another rectangle.
+    ///     Returns the union of this rectangle with another rectangle.
     /// </summary>
     /// <param name="other">The rectangle to union with.</param>
     /// <returns>The union rectangle.</returns>
     public RectF Union(RectF other)
     {
-        if (IsEmpty) return other;
-        if (other.IsEmpty) return this;
+        if (IsEmpty)
+        {
+            return other;
+        }
+
+        if (other.IsEmpty)
+        {
+            return this;
+        }
 
         var left = MathF.Min(X, other.X);
         var top = MathF.Min(Y, other.Y);
@@ -214,7 +221,7 @@ public readonly struct RectF : IEquatable<RectF>
     }
 
     /// <summary>
-    /// Returns a new rectangle with the specified position.
+    ///     Returns a new rectangle with the specified position.
     /// </summary>
     /// <param name="x">The new X coordinate.</param>
     /// <param name="y">The new Y coordinate.</param>
@@ -225,7 +232,7 @@ public readonly struct RectF : IEquatable<RectF>
     }
 
     /// <summary>
-    /// Returns a new rectangle with the specified position.
+    ///     Returns a new rectangle with the specified position.
     /// </summary>
     /// <param name="position">The new position.</param>
     /// <returns>A new rectangle with the specified position.</returns>
@@ -235,7 +242,7 @@ public readonly struct RectF : IEquatable<RectF>
     }
 
     /// <summary>
-    /// Returns a new rectangle with the specified size.
+    ///     Returns a new rectangle with the specified size.
     /// </summary>
     /// <param name="width">The new width.</param>
     /// <param name="height">The new height.</param>
@@ -246,7 +253,7 @@ public readonly struct RectF : IEquatable<RectF>
     }
 
     /// <summary>
-    /// Returns a new rectangle inflated by the specified amounts.
+    ///     Returns a new rectangle inflated by the specified amounts.
     /// </summary>
     /// <param name="horizontal">The amount to inflate horizontally (added to both sides).</param>
     /// <param name="vertical">The amount to inflate vertically (added to both sides).</param>
@@ -257,7 +264,7 @@ public readonly struct RectF : IEquatable<RectF>
     }
 
     /// <summary>
-    /// Returns a new rectangle offset by the specified amounts.
+    ///     Returns a new rectangle offset by the specified amounts.
     /// </summary>
     /// <param name="offsetX">The amount to offset horizontally.</param>
     /// <param name="offsetY">The amount to offset vertically.</param>
@@ -268,7 +275,7 @@ public readonly struct RectF : IEquatable<RectF>
     }
 
     /// <summary>
-    /// Returns a new rectangle offset by the specified position.
+    ///     Returns a new rectangle offset by the specified position.
     /// </summary>
     /// <param name="offset">The offset to apply.</param>
     /// <returns>The offset rectangle.</returns>
@@ -278,7 +285,7 @@ public readonly struct RectF : IEquatable<RectF>
     }
 
     /// <summary>
-    /// Linearly interpolates between this rectangle and another rectangle.
+    ///     Linearly interpolates between this rectangle and another rectangle.
     /// </summary>
     /// <param name="other">The target rectangle.</param>
     /// <param name="t">The interpolation factor (0.0 to 1.0).</param>
@@ -295,7 +302,7 @@ public readonly struct RectF : IEquatable<RectF>
     }
 
     /// <summary>
-    /// Determines whether the specified RectangleF is equal to the current RectangleF.
+    ///     Determines whether the specified RectangleF is equal to the current RectangleF.
     /// </summary>
     /// <param name="other">The RectangleF to compare with the current RectangleF.</param>
     /// <returns>true if the specified RectangleF is equal to the current RectangleF; otherwise, false.</returns>
@@ -305,7 +312,7 @@ public readonly struct RectF : IEquatable<RectF>
     }
 
     /// <summary>
-    /// Determines whether the specified RectangleF is approximately equal to the current RectangleF.
+    ///     Determines whether the specified RectangleF is approximately equal to the current RectangleF.
     /// </summary>
     /// <param name="other">The RectangleF to compare with the current RectangleF.</param>
     /// <param name="tolerance">The tolerance for comparison (default: 1e-6f).</param>
@@ -319,7 +326,7 @@ public readonly struct RectF : IEquatable<RectF>
     }
 
     /// <summary>
-    /// Determines whether the specified object is equal to the current RectangleF.
+    ///     Determines whether the specified object is equal to the current RectangleF.
     /// </summary>
     /// <param name="obj">The object to compare with the current RectangleF.</param>
     /// <returns>true if the specified object is equal to the current RectangleF; otherwise, false.</returns>
@@ -329,7 +336,7 @@ public readonly struct RectF : IEquatable<RectF>
     }
 
     /// <summary>
-    /// Returns the hash code for this RectangleF.
+    ///     Returns the hash code for this RectangleF.
     /// </summary>
     /// <returns>A 32-bit signed integer hash code.</returns>
     public override int GetHashCode()
@@ -338,7 +345,7 @@ public readonly struct RectF : IEquatable<RectF>
     }
 
     /// <summary>
-    /// Returns a string representation of this RectangleF.
+    ///     Returns a string representation of this RectangleF.
     /// </summary>
     /// <returns>A string that represents this RectangleF.</returns>
     public override string ToString()
@@ -347,17 +354,18 @@ public readonly struct RectF : IEquatable<RectF>
     }
 
     /// <summary>
-    /// Returns a string representation of this RectangleF with the specified format.
+    ///     Returns a string representation of this RectangleF with the specified format.
     /// </summary>
     /// <param name="format">The format string to use for the coordinates and dimensions.</param>
     /// <returns>A string that represents this RectangleF with the specified format.</returns>
     public string ToString(string format)
     {
-        return $"RectangleF(X:{X.ToString(format)}, Y:{Y.ToString(format)}, W:{Width.ToString(format)}, H:{Height.ToString(format)})";
+        return
+            $"RectangleF(X:{X.ToString(format)}, Y:{Y.ToString(format)}, W:{Width.ToString(format)}, H:{Height.ToString(format)})";
     }
 
     /// <summary>
-    /// Determines whether two RectangleF instances are equal.
+    ///     Determines whether two RectangleF instances are equal.
     /// </summary>
     /// <param name="left">The first RectangleF to compare.</param>
     /// <param name="right">The second RectangleF to compare.</param>
@@ -368,7 +376,7 @@ public readonly struct RectF : IEquatable<RectF>
     }
 
     /// <summary>
-    /// Determines whether two RectangleF instances are not equal.
+    ///     Determines whether two RectangleF instances are not equal.
     /// </summary>
     /// <param name="left">The first RectangleF to compare.</param>
     /// <param name="right">The second RectangleF to compare.</param>

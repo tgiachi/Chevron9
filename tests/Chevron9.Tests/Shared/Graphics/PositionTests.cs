@@ -1,4 +1,3 @@
-using Chevron9.Shared.Graphics;
 using Chevron9.Shared.Primitives;
 
 namespace Chevron9.Tests.Shared.Graphics;
@@ -141,6 +140,10 @@ public class PositionTests
     {
         var position = new Position(6f, 8f);
 
-        Assert.Throws<DivideByZeroException>(() => { var result = position / 0f; });
+        Assert.Throws<DivideByZeroException>(() =>
+            {
+                var result = position / 0f;
+            }
+        );
     }
 }

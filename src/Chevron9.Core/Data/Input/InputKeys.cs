@@ -1,8 +1,8 @@
 namespace Chevron9.Core.Data.Input;
 
 /// <summary>
-/// Static class containing predefined keyboard key constants
-/// Provides standardized InputKey instances for common keyboard keys
+///     Static class containing predefined keyboard key constants
+///     Provides standardized InputKey instances for common keyboard keys
 /// </summary>
 public static class InputKeys
 {

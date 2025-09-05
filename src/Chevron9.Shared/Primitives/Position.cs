@@ -1,22 +1,22 @@
 namespace Chevron9.Shared.Primitives;
 
 /// <summary>
-/// Represents a 2D position with X and Y coordinates as floating-point values.
+///     Represents a 2D position with X and Y coordinates as floating-point values.
 /// </summary>
 public readonly struct Position : IEquatable<Position>
 {
     /// <summary>
-    /// The X coordinate of the position.
+    ///     The X coordinate of the position.
     /// </summary>
     public float X { get; }
 
     /// <summary>
-    /// The Y coordinate of the position.
+    ///     The Y coordinate of the position.
     /// </summary>
     public float Y { get; }
 
     /// <summary>
-    /// Initializes a new instance of the Position struct with the specified coordinates.
+    ///     Initializes a new instance of the Position struct with the specified coordinates.
     /// </summary>
     /// <param name="x">The X coordinate.</param>
     /// <param name="y">The Y coordinate.</param>
@@ -27,27 +27,27 @@ public readonly struct Position : IEquatable<Position>
     }
 
     /// <summary>
-    /// Gets a Position with both coordinates set to zero.
+    ///     Gets a Position with both coordinates set to zero.
     /// </summary>
     public static Position Zero => new(0f, 0f);
 
     /// <summary>
-    /// Gets a Position with both coordinates set to one.
+    ///     Gets a Position with both coordinates set to one.
     /// </summary>
     public static Position One => new(1f, 1f);
 
     /// <summary>
-    /// Gets a Position representing the unit vector in the X direction (1, 0).
+    ///     Gets a Position representing the unit vector in the X direction (1, 0).
     /// </summary>
     public static Position UnitX => new(1f, 0f);
 
     /// <summary>
-    /// Gets a Position representing the unit vector in the Y direction (0, 1).
+    ///     Gets a Position representing the unit vector in the Y direction (0, 1).
     /// </summary>
     public static Position UnitY => new(0f, 1f);
 
     /// <summary>
-    /// Calculates the distance between this position and another position.
+    ///     Calculates the distance between this position and another position.
     /// </summary>
     /// <param name="other">The other position.</param>
     /// <returns>The distance between the two positions.</returns>
@@ -59,8 +59,8 @@ public readonly struct Position : IEquatable<Position>
     }
 
     /// <summary>
-    /// Calculates the squared distance between this position and another position.
-    /// This is more efficient than DistanceTo when you only need to compare distances.
+    ///     Calculates the squared distance between this position and another position.
+    ///     This is more efficient than DistanceTo when you only need to compare distances.
     /// </summary>
     /// <param name="other">The other position.</param>
     /// <returns>The squared distance between the two positions.</returns>
@@ -72,7 +72,7 @@ public readonly struct Position : IEquatable<Position>
     }
 
     /// <summary>
-    /// Calculates the length (magnitude) of this position as a vector from origin.
+    ///     Calculates the length (magnitude) of this position as a vector from origin.
     /// </summary>
     /// <returns>The length of the vector.</returns>
     public float Length()
@@ -81,8 +81,8 @@ public readonly struct Position : IEquatable<Position>
     }
 
     /// <summary>
-    /// Calculates the squared length of this position as a vector from origin.
-    /// This is more efficient than Length when you only need to compare lengths.
+    ///     Calculates the squared length of this position as a vector from origin.
+    ///     This is more efficient than Length when you only need to compare lengths.
     /// </summary>
     /// <returns>The squared length of the vector.</returns>
     public float LengthSquared()
@@ -91,7 +91,7 @@ public readonly struct Position : IEquatable<Position>
     }
 
     /// <summary>
-    /// Returns a normalized version of this position (unit vector in the same direction).
+    ///     Returns a normalized version of this position (unit vector in the same direction).
     /// </summary>
     /// <returns>The normalized position.</returns>
     /// <exception cref="InvalidOperationException">Thrown when trying to normalize a zero vector.</exception>
@@ -99,13 +99,15 @@ public readonly struct Position : IEquatable<Position>
     {
         var length = Length();
         if (length == 0f)
+        {
             throw new InvalidOperationException("Cannot normalize a zero vector.");
+        }
 
         return new Position(X / length, Y / length);
     }
 
     /// <summary>
-    /// Linearly interpolates between this position and another position.
+    ///     Linearly interpolates between this position and another position.
     /// </summary>
     /// <param name="other">The target position.</param>
     /// <param name="t">The interpolation factor (0.0 to 1.0).</param>
@@ -120,7 +122,7 @@ public readonly struct Position : IEquatable<Position>
     }
 
     /// <summary>
-    /// Calculates the dot product of this position and another position.
+    ///     Calculates the dot product of this position and another position.
     /// </summary>
     /// <param name="other">The other position.</param>
     /// <returns>The dot product.</returns>
@@ -130,7 +132,7 @@ public readonly struct Position : IEquatable<Position>
     }
 
     /// <summary>
-    /// Calculates the cross product of this position and another position (Z component only).
+    ///     Calculates the cross product of this position and another position (Z component only).
     /// </summary>
     /// <param name="other">The other position.</param>
     /// <returns>The Z component of the cross product.</returns>
@@ -140,7 +142,7 @@ public readonly struct Position : IEquatable<Position>
     }
 
     /// <summary>
-    /// Returns a position with absolute values of the coordinates.
+    ///     Returns a position with absolute values of the coordinates.
     /// </summary>
     /// <returns>The position with absolute coordinate values.</returns>
     public Position Abs()
@@ -149,7 +151,7 @@ public readonly struct Position : IEquatable<Position>
     }
 
     /// <summary>
-    /// Returns a position with the coordinates rounded to the nearest integers.
+    ///     Returns a position with the coordinates rounded to the nearest integers.
     /// </summary>
     /// <returns>The position with rounded coordinates.</returns>
     public Position Round()
@@ -158,7 +160,7 @@ public readonly struct Position : IEquatable<Position>
     }
 
     /// <summary>
-    /// Returns a position with the coordinates rounded down to the nearest integers.
+    ///     Returns a position with the coordinates rounded down to the nearest integers.
     /// </summary>
     /// <returns>The position with floored coordinates.</returns>
     public Position Floor()
@@ -167,7 +169,7 @@ public readonly struct Position : IEquatable<Position>
     }
 
     /// <summary>
-    /// Returns a position with the coordinates rounded up to the nearest integers.
+    ///     Returns a position with the coordinates rounded up to the nearest integers.
     /// </summary>
     /// <returns>The position with ceiled coordinates.</returns>
     public Position Ceiling()
@@ -176,7 +178,7 @@ public readonly struct Position : IEquatable<Position>
     }
 
     /// <summary>
-    /// Clamps this position within the specified bounds.
+    ///     Clamps this position within the specified bounds.
     /// </summary>
     /// <param name="min">The minimum position.</param>
     /// <param name="max">The maximum position.</param>
@@ -190,7 +192,7 @@ public readonly struct Position : IEquatable<Position>
     }
 
     /// <summary>
-    /// Determines whether the specified Position is equal to the current Position.
+    ///     Determines whether the specified Position is equal to the current Position.
     /// </summary>
     /// <param name="other">The Position to compare with the current Position.</param>
     /// <returns>true if the specified Position is equal to the current Position; otherwise, false.</returns>
@@ -200,7 +202,7 @@ public readonly struct Position : IEquatable<Position>
     }
 
     /// <summary>
-    /// Determines whether the specified Position is approximately equal to the current Position.
+    ///     Determines whether the specified Position is approximately equal to the current Position.
     /// </summary>
     /// <param name="other">The Position to compare with the current Position.</param>
     /// <param name="tolerance">The tolerance for comparison (default: 1e-6f).</param>
@@ -211,7 +213,7 @@ public readonly struct Position : IEquatable<Position>
     }
 
     /// <summary>
-    /// Determines whether the specified object is equal to the current Position.
+    ///     Determines whether the specified object is equal to the current Position.
     /// </summary>
     /// <param name="obj">The object to compare with the current Position.</param>
     /// <returns>true if the specified object is equal to the current Position; otherwise, false.</returns>
@@ -221,7 +223,7 @@ public readonly struct Position : IEquatable<Position>
     }
 
     /// <summary>
-    /// Returns the hash code for this Position.
+    ///     Returns the hash code for this Position.
     /// </summary>
     /// <returns>A 32-bit signed integer hash code.</returns>
     public override int GetHashCode()
@@ -230,7 +232,7 @@ public readonly struct Position : IEquatable<Position>
     }
 
     /// <summary>
-    /// Returns a string representation of this Position.
+    ///     Returns a string representation of this Position.
     /// </summary>
     /// <returns>A string that represents this Position.</returns>
     public override string ToString()
@@ -239,7 +241,7 @@ public readonly struct Position : IEquatable<Position>
     }
 
     /// <summary>
-    /// Returns a string representation of this Position with the specified format.
+    ///     Returns a string representation of this Position with the specified format.
     /// </summary>
     /// <param name="format">The format string to use for the coordinates.</param>
     /// <returns>A string that represents this Position with the specified format.</returns>
@@ -251,7 +253,7 @@ public readonly struct Position : IEquatable<Position>
     #region Operators
 
     /// <summary>
-    /// Adds two positions.
+    ///     Adds two positions.
     /// </summary>
     /// <param name="left">The first position.</param>
     /// <param name="right">The second position.</param>
@@ -262,7 +264,7 @@ public readonly struct Position : IEquatable<Position>
     }
 
     /// <summary>
-    /// Subtracts one position from another.
+    ///     Subtracts one position from another.
     /// </summary>
     /// <param name="left">The first position.</param>
     /// <param name="right">The second position.</param>
@@ -273,7 +275,7 @@ public readonly struct Position : IEquatable<Position>
     }
 
     /// <summary>
-    /// Negates a position.
+    ///     Negates a position.
     /// </summary>
     /// <param name="position">The position to negate.</param>
     /// <returns>The negated position.</returns>
@@ -283,7 +285,7 @@ public readonly struct Position : IEquatable<Position>
     }
 
     /// <summary>
-    /// Multiplies a position by a scalar.
+    ///     Multiplies a position by a scalar.
     /// </summary>
     /// <param name="position">The position.</param>
     /// <param name="scalar">The scalar value.</param>
@@ -294,7 +296,7 @@ public readonly struct Position : IEquatable<Position>
     }
 
     /// <summary>
-    /// Multiplies a position by a scalar.
+    ///     Multiplies a position by a scalar.
     /// </summary>
     /// <param name="scalar">The scalar value.</param>
     /// <param name="position">The position.</param>
@@ -305,7 +307,7 @@ public readonly struct Position : IEquatable<Position>
     }
 
     /// <summary>
-    /// Multiplies two positions component-wise.
+    ///     Multiplies two positions component-wise.
     /// </summary>
     /// <param name="left">The first position.</param>
     /// <param name="right">The second position.</param>
@@ -316,7 +318,7 @@ public readonly struct Position : IEquatable<Position>
     }
 
     /// <summary>
-    /// Divides a position by a scalar.
+    ///     Divides a position by a scalar.
     /// </summary>
     /// <param name="position">The position.</param>
     /// <param name="scalar">The scalar value.</param>
@@ -325,13 +327,15 @@ public readonly struct Position : IEquatable<Position>
     public static Position operator /(Position position, float scalar)
     {
         if (scalar == 0f)
+        {
             throw new DivideByZeroException("Cannot divide by zero.");
+        }
 
         return new Position(position.X / scalar, position.Y / scalar);
     }
 
     /// <summary>
-    /// Divides two positions component-wise.
+    ///     Divides two positions component-wise.
     /// </summary>
     /// <param name="left">The first position.</param>
     /// <param name="right">The second position.</param>
@@ -340,13 +344,15 @@ public readonly struct Position : IEquatable<Position>
     public static Position operator /(Position left, Position right)
     {
         if (right.X == 0f || right.Y == 0f)
+        {
             throw new DivideByZeroException("Cannot divide by zero.");
+        }
 
         return new Position(left.X / right.X, left.Y / right.Y);
     }
 
     /// <summary>
-    /// Determines whether two Position instances are equal.
+    ///     Determines whether two Position instances are equal.
     /// </summary>
     /// <param name="left">The first Position to compare.</param>
     /// <param name="right">The second Position to compare.</param>
@@ -357,7 +363,7 @@ public readonly struct Position : IEquatable<Position>
     }
 
     /// <summary>
-    /// Determines whether two Position instances are not equal.
+    ///     Determines whether two Position instances are not equal.
     /// </summary>
     /// <param name="left">The first Position to compare.</param>
     /// <param name="right">The second Position to compare.</param>

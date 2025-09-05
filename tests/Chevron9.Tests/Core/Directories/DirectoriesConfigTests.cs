@@ -5,9 +5,6 @@ namespace Chevron9.Tests.Core.Directories;
 [TestFixture]
 public class DirectoriesConfigTests
 {
-    private string _tempRootPath;
-    private DirectoriesConfig _directoriesConfig;
-
     [SetUp]
     public void SetUp()
     {
@@ -23,6 +20,9 @@ public class DirectoriesConfigTests
             Directory.Delete(_tempRootPath, true);
         }
     }
+
+    private string _tempRootPath;
+    private DirectoriesConfig _directoriesConfig;
 
     [Test]
     public void Constructor_ShouldCreateRootDirectory()

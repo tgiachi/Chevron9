@@ -1,32 +1,32 @@
 namespace Chevron9.Shared.Primitives;
 
 /// <summary>
-/// Represents a rectangle with integer coordinates and dimensions.
+///     Represents a rectangle with integer coordinates and dimensions.
 /// </summary>
 public readonly struct RectI : IEquatable<RectI>
 {
     /// <summary>
-    /// The X coordinate of the top-left corner of the rectangle.
+    ///     The X coordinate of the top-left corner of the rectangle.
     /// </summary>
     public int X { get; }
 
     /// <summary>
-    /// The Y coordinate of the top-left corner of the rectangle.
+    ///     The Y coordinate of the top-left corner of the rectangle.
     /// </summary>
     public int Y { get; }
 
     /// <summary>
-    /// The width of the rectangle.
+    ///     The width of the rectangle.
     /// </summary>
     public int Width { get; }
 
     /// <summary>
-    /// The height of the rectangle.
+    ///     The height of the rectangle.
     /// </summary>
     public int Height { get; }
 
     /// <summary>
-    /// Initializes a new instance of the RectangleI struct.
+    ///     Initializes a new instance of the RectangleI struct.
     /// </summary>
     /// <param name="x">The X coordinate of the top-left corner.</param>
     /// <param name="y">The Y coordinate of the top-left corner.</param>
@@ -41,7 +41,7 @@ public readonly struct RectI : IEquatable<RectI>
     }
 
     /// <summary>
-    /// Initializes a new instance of the RectangleI struct from position and size.
+    ///     Initializes a new instance of the RectangleI struct from position and size.
     /// </summary>
     /// <param name="position">The position of the top-left corner.</param>
     /// <param name="size">The size of the rectangle.</param>
@@ -51,57 +51,57 @@ public readonly struct RectI : IEquatable<RectI>
     }
 
     /// <summary>
-    /// Gets an empty rectangle (0, 0, 0, 0).
+    ///     Gets an empty rectangle (0, 0, 0, 0).
     /// </summary>
     public static RectI Empty => new(0, 0, 0, 0);
 
     /// <summary>
-    /// Gets the X coordinate of the left edge of the rectangle.
+    ///     Gets the X coordinate of the left edge of the rectangle.
     /// </summary>
     public int Left => X;
 
     /// <summary>
-    /// Gets the X coordinate of the right edge of the rectangle.
+    ///     Gets the X coordinate of the right edge of the rectangle.
     /// </summary>
     public int Right => X + Width;
 
     /// <summary>
-    /// Gets the Y coordinate of the top edge of the rectangle.
+    ///     Gets the Y coordinate of the top edge of the rectangle.
     /// </summary>
     public int Top => Y;
 
     /// <summary>
-    /// Gets the Y coordinate of the bottom edge of the rectangle.
+    ///     Gets the Y coordinate of the bottom edge of the rectangle.
     /// </summary>
     public int Bottom => Y + Height;
 
     /// <summary>
-    /// Gets the position of the top-left corner.
+    ///     Gets the position of the top-left corner.
     /// </summary>
     public (int X, int Y) Position => (X, Y);
 
     /// <summary>
-    /// Gets the size of the rectangle.
+    ///     Gets the size of the rectangle.
     /// </summary>
     public (int Width, int Height) Size => (Width, Height);
 
     /// <summary>
-    /// Gets the position of the center of the rectangle.
+    ///     Gets the position of the center of the rectangle.
     /// </summary>
     public (float X, float Y) Center => (X + Width / 2f, Y + Height / 2f);
 
     /// <summary>
-    /// Gets the area of the rectangle.
+    ///     Gets the area of the rectangle.
     /// </summary>
     public int Area => Width * Height;
 
     /// <summary>
-    /// Gets a value indicating whether the rectangle is empty (width or height is zero or negative).
+    ///     Gets a value indicating whether the rectangle is empty (width or height is zero or negative).
     /// </summary>
     public bool IsEmpty => Width <= 0 || Height <= 0;
 
     /// <summary>
-    /// Determines whether the specified point is contained within this rectangle.
+    ///     Determines whether the specified point is contained within this rectangle.
     /// </summary>
     /// <param name="x">The X coordinate of the point.</param>
     /// <param name="y">The Y coordinate of the point.</param>
@@ -112,7 +112,7 @@ public readonly struct RectI : IEquatable<RectI>
     }
 
     /// <summary>
-    /// Determines whether the specified point is contained within this rectangle.
+    ///     Determines whether the specified point is contained within this rectangle.
     /// </summary>
     /// <param name="point">The point to test.</param>
     /// <returns>True if the point is contained within this rectangle; otherwise, false.</returns>
@@ -122,7 +122,7 @@ public readonly struct RectI : IEquatable<RectI>
     }
 
     /// <summary>
-    /// Determines whether the specified rectangle is entirely contained within this rectangle.
+    ///     Determines whether the specified rectangle is entirely contained within this rectangle.
     /// </summary>
     /// <param name="other">The rectangle to test.</param>
     /// <returns>True if the rectangle is entirely contained within this rectangle; otherwise, false.</returns>
@@ -134,7 +134,7 @@ public readonly struct RectI : IEquatable<RectI>
     }
 
     /// <summary>
-    /// Determines whether this rectangle intersects with another rectangle.
+    ///     Determines whether this rectangle intersects with another rectangle.
     /// </summary>
     /// <param name="other">The rectangle to test for intersection.</param>
     /// <returns>True if the rectangles intersect; otherwise, false.</returns>
@@ -145,7 +145,7 @@ public readonly struct RectI : IEquatable<RectI>
     }
 
     /// <summary>
-    /// Returns the intersection of this rectangle with another rectangle.
+    ///     Returns the intersection of this rectangle with another rectangle.
     /// </summary>
     /// <param name="other">The rectangle to intersect with.</param>
     /// <returns>The intersection rectangle, or Empty if no intersection exists.</returns>
@@ -157,20 +157,29 @@ public readonly struct RectI : IEquatable<RectI>
         var bottom = Math.Min(Y + Height, other.Y + other.Height);
 
         if (right <= left || bottom <= top)
+        {
             return Empty;
+        }
 
         return new RectI(left, top, right - left, bottom - top);
     }
 
     /// <summary>
-    /// Returns the union of this rectangle with another rectangle.
+    ///     Returns the union of this rectangle with another rectangle.
     /// </summary>
     /// <param name="other">The rectangle to union with.</param>
     /// <returns>The union rectangle.</returns>
     public RectI Union(RectI other)
     {
-        if (IsEmpty) return other;
-        if (other.IsEmpty) return this;
+        if (IsEmpty)
+        {
+            return other;
+        }
+
+        if (other.IsEmpty)
+        {
+            return this;
+        }
 
         var left = Math.Min(X, other.X);
         var top = Math.Min(Y, other.Y);
@@ -181,7 +190,7 @@ public readonly struct RectI : IEquatable<RectI>
     }
 
     /// <summary>
-    /// Returns a new rectangle with the specified position.
+    ///     Returns a new rectangle with the specified position.
     /// </summary>
     /// <param name="x">The new X coordinate.</param>
     /// <param name="y">The new Y coordinate.</param>
@@ -192,7 +201,7 @@ public readonly struct RectI : IEquatable<RectI>
     }
 
     /// <summary>
-    /// Returns a new rectangle with the specified size.
+    ///     Returns a new rectangle with the specified size.
     /// </summary>
     /// <param name="width">The new width.</param>
     /// <param name="height">The new height.</param>
@@ -203,7 +212,7 @@ public readonly struct RectI : IEquatable<RectI>
     }
 
     /// <summary>
-    /// Returns a new rectangle inflated by the specified amounts.
+    ///     Returns a new rectangle inflated by the specified amounts.
     /// </summary>
     /// <param name="horizontal">The amount to inflate horizontally (added to both sides).</param>
     /// <param name="vertical">The amount to inflate vertically (added to both sides).</param>
@@ -214,7 +223,7 @@ public readonly struct RectI : IEquatable<RectI>
     }
 
     /// <summary>
-    /// Returns a new rectangle offset by the specified amounts.
+    ///     Returns a new rectangle offset by the specified amounts.
     /// </summary>
     /// <param name="offsetX">The amount to offset horizontally.</param>
     /// <param name="offsetY">The amount to offset vertically.</param>
@@ -225,7 +234,7 @@ public readonly struct RectI : IEquatable<RectI>
     }
 
     /// <summary>
-    /// Determines whether the specified RectangleI is equal to the current RectangleI.
+    ///     Determines whether the specified RectangleI is equal to the current RectangleI.
     /// </summary>
     /// <param name="other">The RectangleI to compare with the current RectangleI.</param>
     /// <returns>true if the specified RectangleI is equal to the current RectangleI; otherwise, false.</returns>
@@ -235,7 +244,7 @@ public readonly struct RectI : IEquatable<RectI>
     }
 
     /// <summary>
-    /// Determines whether the specified object is equal to the current RectangleI.
+    ///     Determines whether the specified object is equal to the current RectangleI.
     /// </summary>
     /// <param name="obj">The object to compare with the current RectangleI.</param>
     /// <returns>true if the specified object is equal to the current RectangleI; otherwise, false.</returns>
@@ -245,7 +254,7 @@ public readonly struct RectI : IEquatable<RectI>
     }
 
     /// <summary>
-    /// Returns the hash code for this RectangleI.
+    ///     Returns the hash code for this RectangleI.
     /// </summary>
     /// <returns>A 32-bit signed integer hash code.</returns>
     public override int GetHashCode()
@@ -254,7 +263,7 @@ public readonly struct RectI : IEquatable<RectI>
     }
 
     /// <summary>
-    /// Returns a string representation of this RectangleI.
+    ///     Returns a string representation of this RectangleI.
     /// </summary>
     /// <returns>A string that represents this RectangleI.</returns>
     public override string ToString()
@@ -263,7 +272,7 @@ public readonly struct RectI : IEquatable<RectI>
     }
 
     /// <summary>
-    /// Determines whether two RectangleI instances are equal.
+    ///     Determines whether two RectangleI instances are equal.
     /// </summary>
     /// <param name="left">The first RectangleI to compare.</param>
     /// <param name="right">The second RectangleI to compare.</param>
@@ -274,7 +283,7 @@ public readonly struct RectI : IEquatable<RectI>
     }
 
     /// <summary>
-    /// Determines whether two RectangleI instances are not equal.
+    ///     Determines whether two RectangleI instances are not equal.
     /// </summary>
     /// <param name="left">The first RectangleI to compare.</param>
     /// <param name="right">The second RectangleI to compare.</param>

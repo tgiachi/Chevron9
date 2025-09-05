@@ -9,7 +9,7 @@ public class ColorTests
     public void Constructor_WithRGBA_ShouldSetProperties()
     {
         var color = new Color(255, 128, 64, 200);
-        
+
         Assert.That(color.R, Is.EqualTo(255));
         Assert.That(color.G, Is.EqualTo(128));
         Assert.That(color.B, Is.EqualTo(64));
@@ -20,7 +20,7 @@ public class ColorTests
     public void Constructor_WithRGB_ShouldSetAlphaTo255()
     {
         var color = new Color(255, 128, 64);
-        
+
         Assert.That(color.R, Is.EqualTo(255));
         Assert.That(color.G, Is.EqualTo(128));
         Assert.That(color.B, Is.EqualTo(64));
@@ -42,7 +42,7 @@ public class ColorTests
     public void FromFloat_WithClampedValues_ShouldClampCorrectly()
     {
         var color = Color.FromFloat(1.5f, -0.5f, 0.5f, 2.0f);
-        
+
         Assert.That(color.R, Is.EqualTo(255));
         Assert.That(color.G, Is.EqualTo(0));
         Assert.That(color.B, Is.EqualTo(127));
@@ -53,7 +53,7 @@ public class ColorTests
     public void FromHex_WithRGB_ShouldParseCorrectly()
     {
         var color = Color.FromHex("#F80");
-        
+
         Assert.That(color.R, Is.EqualTo(255));
         Assert.That(color.G, Is.EqualTo(136));
         Assert.That(color.B, Is.EqualTo(0));
@@ -64,7 +64,7 @@ public class ColorTests
     public void FromHex_WithRRGGBB_ShouldParseCorrectly()
     {
         var color = Color.FromHex("#FF8800");
-        
+
         Assert.That(color.R, Is.EqualTo(255));
         Assert.That(color.G, Is.EqualTo(136));
         Assert.That(color.B, Is.EqualTo(0));
@@ -75,7 +75,7 @@ public class ColorTests
     public void FromHex_WithoutHashPrefix_ShouldParseCorrectly()
     {
         var color = Color.FromHex("FF8800");
-        
+
         Assert.That(color.R, Is.EqualTo(255));
         Assert.That(color.G, Is.EqualTo(136));
         Assert.That(color.B, Is.EqualTo(0));
@@ -104,7 +104,7 @@ public class ColorTests
     {
         var color = new Color(255, 136, 0);
         var hex = color.ToHex();
-        
+
         Assert.That(hex, Is.EqualTo("#FF8800"));
     }
 
@@ -113,7 +113,7 @@ public class ColorTests
     {
         var color = new Color(255, 136, 0, 128);
         var hex = color.ToHex(true);
-        
+
         Assert.That(hex, Is.EqualTo("#80FF8800"));
     }
 
@@ -121,7 +121,7 @@ public class ColorTests
     public void FloatProperties_ShouldReturnCorrectValues()
     {
         var color = new Color(255, 128, 64, 200);
-        
+
         Assert.That(color.RedFloat, Is.EqualTo(1.0f).Within(0.01f));
         Assert.That(color.GreenFloat, Is.EqualTo(0.502f).Within(0.01f));
         Assert.That(color.BlueFloat, Is.EqualTo(0.251f).Within(0.01f));
@@ -133,12 +133,12 @@ public class ColorTests
     {
         var color = new Color(255, 128, 64, 255);
         var newColor = color.WithAlpha(128);
-        
+
         Assert.That(newColor.R, Is.EqualTo(255));
         Assert.That(newColor.G, Is.EqualTo(128));
         Assert.That(newColor.B, Is.EqualTo(64));
         Assert.That(newColor.A, Is.EqualTo(128));
-        
+
         Assert.That(color.A, Is.EqualTo(255));
     }
 
@@ -156,7 +156,7 @@ public class ColorTests
     {
         var color1 = new Color(255, 128, 64, 200);
         var color2 = new Color(255, 128, 64, 200);
-        
+
         Assert.That(color1.Equals(color2), Is.True);
         Assert.That(color1 == color2, Is.True);
         Assert.That(color1 != color2, Is.False);
@@ -167,7 +167,7 @@ public class ColorTests
     {
         var color1 = new Color(255, 128, 64, 200);
         var color2 = new Color(255, 128, 64, 199);
-        
+
         Assert.That(color1.Equals(color2), Is.False);
         Assert.That(color1 == color2, Is.False);
         Assert.That(color1 != color2, Is.True);
@@ -178,7 +178,7 @@ public class ColorTests
     {
         var color1 = new Color(255, 128, 64, 200);
         var color2 = new Color(255, 128, 64, 200);
-        
+
         Assert.That(color1.GetHashCode(), Is.EqualTo(color2.GetHashCode()));
     }
 
@@ -187,7 +187,7 @@ public class ColorTests
     {
         var color = new Color(255, 128, 64, 200);
         var str = color.ToString();
-        
+
         Assert.That(str, Is.EqualTo("Color(R:255, G:128, B:64, A:200)"));
     }
 

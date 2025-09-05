@@ -10,7 +10,7 @@ public class EnvExtensionsTests
     {
         string nullString = null;
         var result = nullString.ExpandEnvironmentVariables();
-        
+
         Assert.That(result, Is.Null);
     }
 
@@ -19,7 +19,7 @@ public class EnvExtensionsTests
     {
         var emptyString = "";
         var result = emptyString.ExpandEnvironmentVariables();
-        
+
         Assert.That(result, Is.EqualTo(""));
     }
 
@@ -34,7 +34,7 @@ public class EnvExtensionsTests
         {
             var input = $"Before ${testVarName} After";
             var result = input.ExpandEnvironmentVariables();
-            
+
             Assert.That(result, Is.EqualTo($"Before {testVarValue} After"));
         }
         finally
@@ -50,7 +50,7 @@ public class EnvExtensionsTests
         var testVar1Value = "value1";
         var testVar2Name = "TEST_VAR2";
         var testVar2Value = "value2";
-        
+
         Environment.SetEnvironmentVariable(testVar1Name, testVar1Value);
         Environment.SetEnvironmentVariable(testVar2Name, testVar2Value);
 
@@ -58,7 +58,7 @@ public class EnvExtensionsTests
         {
             var input = $"${testVar1Name} and ${testVar2Name}";
             var result = input.ExpandEnvironmentVariables();
-            
+
             Assert.That(result, Is.EqualTo($"{testVar1Value} and {testVar2Value}"));
         }
         finally
@@ -73,7 +73,7 @@ public class EnvExtensionsTests
     {
         var input = "Before $NONEXISTENT_VAR After";
         var result = input.ExpandEnvironmentVariables();
-        
+
         Assert.That(result, Is.EqualTo("Before  After"));
     }
 
@@ -87,7 +87,7 @@ public class EnvExtensionsTests
         {
             var input = $"Before ${testVarName} After";
             var result = input.ExpandEnvironmentVariables();
-            
+
             Assert.That(result, Is.EqualTo("Before  After"));
         }
         finally
@@ -101,7 +101,7 @@ public class EnvExtensionsTests
     {
         var input = "No variables here";
         var result = input.ExpandEnvironmentVariables();
-        
+
         Assert.That(result, Is.EqualTo(input));
     }
 
@@ -116,7 +116,7 @@ public class EnvExtensionsTests
         {
             var input = $"Text ${testVarName} end";
             var result = input.ExpandEnvironmentVariables();
-            
+
             Assert.That(result, Is.EqualTo($"Text {testVarValue} end"));
         }
         finally
@@ -136,7 +136,7 @@ public class EnvExtensionsTests
         {
             var input = $"${testVarName} and ${testVarName} again";
             var result = input.ExpandEnvironmentVariables();
-            
+
             Assert.That(result, Is.EqualTo($"{testVarValue} and {testVarValue} again"));
         }
         finally

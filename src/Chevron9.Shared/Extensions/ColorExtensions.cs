@@ -3,14 +3,14 @@ using Chevron9.Shared.Graphics;
 namespace Chevron9.Shared.Extensions;
 
 /// <summary>
-/// Extension methods for working with colors, including gradients, blending, and utility functions.
+///     Extension methods for working with colors, including gradients, blending, and utility functions.
 /// </summary>
 public static class ColorExtensions
 {
     #region Color Blending and Interpolation
 
     /// <summary>
-    /// Linearly interpolates between two colors.
+    ///     Linearly interpolates between two colors.
     /// </summary>
     /// <param name="from">The starting color.</param>
     /// <param name="to">The ending color.</param>
@@ -29,7 +29,7 @@ public static class ColorExtensions
     }
 
     /// <summary>
-    /// Blends two colors using alpha blending.
+    ///     Blends two colors using alpha blending.
     /// </summary>
     /// <param name="background">The background color.</param>
     /// <param name="foreground">The foreground color to blend over the background.</param>
@@ -48,7 +48,7 @@ public static class ColorExtensions
     }
 
     /// <summary>
-    /// Blends multiple colors with equal weight.
+    ///     Blends multiple colors with equal weight.
     /// </summary>
     /// <param name="colors">The colors to blend.</param>
     /// <returns>The blended color.</returns>
@@ -94,7 +94,7 @@ public static class ColorExtensions
     #region Gradient Generation
 
     /// <summary>
-    /// Creates a linear gradient between two colors.
+    ///     Creates a linear gradient between two colors.
     /// </summary>
     /// <param name="from">The starting color.</param>
     /// <param name="to">The ending color.</param>
@@ -110,7 +110,7 @@ public static class ColorExtensions
 
         var gradient = new Color[steps];
 
-        for (int i = 0; i < steps; i++)
+        for (var i = 0; i < steps; i++)
         {
             var t = (float)i / (steps - 1);
             gradient[i] = from.Lerp(to, t);
@@ -120,7 +120,7 @@ public static class ColorExtensions
     }
 
     /// <summary>
-    /// Creates a multi-color gradient.
+    ///     Creates a multi-color gradient.
     /// </summary>
     /// <param name="colors">The colors to create a gradient from.</param>
     /// <param name="steps">The number of steps in the gradient.</param>
@@ -131,15 +131,19 @@ public static class ColorExtensions
         var colorArray = colors?.ToArray() ?? throw new ArgumentException("Colors cannot be null.", nameof(colors));
 
         if (colorArray.Length < 2)
+        {
             throw new ArgumentException("At least 2 colors are required.", nameof(colors));
+        }
 
         if (steps < 2)
+        {
             throw new ArgumentException("Steps must be at least 2.", nameof(steps));
+        }
 
         var gradient = new Color[steps];
         var segmentLength = (float)(steps - 1) / (colorArray.Length - 1);
 
-        for (int i = 0; i < steps; i++)
+        for (var i = 0; i < steps; i++)
         {
             var position = (float)i;
             var segmentIndex = (int)(position / segmentLength);
@@ -159,7 +163,7 @@ public static class ColorExtensions
     }
 
     /// <summary>
-    /// Creates a radial gradient pattern.
+    ///     Creates a radial gradient pattern.
     /// </summary>
     /// <param name="center">The center color.</param>
     /// <param name="edge">The edge color.</param>
@@ -173,9 +177,9 @@ public static class ColorExtensions
         var centerX = width / 2f;
         var centerY = height / 2f;
 
-        for (int x = 0; x < width; x++)
+        for (var x = 0; x < width; x++)
         {
-            for (int y = 0; y < height; y++)
+            for (var y = 0; y < height; y++)
             {
                 var distance = MathF.Sqrt((x - centerX) * (x - centerX) + (y - centerY) * (y - centerY));
                 var t = Math.Clamp(distance / radius, 0f, 1f);
@@ -191,7 +195,7 @@ public static class ColorExtensions
     #region Color Manipulation
 
     /// <summary>
-    /// Darkens a color by the specified amount.
+    ///     Darkens a color by the specified amount.
     /// </summary>
     /// <param name="color">The color to darken.</param>
     /// <param name="amount">The amount to darken (0.0 to 1.0).</param>
@@ -210,7 +214,7 @@ public static class ColorExtensions
     }
 
     /// <summary>
-    /// Lightens a color by the specified amount.
+    ///     Lightens a color by the specified amount.
     /// </summary>
     /// <param name="color">The color to lighten.</param>
     /// <param name="amount">The amount to lighten (0.0 to 1.0).</param>
@@ -228,7 +232,7 @@ public static class ColorExtensions
     }
 
     /// <summary>
-    /// Adjusts the saturation of a color.
+    ///     Adjusts the saturation of a color.
     /// </summary>
     /// <param name="color">The color to adjust.</param>
     /// <param name="saturation">The saturation factor (0.0 = grayscale, 1.0 = original, >1.0 = more saturated).</param>
@@ -245,7 +249,7 @@ public static class ColorExtensions
     }
 
     /// <summary>
-    /// Converts a color to grayscale using luminance.
+    ///     Converts a color to grayscale using luminance.
     /// </summary>
     /// <param name="color">The color to convert.</param>
     /// <returns>The grayscale color.</returns>
@@ -256,7 +260,7 @@ public static class ColorExtensions
     }
 
     /// <summary>
-    /// Inverts a color.
+    ///     Inverts a color.
     /// </summary>
     /// <param name="color">The color to invert.</param>
     /// <param name="invertAlpha">Whether to invert the alpha channel as well.</param>
@@ -276,7 +280,7 @@ public static class ColorExtensions
     #region Color Analysis
 
     /// <summary>
-    /// Gets the luminance of a color (perceived brightness).
+    ///     Gets the luminance of a color (perceived brightness).
     /// </summary>
     /// <param name="color">The color to analyze.</param>
     /// <returns>The luminance value (0.0 to 1.0).</returns>
@@ -286,7 +290,7 @@ public static class ColorExtensions
     }
 
     /// <summary>
-    /// Determines if a color is considered "light" based on its luminance.
+    ///     Determines if a color is considered "light" based on its luminance.
     /// </summary>
     /// <param name="color">The color to analyze.</param>
     /// <param name="threshold">The luminance threshold (default: 0.5).</param>
@@ -297,7 +301,7 @@ public static class ColorExtensions
     }
 
     /// <summary>
-    /// Determines if a color is considered "dark" based on its luminance.
+    ///     Determines if a color is considered "dark" based on its luminance.
     /// </summary>
     /// <param name="color">The color to analyze.</param>
     /// <param name="threshold">The luminance threshold (default: 0.5).</param>
@@ -308,7 +312,7 @@ public static class ColorExtensions
     }
 
     /// <summary>
-    /// Calculates the contrast ratio between two colors.
+    ///     Calculates the contrast ratio between two colors.
     /// </summary>
     /// <param name="color1">The first color.</param>
     /// <param name="color2">The second color.</param>
@@ -325,7 +329,7 @@ public static class ColorExtensions
     }
 
     /// <summary>
-    /// Gets the best contrasting color (black or white) for the given color.
+    ///     Gets the best contrasting color (black or white) for the given color.
     /// </summary>
     /// <param name="color">The color to find contrast for.</param>
     /// <returns>Either black or white, whichever provides better contrast.</returns>
@@ -339,7 +343,7 @@ public static class ColorExtensions
     #region HSV/HSL Conversion Utilities
 
     /// <summary>
-    /// Converts RGB to HSV (Hue, Saturation, Value).
+    ///     Converts RGB to HSV (Hue, Saturation, Value).
     /// </summary>
     /// <param name="color">The RGB color to convert.</param>
     /// <returns>A tuple containing HSV values (H: 0-360, S: 0-1, V: 0-1).</returns>
@@ -357,14 +361,23 @@ public static class ColorExtensions
         if (delta != 0)
         {
             if (max == r)
-                h = 60 * (((g - b) / delta) % 6);
+            {
+                h = 60 * ((g - b) / delta % 6);
+            }
             else if (max == g)
-                h = 60 * (((b - r) / delta) + 2);
+            {
+                h = 60 * ((b - r) / delta + 2);
+            }
             else
-                h = 60 * (((r - g) / delta) + 4);
+            {
+                h = 60 * ((r - g) / delta + 4);
+            }
         }
 
-        if (h < 0) h += 360;
+        if (h < 0)
+        {
+            h += 360;
+        }
 
         var s = max == 0 ? 0 : delta / max;
         var v = max;
@@ -373,7 +386,7 @@ public static class ColorExtensions
     }
 
     /// <summary>
-    /// Creates a color from HSV values.
+    ///     Creates a color from HSV values.
     /// </summary>
     /// <param name="h">Hue (0-360 degrees).</param>
     /// <param name="s">Saturation (0.0-1.0).</param>
@@ -383,44 +396,59 @@ public static class ColorExtensions
     public static Color FromHsv(float h, float s, float v, float a = 1.0f)
     {
         h = h % 360;
-        if (h < 0) h += 360;
+        if (h < 0)
+        {
+            h += 360;
+        }
 
         var c = v * s;
-        var x = c * (1 - Math.Abs((h / 60) % 2 - 1));
+        var x = c * (1 - Math.Abs(h / 60 % 2 - 1));
         var m = v - c;
 
         float r, g, b;
 
         if (h < 60)
         {
-            r = c; g = x; b = 0;
+            r = c;
+            g = x;
+            b = 0;
         }
         else if (h < 120)
         {
-            r = x; g = c; b = 0;
+            r = x;
+            g = c;
+            b = 0;
         }
         else if (h < 180)
         {
-            r = 0; g = c; b = x;
+            r = 0;
+            g = c;
+            b = x;
         }
         else if (h < 240)
         {
-            r = 0; g = x; b = c;
+            r = 0;
+            g = x;
+            b = c;
         }
         else if (h < 300)
         {
-            r = x; g = 0; b = c;
+            r = x;
+            g = 0;
+            b = c;
         }
         else
         {
-            r = c; g = 0; b = x;
+            r = c;
+            g = 0;
+            b = x;
         }
 
         return Color.FromFloat(r + m, g + m, b + m, a);
     }
 
     /// <summary>
-    /// Adjusts the hue of a color.
+    ///     Adjusts the hue of a color.
     /// </summary>
     /// <param name="color">The color to adjust.</param>
     /// <param name="hueShift">The amount to shift the hue (in degrees).</param>

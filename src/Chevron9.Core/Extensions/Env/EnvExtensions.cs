@@ -15,8 +15,8 @@ public static class EnvExtensions
         // First expand existing environment variables
         foreach (DictionaryEntry env in Environment.GetEnvironmentVariables())
         {
-            string key = $"${env.Key}";
-            string value = env.Value?.ToString() ?? "";
+            var key = $"${env.Key}";
+            var value = env.Value?.ToString() ?? "";
             input = input.Replace(key, value);
         }
 
@@ -25,5 +25,4 @@ public static class EnvExtensions
 
         return input;
     }
-
 }

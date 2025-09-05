@@ -102,7 +102,10 @@ public class FixedEventLoopTests
         while (eventLoop.ShouldUpdate())
         {
             updateCount++;
-            if (updateCount > 10) break; // Safety break
+            if (updateCount > 10)
+            {
+                break; // Safety break
+            }
         }
 
         Assert.That(updateCount, Is.GreaterThanOrEqualTo(2));
@@ -190,17 +193,20 @@ public class FixedEventLoopTests
         {
             Thread.Sleep(10);
             eventLoop.Tick();
-            
+
             while (eventLoop.ShouldUpdate())
             {
                 totalUpdates++;
-                if (totalUpdates > 20) break; // Safety
+                if (totalUpdates > 20)
+                {
+                    break; // Safety
+                }
             }
         }
 
         // Should have processed some updates, but not too many due to timing
         Assert.That(totalUpdates, Is.GreaterThan(0));
-        Assert.That(totalUpdates, Is.LessThan(15)); // Reasonable upper bound
+        Assert.That(totalUpdates, Is.LessThan(15));        // Reasonable upper bound
         Assert.That(eventLoop.Total, Is.GreaterThan(0.1)); // Should have accumulated time
     }
 }

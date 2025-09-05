@@ -6,22 +6,40 @@ namespace Chevron9.Core.Utils.Random;
 public static class RandomUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int Random(int from, int count) => BuiltInRng.Next(from, count);
+    public static int Random(int from, int count)
+    {
+        return BuiltInRng.Next(from, count);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int Random(int count) => count < 0 ? -BuiltInRng.Next(-count) : BuiltInRng.Next(count);
+    public static int Random(int count)
+    {
+        return count < 0 ? -BuiltInRng.Next(-count) : BuiltInRng.Next(count);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static long Random(long from, long count) => BuiltInRng.Next(from, count);
+    public static long Random(long from, long count)
+    {
+        return BuiltInRng.Next(from, count);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static long Random(long count) => count < 0 ? -BuiltInRng.Next(-count) : BuiltInRng.Next(count);
+    public static long Random(long count)
+    {
+        return count < 0 ? -BuiltInRng.Next(-count) : BuiltInRng.Next(count);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void RandomBytes(Span<byte> buffer) => BuiltInRng.NextBytes(buffer);
+    public static void RandomBytes(Span<byte> buffer)
+    {
+        BuiltInRng.NextBytes(buffer);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double RandomDouble() => BuiltInRng.NextDouble();
+    public static double RandomDouble()
+    {
+        return BuiltInRng.NextDouble();
+    }
 
     // Optimized method for handling 50% random chances in succession up to a maximum
     public static int CoinFlips(int amount, int maximum)
@@ -30,7 +48,7 @@ public static class RandomUtils
         while (amount > 0)
         {
             // Range is 2^amount exclusively, maximum of 62 bits can be used
-            ulong num = amount >= 62
+            var num = amount >= 62
                 ? (ulong)BuiltInRng.NextLong()
                 : (ulong)BuiltInRng.Next(1L << amount);
 
@@ -54,7 +72,7 @@ public static class RandomUtils
         while (amount > 0)
         {
             // Range is 2^amount exclusively, maximum of 62 bits can be used
-            ulong num = amount >= 62
+            var num = amount >= 62
                 ? (ulong)BuiltInRng.NextLong()
                 : (ulong)BuiltInRng.Next(1L << amount);
 

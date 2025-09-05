@@ -30,7 +30,7 @@ public class BuiltInRngTests
     [Test]
     public void Next_ShouldReturnNonNegativeInteger()
     {
-        for (int i = 0; i < 100; i++)
+        for (var i = 0; i < 100; i++)
         {
             var result = BuiltInRng.Next();
             Assert.That(result, Is.GreaterThanOrEqualTo(0));
@@ -41,7 +41,7 @@ public class BuiltInRngTests
     public void Next_WithMaxValue_ShouldReturnValueInRange()
     {
         const int maxValue = 100;
-        for (int i = 0; i < 100; i++)
+        for (var i = 0; i < 100; i++)
         {
             var result = BuiltInRng.Next(maxValue);
             Assert.That(result, Is.InRange(0, maxValue - 1));
@@ -54,7 +54,7 @@ public class BuiltInRngTests
         const int minValue = 50;
         const int count = 30;
 
-        for (int i = 0; i < 100; i++)
+        for (var i = 0; i < 100; i++)
         {
             var result = BuiltInRng.Next(minValue, count);
             Assert.That(result, Is.InRange(minValue, minValue + count - 1));
@@ -65,7 +65,7 @@ public class BuiltInRngTests
     public void Next_WithLongMaxValue_ShouldReturnValueInRange()
     {
         const long maxValue = 1000L;
-        for (int i = 0; i < 100; i++)
+        for (var i = 0; i < 100; i++)
         {
             var result = BuiltInRng.Next(maxValue);
             Assert.That(result, Is.InRange(0L, maxValue - 1));
@@ -75,7 +75,7 @@ public class BuiltInRngTests
     [Test]
     public void NextDouble_ShouldReturnValueBetween0And1()
     {
-        for (int i = 0; i < 100; i++)
+        for (var i = 0; i < 100; i++)
         {
             var result = BuiltInRng.NextDouble();
             Assert.That(result, Is.InRange(0.0, 1.0));

@@ -92,9 +92,9 @@ public class VariableEventLoopTests
         var eventLoop = new VariableEventLoop(config);
 
         var deltas = new List<double>();
-        
+
         // Collect several frame deltas with consistent timing
-        for (int i = 0; i < 5; i++)
+        for (var i = 0; i < 5; i++)
         {
             Thread.Sleep(10); // Consistent 10ms sleep
             eventLoop.Tick();
@@ -134,12 +134,12 @@ public class VariableEventLoopTests
         var eventLoop = new VariableEventLoop(config);
 
         Assert.That(eventLoop.Config.MaxFrameTime, Is.EqualTo(expectedMaxFrameTime));
-        
+
         // Config should remain unchanged after ticks
         eventLoop.Tick();
         Thread.Sleep(5);
         eventLoop.Tick();
-        
+
         Assert.That(eventLoop.Config.MaxFrameTime, Is.EqualTo(expectedMaxFrameTime));
     }
 }

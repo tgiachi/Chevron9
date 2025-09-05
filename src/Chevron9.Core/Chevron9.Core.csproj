@@ -1,20 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Update="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Update="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Chevron9.Shared\Chevron9.Shared.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Chevron9.Shared\Chevron9.Shared.csproj"/>
+    </ItemGroup>
 
 </Project>

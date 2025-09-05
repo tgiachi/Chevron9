@@ -1,34 +1,34 @@
 namespace Chevron9.Shared.Graphics;
 
 /// <summary>
-/// Represents a color with Red, Green, Blue, and Alpha (RGBA) components.
-/// Each component is a byte value ranging from 0 to 255.
+///     Represents a color with Red, Green, Blue, and Alpha (RGBA) components.
+///     Each component is a byte value ranging from 0 to 255.
 /// </summary>
 public readonly partial struct Color : IEquatable<Color>
 {
     /// <summary>
-    /// The red component of the color (0-255).
+    ///     The red component of the color (0-255).
     /// </summary>
     public byte R { get; }
 
     /// <summary>
-    /// The green component of the color (0-255).
+    ///     The green component of the color (0-255).
     /// </summary>
     public byte G { get; }
 
     /// <summary>
-    /// The blue component of the color (0-255).
+    ///     The blue component of the color (0-255).
     /// </summary>
     public byte B { get; }
 
     /// <summary>
-    /// The alpha (transparency) component of the color (0-255).
-    /// 0 is fully transparent, 255 is fully opaque.
+    ///     The alpha (transparency) component of the color (0-255).
+    ///     0 is fully transparent, 255 is fully opaque.
     /// </summary>
     public byte A { get; }
 
     /// <summary>
-    /// Initializes a new instance of the Color struct with the specified RGBA values.
+    ///     Initializes a new instance of the Color struct with the specified RGBA values.
     /// </summary>
     /// <param name="r">The red component (0-255).</param>
     /// <param name="g">The green component (0-255).</param>
@@ -43,7 +43,7 @@ public readonly partial struct Color : IEquatable<Color>
     }
 
     /// <summary>
-    /// Initializes a new instance of the Color struct with the specified RGB values and full opacity.
+    ///     Initializes a new instance of the Color struct with the specified RGB values and full opacity.
     /// </summary>
     /// <param name="r">The red component (0-255).</param>
     /// <param name="g">The green component (0-255).</param>
@@ -53,7 +53,7 @@ public readonly partial struct Color : IEquatable<Color>
     }
 
     /// <summary>
-    /// Creates a color from floating-point RGBA values (0.0 to 1.0).
+    ///     Creates a color from floating-point RGBA values (0.0 to 1.0).
     /// </summary>
     /// <param name="r">The red component (0.0-1.0).</param>
     /// <param name="g">The green component (0.0-1.0).</param>
@@ -71,8 +71,8 @@ public readonly partial struct Color : IEquatable<Color>
     }
 
     /// <summary>
-    /// Creates a color from a hexadecimal string representation.
-    /// Supports formats: "#RGB", "#ARGB", "#RRGGBB", "#AARRGGBB"
+    ///     Creates a color from a hexadecimal string representation.
+    ///     Supports formats: "#RGB", "#ARGB", "#RRGGBB", "#AARRGGBB"
     /// </summary>
     /// <param name="hex">The hexadecimal color string.</param>
     /// <returns>A new Color instance.</returns>
@@ -80,7 +80,9 @@ public readonly partial struct Color : IEquatable<Color>
     public static Color FromHex(string hex)
     {
         if (string.IsNullOrWhiteSpace(hex))
+        {
             throw new ArgumentException("Hex string cannot be null or empty.", nameof(hex));
+        }
 
         hex = hex.TrimStart('#');
 
@@ -140,7 +142,7 @@ public readonly partial struct Color : IEquatable<Color>
     }
 
     /// <summary>
-    /// Converts the color to a hexadecimal string representation.
+    ///     Converts the color to a hexadecimal string representation.
     /// </summary>
     /// <param name="includeAlpha">Whether to include the alpha component in the output.</param>
     /// <returns>A hexadecimal color string (e.g., "#FF0000" or "#FFFF0000").</returns>
@@ -150,31 +152,32 @@ public readonly partial struct Color : IEquatable<Color>
         {
             return $"#{A:X2}{R:X2}{G:X2}{B:X2}";
         }
+
         return $"#{R:X2}{G:X2}{B:X2}";
     }
 
     /// <summary>
-    /// Gets the red component as a floating-point value (0.0 to 1.0).
+    ///     Gets the red component as a floating-point value (0.0 to 1.0).
     /// </summary>
     public float RedFloat => R / 255.0f;
 
     /// <summary>
-    /// Gets the green component as a floating-point value (0.0 to 1.0).
+    ///     Gets the green component as a floating-point value (0.0 to 1.0).
     /// </summary>
     public float GreenFloat => G / 255.0f;
 
     /// <summary>
-    /// Gets the blue component as a floating-point value (0.0 to 1.0).
+    ///     Gets the blue component as a floating-point value (0.0 to 1.0).
     /// </summary>
     public float BlueFloat => B / 255.0f;
 
     /// <summary>
-    /// Gets the alpha component as a floating-point value (0.0 to 1.0).
+    ///     Gets the alpha component as a floating-point value (0.0 to 1.0).
     /// </summary>
     public float AlphaFloat => A / 255.0f;
 
     /// <summary>
-    /// Creates a new color with the specified alpha value.
+    ///     Creates a new color with the specified alpha value.
     /// </summary>
     /// <param name="alpha">The new alpha value (0-255).</param>
     /// <returns>A new Color instance with the specified alpha.</returns>
@@ -184,7 +187,7 @@ public readonly partial struct Color : IEquatable<Color>
     }
 
     /// <summary>
-    /// Creates a new color with the specified alpha value as a float (0.0 to 1.0).
+    ///     Creates a new color with the specified alpha value as a float (0.0 to 1.0).
     /// </summary>
     /// <param name="alpha">The new alpha value (0.0-1.0).</param>
     /// <returns>A new Color instance with the specified alpha.</returns>
@@ -194,7 +197,7 @@ public readonly partial struct Color : IEquatable<Color>
     }
 
     /// <summary>
-    /// Determines whether the specified Color is equal to the current Color.
+    ///     Determines whether the specified Color is equal to the current Color.
     /// </summary>
     /// <param name="other">The Color to compare with the current Color.</param>
     /// <returns>true if the specified Color is equal to the current Color; otherwise, false.</returns>
@@ -204,7 +207,7 @@ public readonly partial struct Color : IEquatable<Color>
     }
 
     /// <summary>
-    /// Determines whether the specified object is equal to the current Color.
+    ///     Determines whether the specified object is equal to the current Color.
     /// </summary>
     /// <param name="obj">The object to compare with the current Color.</param>
     /// <returns>true if the specified object is equal to the current Color; otherwise, false.</returns>
@@ -214,7 +217,7 @@ public readonly partial struct Color : IEquatable<Color>
     }
 
     /// <summary>
-    /// Returns the hash code for this Color.
+    ///     Returns the hash code for this Color.
     /// </summary>
     /// <returns>A 32-bit signed integer hash code.</returns>
     public override int GetHashCode()
@@ -223,7 +226,7 @@ public readonly partial struct Color : IEquatable<Color>
     }
 
     /// <summary>
-    /// Returns a string representation of this Color.
+    ///     Returns a string representation of this Color.
     /// </summary>
     /// <returns>A string that represents this Color.</returns>
     public override string ToString()
@@ -232,7 +235,7 @@ public readonly partial struct Color : IEquatable<Color>
     }
 
     /// <summary>
-    /// Determines whether two Color instances are equal.
+    ///     Determines whether two Color instances are equal.
     /// </summary>
     /// <param name="left">The first Color to compare.</param>
     /// <param name="right">The second Color to compare.</param>
@@ -243,7 +246,7 @@ public readonly partial struct Color : IEquatable<Color>
     }
 
     /// <summary>
-    /// Determines whether two Color instances are not equal.
+    ///     Determines whether two Color instances are not equal.
     /// </summary>
     /// <param name="left">The first Color to compare.</param>
     /// <param name="right">The second Color to compare.</param>

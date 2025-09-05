@@ -3,15 +3,15 @@ using Chevron9.Core.Extensions.Strings;
 namespace Chevron9.Core.Directories;
 
 /// <summary>
-/// Configuration class for managing application directory structure
-/// Automatically creates directories and provides path resolution with snake_case conversion
+///     Configuration class for managing application directory structure
+///     Automatically creates directories and provides path resolution with snake_case conversion
 /// </summary>
 public class DirectoriesConfig
 {
     private readonly string[] _directories;
 
     /// <summary>
-    /// Initializes a new DirectoriesConfig with root directory and subdirectory list
+    ///     Initializes a new DirectoriesConfig with root directory and subdirectory list
     /// </summary>
     /// <param name="rootDirectory">Root directory path</param>
     /// <param name="directories">Array of subdirectory names to create</param>
@@ -24,12 +24,12 @@ public class DirectoriesConfig
     }
 
     /// <summary>
-    /// Gets the root directory path
+    ///     Gets the root directory path
     /// </summary>
     public string Root { get; }
 
     /// <summary>
-    /// Gets directory path by string key (converted to snake_case)
+    ///     Gets directory path by string key (converted to snake_case)
     /// </summary>
     /// <param name="directoryType">Directory type name</param>
     /// <returns>Full path to directory</returns>
@@ -37,14 +37,14 @@ public class DirectoriesConfig
 
 
     /// <summary>
-    /// Gets directory path by enum value (converted to snake_case)
+    ///     Gets directory path by enum value (converted to snake_case)
     /// </summary>
     /// <param name="directoryType">Directory type enum</param>
     /// <returns>Full path to directory</returns>
     public string this[Enum directoryType] => GetPath(directoryType.ToString());
 
     /// <summary>
-    /// Gets directory path by strongly-typed enum value
+    ///     Gets directory path by strongly-typed enum value
     /// </summary>
     /// <typeparam name="TEnum">Enum type</typeparam>
     /// <param name="value">Enum value</param>
@@ -55,7 +55,7 @@ public class DirectoriesConfig
     }
 
     /// <summary>
-    /// Gets directory path by name, creating directory if it doesn't exist
+    ///     Gets directory path by name, creating directory if it doesn't exist
     /// </summary>
     /// <param name="directoryType">Directory type name (will be converted to snake_case)</param>
     /// <returns>Full path to directory</returns>

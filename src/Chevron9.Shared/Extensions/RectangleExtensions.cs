@@ -1,15 +1,14 @@
-using Chevron9.Shared.Graphics;
 using Chevron9.Shared.Primitives;
 
 namespace Chevron9.Shared.Extensions;
 
 /// <summary>
-/// Provides extension methods for rectangle conversions and utilities.
+///     Provides extension methods for rectangle conversions and utilities.
 /// </summary>
 public static class RectangleExtensions
 {
     /// <summary>
-    /// Converts a RectangleI to a RectangleF.
+    ///     Converts a RectangleI to a RectangleF.
     /// </summary>
     /// <param name="rect">The RectangleI to convert.</param>
     /// <returns>A RectangleF with the same coordinates and dimensions.</returns>
@@ -19,7 +18,7 @@ public static class RectangleExtensions
     }
 
     /// <summary>
-    /// Converts a RectangleF to a RectangleI by rounding the coordinates and dimensions.
+    ///     Converts a RectangleF to a RectangleI by rounding the coordinates and dimensions.
     /// </summary>
     /// <param name="rect">The RectangleF to convert.</param>
     /// <returns>A RectangleI with rounded coordinates and dimensions.</returns>
@@ -34,7 +33,7 @@ public static class RectangleExtensions
     }
 
     /// <summary>
-    /// Converts a RectangleF to a RectangleI by flooring the coordinates and dimensions.
+    ///     Converts a RectangleF to a RectangleI by flooring the coordinates and dimensions.
     /// </summary>
     /// <param name="rect">The RectangleF to convert.</param>
     /// <returns>A RectangleI with floored coordinates and dimensions.</returns>
@@ -49,7 +48,7 @@ public static class RectangleExtensions
     }
 
     /// <summary>
-    /// Converts a RectangleF to a RectangleI by ceiling the coordinates and dimensions.
+    ///     Converts a RectangleF to a RectangleI by ceiling the coordinates and dimensions.
     /// </summary>
     /// <param name="rect">The RectangleF to convert.</param>
     /// <returns>A RectangleI with ceiling coordinates and dimensions.</returns>
@@ -64,7 +63,7 @@ public static class RectangleExtensions
     }
 
     /// <summary>
-    /// Converts a RectangleF to a RectangleI by truncating the coordinates and dimensions.
+    ///     Converts a RectangleF to a RectangleI by truncating the coordinates and dimensions.
     /// </summary>
     /// <param name="rect">The RectangleF to convert.</param>
     /// <returns>A RectangleI with truncated coordinates and dimensions.</returns>
@@ -79,11 +78,13 @@ public static class RectangleExtensions
     }
 
     /// <summary>
-    /// Gets the four corner positions of the rectangle.
+    ///     Gets the four corner positions of the rectangle.
     /// </summary>
     /// <param name="rect">The rectangle.</param>
     /// <returns>A tuple containing the four corner positions (TopLeft, TopRight, BottomLeft, BottomRight).</returns>
-    public static (Position TopLeft, Position TopRight, Position BottomLeft, Position BottomRight) GetCorners(this RectF rect)
+    public static (Position TopLeft, Position TopRight, Position BottomLeft, Position BottomRight) GetCorners(
+        this RectF rect
+    )
     {
         return (
             TopLeft: new Position(rect.Left, rect.Top),
@@ -94,11 +95,12 @@ public static class RectangleExtensions
     }
 
     /// <summary>
-    /// Gets the four corner positions of the rectangle.
+    ///     Gets the four corner positions of the rectangle.
     /// </summary>
     /// <param name="rect">The rectangle.</param>
     /// <returns>A tuple containing the four corner positions (TopLeft, TopRight, BottomLeft, BottomRight).</returns>
-    public static ((int X, int Y) TopLeft, (int X, int Y) TopRight, (int X, int Y) BottomLeft, (int X, int Y) BottomRight) GetCorners(this RectI rect)
+    public static ((int X, int Y) TopLeft, (int X, int Y) TopRight, (int X, int Y) BottomLeft, (int X, int Y) BottomRight)
+        GetCorners(this RectI rect)
     {
         return (
             TopLeft: (rect.Left, rect.Top),
@@ -109,7 +111,7 @@ public static class RectangleExtensions
     }
 
     /// <summary>
-    /// Scales a rectangle by the specified factor.
+    ///     Scales a rectangle by the specified factor.
     /// </summary>
     /// <param name="rect">The rectangle to scale.</param>
     /// <param name="scale">The scale factor.</param>
@@ -120,7 +122,7 @@ public static class RectangleExtensions
     }
 
     /// <summary>
-    /// Scales a rectangle by different factors for X and Y.
+    ///     Scales a rectangle by different factors for X and Y.
     /// </summary>
     /// <param name="rect">The rectangle to scale.</param>
     /// <param name="scaleX">The X scale factor.</param>
@@ -132,7 +134,7 @@ public static class RectangleExtensions
     }
 
     /// <summary>
-    /// Scales a rectangle by the specified Position as scale factors.
+    ///     Scales a rectangle by the specified Position as scale factors.
     /// </summary>
     /// <param name="rect">The rectangle to scale.</param>
     /// <param name="scale">The scale factors (X and Y).</param>
@@ -143,7 +145,7 @@ public static class RectangleExtensions
     }
 
     /// <summary>
-    /// Gets a rectangle that represents the aspect-ratio-preserving fit of one rectangle within another.
+    ///     Gets a rectangle that represents the aspect-ratio-preserving fit of one rectangle within another.
     /// </summary>
     /// <param name="container">The container rectangle.</param>
     /// <param name="content">The content rectangle to fit.</param>
@@ -151,7 +153,9 @@ public static class RectangleExtensions
     public static RectF FitWithin(this RectF container, RectF content)
     {
         if (content.IsEmpty || container.IsEmpty)
+        {
             return RectF.Empty;
+        }
 
         var scaleX = container.Width / content.Width;
         var scaleY = container.Height / content.Height;
@@ -167,7 +171,7 @@ public static class RectangleExtensions
     }
 
     /// <summary>
-    /// Gets a rectangle that represents the aspect-ratio-preserving fill of one rectangle within another.
+    ///     Gets a rectangle that represents the aspect-ratio-preserving fill of one rectangle within another.
     /// </summary>
     /// <param name="container">The container rectangle.</param>
     /// <param name="content">The content rectangle to fill.</param>
@@ -175,7 +179,9 @@ public static class RectangleExtensions
     public static RectF FillWithin(this RectF container, RectF content)
     {
         if (content.IsEmpty || container.IsEmpty)
+        {
             return RectF.Empty;
+        }
 
         var scaleX = container.Width / content.Width;
         var scaleY = container.Height / content.Height;
@@ -191,7 +197,7 @@ public static class RectangleExtensions
     }
 
     /// <summary>
-    /// Clamps a rectangle to be entirely within the bounds of another rectangle.
+    ///     Clamps a rectangle to be entirely within the bounds of another rectangle.
     /// </summary>
     /// <param name="rect">The rectangle to clamp.</param>
     /// <param name="bounds">The bounding rectangle.</param>
@@ -207,7 +213,7 @@ public static class RectangleExtensions
     }
 
     /// <summary>
-    /// Clamps a rectangle to be entirely within the bounds of another rectangle.
+    ///     Clamps a rectangle to be entirely within the bounds of another rectangle.
     /// </summary>
     /// <param name="rect">The rectangle to clamp.</param>
     /// <param name="bounds">The bounding rectangle.</param>
