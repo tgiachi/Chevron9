@@ -30,8 +30,8 @@
         <Copyright>Copyright © 2025 Chevron9 Contributors</Copyright>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RepositoryType>git</RepositoryType>
-        <RepositoryUrl>https://github.com/squid/chevron9</RepositoryUrl>
-        <PackageProjectUrl>https://github.com/squid/chevron9</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/tgiachi/chevron9</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/tgiachi/chevron9</PackageProjectUrl>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageTags>game-engine;2d;rendering;terminal;monogame;opengl;roguelike</PackageTags>
     </PropertyGroup>
@@ -45,5 +45,11 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
     </ItemGroup>
+
+    <!-- Source Link configuration -->
+    <PropertyGroup>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    </PropertyGroup>
 
 </Project>
