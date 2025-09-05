@@ -135,25 +135,25 @@ public class RenderCommandCollectorTests
         var result = _collector.FlushSorted();
 
         Assert.That(result.Count, Is.EqualTo(4));
-        
+
         // Layer 100, Material 10, Sort 200 (cmd4)
         Assert.That(result[0].LayerZ, Is.EqualTo(100));
         Assert.That(result[0].MaterialKey, Is.EqualTo(10));
         Assert.That(result[0].SortKey, Is.EqualTo(200));
         Assert.That(result[0].Command, Is.EqualTo(cmd4));
-        
+
         // Layer 100, Material 20, Sort 100 (cmd2)
         Assert.That(result[1].LayerZ, Is.EqualTo(100));
         Assert.That(result[1].MaterialKey, Is.EqualTo(20));
         Assert.That(result[1].SortKey, Is.EqualTo(100));
         Assert.That(result[1].Command, Is.EqualTo(cmd2));
-        
+
         // Layer 200, Material 10, Sort 100 (cmd3)
         Assert.That(result[2].LayerZ, Is.EqualTo(200));
         Assert.That(result[2].MaterialKey, Is.EqualTo(10));
         Assert.That(result[2].SortKey, Is.EqualTo(100));
         Assert.That(result[2].Command, Is.EqualTo(cmd3));
-        
+
         // Layer 200, Material 10, Sort 300 (cmd1)
         Assert.That(result[3].LayerZ, Is.EqualTo(200));
         Assert.That(result[3].MaterialKey, Is.EqualTo(10));
@@ -201,7 +201,7 @@ public class RenderCommandCollectorTests
 
         _collector.Submit(100, 0, 0, cmd1);
         var firstResult = _collector.FlushSorted();
-        
+
         _collector.Submit(200, 0, 0, cmd2);
         var secondResult = _collector.FlushSorted();
 

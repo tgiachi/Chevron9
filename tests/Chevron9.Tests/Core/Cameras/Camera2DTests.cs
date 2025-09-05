@@ -91,7 +91,7 @@ public class Camera2DTests
     public void WorldToScreen_WithOffset_ShouldTransformCorrectly()
     {
         _camera.Position = new Position(100, 50);
-        
+
         var screenPos = _camera.WorldToScreen(new Position(200, 150));
 
         Assert.That(screenPos.X, Is.EqualTo(500.0f).Within(0.0001f)); // (200-100) + 400
@@ -274,7 +274,7 @@ public class Camera2DTests
     public void ViewBounds_ShouldBeCached_WhenTransformNotChanged()
     {
         _camera.Position = new Position(100, 100);
-        
+
         var bounds1 = _camera.ViewBounds;
         var bounds2 = _camera.ViewBounds;
 

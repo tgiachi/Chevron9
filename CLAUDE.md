@@ -27,12 +27,14 @@ The engine follows a layered architecture with separation of concerns:
   - Solution file: `Chevron9.sln`
 
 ## Git Hooks
-- **Pre-commit Hook**: Automatically runs `dotnet test` before each commit
-- **Purpose**: Ensures all tests pass before code is committed
-- **Behavior**: If tests fail, commit is aborted with error message
+- **Pre-commit Hook**: Automatically runs `dotnet format` (linting) and `dotnet test` before each commit
+- **Purpose**: Ensures code is properly formatted and all tests pass before code is committed
+- **Behavior**: If linting fails or tests fail, commit is aborted with error message
 - **Setup**: Run `./setup-hooks.sh` to install the hook
 - **Location**: `.git/hooks/pre-commit` (automatically enabled)
-- **Customization**: Edit the hook file to modify test execution parameters
+- **Linting**: Uses `dotnet format --verify-no-changes` to check code formatting
+- **Testing**: Runs full test suite with `dotnet test --no-build`
+- **Customization**: Edit the hook file to modify execution parameters
 
 ## Testing Standards
 - **Framework**: NUnit 4 exclusively - **NO FluentAssertions**
