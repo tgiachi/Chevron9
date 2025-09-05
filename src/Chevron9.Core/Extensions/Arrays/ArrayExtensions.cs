@@ -1,4 +1,4 @@
-namespace Chevron9.Core.Extensions;
+namespace Chevron9.Core.Extensions.Arrays;
 
 /// <summary>
 ///     Extension methods for array manipulation and enumeration

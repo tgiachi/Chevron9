@@ -1,4 +1,6 @@
+using Chevron9.Core.Args;
 using Chevron9.Core.Render;
+using Chevron9.Core.Types;
 using Chevron9.Shared.Graphics;
 
 namespace Chevron9.Core.Interfaces;
@@ -18,6 +20,11 @@ public interface IRenderer : IDisposable
     ///     Gets the render target height in backend-specific units (cells for Terminal, pixels for GPU)
     /// </summary>
     int Height { get; }
+
+    /// <summary>
+    ///     Occurs when the renderer is resized
+    /// </summary>
+    event EventHandler<ResizeEventArgs>? Resize;
 
     /// <summary>
     ///     Sets the rendering viewport (clipping region)

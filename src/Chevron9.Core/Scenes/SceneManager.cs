@@ -1,4 +1,5 @@
 using Chevron9.Core.Extensions;
+using Chevron9.Core.Extensions.Arrays;
 using Chevron9.Core.Interfaces;
 using Chevron9.Core.Internal;
 
