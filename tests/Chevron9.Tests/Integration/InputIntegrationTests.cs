@@ -18,14 +18,19 @@ public class InputIntegrationTests
         public bool WasPressed(InputKey key, InputKeyModifierType modifiers) => false;
         public bool WasReleased(InputKey key, InputKeyModifierType modifiers) => false;
         public InputKeyModifierType GetActiveModifiers() => InputKeyModifierType.Control;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Method is part of IInputDevice interface")]
         public Position MousePosition() => new Position(100, 200);
         public bool MouseDown(MouseButtonType button) => button == MouseButtonType.Left;
         public bool MouseClicked(MouseButtonType button) => button == MouseButtonType.Right;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Method is part of IInputDevice interface")]
         public Position MouseWheelDelta() => new Position(0, 120);
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Method is part of IInputDevice interface")]
         public Position MouseDelta() => new Position(5, -3);
         public bool MousePressed(MouseButtonType button) => button == MouseButtonType.Middle;
         public bool MouseReleased(MouseButtonType button) => false;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Method is part of IInputDevice interface")]
         public bool IsPointerInside() => true;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Method is part of IInputDevice interface")]
         public bool HasFocus() => true;
         public void Poll() { }
     }
