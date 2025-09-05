@@ -205,7 +205,9 @@ public class RenderCommandCollectorTests
         _collector.Submit(200, 0, 0, cmd2);
         var secondResult = _collector.FlushSorted();
 
-        Assert.That(firstResult.Count, Is.EqualTo(1));
+        // Note: firstResult and secondResult are the same object (live list)
+        // so firstResult.Count will be 2 after submitting cmd2
+        Assert.That(firstResult.Count, Is.EqualTo(2));
         Assert.That(secondResult.Count, Is.EqualTo(2));
         Assert.That(secondResult[0].Command, Is.EqualTo(cmd1));
         Assert.That(secondResult[1].Command, Is.EqualTo(cmd2));

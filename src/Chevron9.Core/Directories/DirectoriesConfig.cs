@@ -9,6 +9,7 @@ namespace Chevron9.Core.Directories;
 public class DirectoriesConfig
 {
     private readonly string[] _directories;
+    private readonly Dictionary<string, string> _pathCache = new();
 
     /// <summary>
     ///     Initializes a new DirectoriesConfig with root directory and subdirectory list
@@ -51,7 +52,8 @@ public class DirectoriesConfig
     /// <returns>Full path to directory</returns>
     public string GetPath<TEnum>(TEnum value) where TEnum : struct, Enum
     {
-        return GetPath(Enum.GetName(value));
+        var enumName = Enum.GetName(value);
+        return enumName is not null ? GetPath(enumName) : throw new ArgumentException("Invalid enum value", nameof(value));
     }
 
     /// <summary>
@@ -61,13 +63,20 @@ public class DirectoriesConfig
     /// <returns>Full path to directory</returns>
     public string GetPath(string directoryType)
     {
-        var path = Path.Combine(Root, directoryType.ToSnakeCase());
+        if (_pathCache.TryGetValue(directoryType, out var cachedPath))
+        {
+            return cachedPath;
+        }
+
+        var snakeCaseName = directoryType.ToSnakeCase();
+        var path = Path.Combine(Root, snakeCaseName);
 
         if (!Directory.Exists(path))
         {
             Directory.CreateDirectory(path);
         }
 
+        _pathCache[directoryType] = path;
         return path;
     }
 
