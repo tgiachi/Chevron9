@@ -8,229 +8,229 @@ public class AnsiEscapeCodesTests
     [Test]
     public void Escape_ShouldReturnCorrectEscapeSequence()
     {
-        Assert.That(AnsiEscapeCodes.Escape, Is.EqualTo("\u001b["));
+        Assert.That(AnsiEscapeCodes.Escape, Is.EqualTo("\e["));
     }
 
     [Test]
     public void Reset_ShouldReturnCorrectResetSequence()
     {
-        Assert.That(AnsiEscapeCodes.Reset, Is.EqualTo("\u001b[0m"));
+        Assert.That(AnsiEscapeCodes.Reset, Is.EqualTo("\e[0m"));
     }
 
     [Test]
     public void ClearScreen_ShouldReturnCorrectClearScreenSequence()
     {
-        Assert.That(AnsiEscapeCodes.ClearScreen, Is.EqualTo("\u001b[2J"));
+        Assert.That(AnsiEscapeCodes.ClearScreen, Is.EqualTo("\e[2J"));
     }
 
     [Test]
     public void ClearLine_ShouldReturnCorrectClearLineSequence()
     {
-        Assert.That(AnsiEscapeCodes.ClearLine, Is.EqualTo("\u001b[2K"));
+        Assert.That(AnsiEscapeCodes.ClearLine, Is.EqualTo("\e[2K"));
     }
 
     [Test]
     public void CursorHome_ShouldReturnCorrectCursorHomeSequence()
     {
-        Assert.That(AnsiEscapeCodes.CursorHome, Is.EqualTo("\u001b[H"));
+        Assert.That(AnsiEscapeCodes.CursorHome, Is.EqualTo("\e[H"));
     }
 
     [Test]
     public void CursorHide_ShouldReturnCorrectCursorHideSequence()
     {
-        Assert.That(AnsiEscapeCodes.CursorHide, Is.EqualTo("\u001b[?25l"));
+        Assert.That(AnsiEscapeCodes.CursorHide, Is.EqualTo("\e[?25l"));
     }
 
     [Test]
     public void CursorShow_ShouldReturnCorrectCursorShowSequence()
     {
-        Assert.That(AnsiEscapeCodes.CursorShow, Is.EqualTo("\u001b[?25h"));
+        Assert.That(AnsiEscapeCodes.CursorShow, Is.EqualTo("\e[?25h"));
     }
 
     [Test]
     public void SaveCursor_ShouldReturnCorrectSaveCursorSequence()
     {
-        Assert.That(AnsiEscapeCodes.SaveCursor, Is.EqualTo("\u001b[s"));
+        Assert.That(AnsiEscapeCodes.SaveCursor, Is.EqualTo("\e[s"));
     }
 
     [Test]
     public void RestoreCursor_ShouldReturnCorrectRestoreCursorSequence()
     {
-        Assert.That(AnsiEscapeCodes.RestoreCursor, Is.EqualTo("\u001b[u"));
+        Assert.That(AnsiEscapeCodes.RestoreCursor, Is.EqualTo("\e[u"));
     }
 
     [Test]
     public void Bold_ShouldReturnCorrectBoldSequence()
     {
-        Assert.That(AnsiEscapeCodes.Bold, Is.EqualTo("\u001b[1m"));
+        Assert.That(AnsiEscapeCodes.Bold, Is.EqualTo("\e[1m"));
     }
 
     [Test]
     public void Underline_ShouldReturnCorrectUnderlineSequence()
     {
-        Assert.That(AnsiEscapeCodes.Underline, Is.EqualTo("\u001b[4m"));
+        Assert.That(AnsiEscapeCodes.Underline, Is.EqualTo("\e[4m"));
     }
 
     [Test]
     public void Black_ShouldReturnCorrectBlackSequence()
     {
-        Assert.That(AnsiEscapeCodes.Black, Is.EqualTo("\u001b[30m"));
+        Assert.That(AnsiEscapeCodes.Black, Is.EqualTo("\e[30m"));
     }
 
     [Test]
     public void Red_ShouldReturnCorrectRedSequence()
     {
-        Assert.That(AnsiEscapeCodes.Red, Is.EqualTo("\u001b[31m"));
+        Assert.That(AnsiEscapeCodes.Red, Is.EqualTo("\e[31m"));
     }
 
     [Test]
     public void Green_ShouldReturnCorrectGreenSequence()
     {
-        Assert.That(AnsiEscapeCodes.Green, Is.EqualTo("\u001b[32m"));
+        Assert.That(AnsiEscapeCodes.Green, Is.EqualTo("\e[32m"));
     }
 
     [Test]
     public void Yellow_ShouldReturnCorrectYellowSequence()
     {
-        Assert.That(AnsiEscapeCodes.Yellow, Is.EqualTo("\u001b[33m"));
+        Assert.That(AnsiEscapeCodes.Yellow, Is.EqualTo("\e[33m"));
     }
 
     [Test]
     public void Blue_ShouldReturnCorrectBlueSequence()
     {
-        Assert.That(AnsiEscapeCodes.Blue, Is.EqualTo("\u001b[34m"));
+        Assert.That(AnsiEscapeCodes.Blue, Is.EqualTo("\e[34m"));
     }
 
     [Test]
     public void Magenta_ShouldReturnCorrectMagentaSequence()
     {
-        Assert.That(AnsiEscapeCodes.Magenta, Is.EqualTo("\u001b[35m"));
+        Assert.That(AnsiEscapeCodes.Magenta, Is.EqualTo("\e[35m"));
     }
 
     [Test]
     public void Cyan_ShouldReturnCorrectCyanSequence()
     {
-        Assert.That(AnsiEscapeCodes.Cyan, Is.EqualTo("\u001b[36m"));
+        Assert.That(AnsiEscapeCodes.Cyan, Is.EqualTo("\e[36m"));
     }
 
     [Test]
     public void White_ShouldReturnCorrectWhiteSequence()
     {
-        Assert.That(AnsiEscapeCodes.White, Is.EqualTo("\u001b[37m"));
+        Assert.That(AnsiEscapeCodes.White, Is.EqualTo("\e[37m"));
     }
 
     [Test]
     public void BgBlack_ShouldReturnCorrectBackgroundBlackSequence()
     {
-        Assert.That(AnsiEscapeCodes.BgBlack, Is.EqualTo("\u001b[40m"));
+        Assert.That(AnsiEscapeCodes.BgBlack, Is.EqualTo("\e[40m"));
     }
 
     [Test]
     public void BgRed_ShouldReturnCorrectBackgroundRedSequence()
     {
-        Assert.That(AnsiEscapeCodes.BgRed, Is.EqualTo("\u001b[41m"));
+        Assert.That(AnsiEscapeCodes.BgRed, Is.EqualTo("\e[41m"));
     }
 
     [Test]
     public void CursorUp_WithDefaultParameter_ShouldReturnCorrectSequence()
     {
-        Assert.That(AnsiEscapeCodes.CursorUp(), Is.EqualTo("\u001b[1A"));
+        Assert.That(AnsiEscapeCodes.CursorUp(), Is.EqualTo("\e[1A"));
     }
 
     [Test]
     public void CursorUp_WithSpecificParameter_ShouldReturnCorrectSequence()
     {
-        Assert.That(AnsiEscapeCodes.CursorUp(5), Is.EqualTo("\u001b[5A"));
+        Assert.That(AnsiEscapeCodes.CursorUp(5), Is.EqualTo("\e[5A"));
     }
 
     [Test]
     public void CursorDown_WithDefaultParameter_ShouldReturnCorrectSequence()
     {
-        Assert.That(AnsiEscapeCodes.CursorDown(), Is.EqualTo("\u001b[1B"));
+        Assert.That(AnsiEscapeCodes.CursorDown(), Is.EqualTo("\e[1B"));
     }
 
     [Test]
     public void CursorDown_WithSpecificParameter_ShouldReturnCorrectSequence()
     {
-        Assert.That(AnsiEscapeCodes.CursorDown(3), Is.EqualTo("\u001b[3B"));
+        Assert.That(AnsiEscapeCodes.CursorDown(3), Is.EqualTo("\e[3B"));
     }
 
     [Test]
     public void CursorForward_WithDefaultParameter_ShouldReturnCorrectSequence()
     {
-        Assert.That(AnsiEscapeCodes.CursorForward(), Is.EqualTo("\u001b[1C"));
+        Assert.That(AnsiEscapeCodes.CursorForward(), Is.EqualTo("\e[1C"));
     }
 
     [Test]
     public void CursorForward_WithSpecificParameter_ShouldReturnCorrectSequence()
     {
-        Assert.That(AnsiEscapeCodes.CursorForward(7), Is.EqualTo("\u001b[7C"));
+        Assert.That(AnsiEscapeCodes.CursorForward(7), Is.EqualTo("\e[7C"));
     }
 
     [Test]
     public void CursorBack_WithDefaultParameter_ShouldReturnCorrectSequence()
     {
-        Assert.That(AnsiEscapeCodes.CursorBack(), Is.EqualTo("\u001b[1D"));
+        Assert.That(AnsiEscapeCodes.CursorBack(), Is.EqualTo("\e[1D"));
     }
 
     [Test]
     public void CursorBack_WithSpecificParameter_ShouldReturnCorrectSequence()
     {
-        Assert.That(AnsiEscapeCodes.CursorBack(2), Is.EqualTo("\u001b[2D"));
+        Assert.That(AnsiEscapeCodes.CursorBack(2), Is.EqualTo("\e[2D"));
     }
 
     [Test]
     public void CursorPosition_ShouldReturnCorrectSequence()
     {
-        Assert.That(AnsiEscapeCodes.CursorPosition(10, 20), Is.EqualTo("\u001b[10;20H"));
+        Assert.That(AnsiEscapeCodes.CursorPosition(10, 20), Is.EqualTo("\e[10;20H"));
     }
 
     [Test]
     public void FgColor256_ShouldReturnCorrectSequence()
     {
-        Assert.That(AnsiEscapeCodes.FgColor256(123), Is.EqualTo("\u001b[38;5;123m"));
+        Assert.That(AnsiEscapeCodes.FgColor256(123), Is.EqualTo("\e[38;5;123m"));
     }
 
     [Test]
     public void BgColor256_ShouldReturnCorrectSequence()
     {
-        Assert.That(AnsiEscapeCodes.BgColor256(200), Is.EqualTo("\u001b[48;5;200m"));
+        Assert.That(AnsiEscapeCodes.BgColor256(200), Is.EqualTo("\e[48;5;200m"));
     }
 
     [Test]
     public void FgColorRgb_ShouldReturnCorrectSequence()
     {
-        Assert.That(AnsiEscapeCodes.FgColorRgb(255, 128, 64), Is.EqualTo("\u001b[38;2;255;128;64m"));
+        Assert.That(AnsiEscapeCodes.FgColorRgb(255, 128, 64), Is.EqualTo("\e[38;2;255;128;64m"));
     }
 
     [Test]
     public void BgColorRgb_ShouldReturnCorrectSequence()
     {
-        Assert.That(AnsiEscapeCodes.BgColorRgb(100, 150, 200), Is.EqualTo("\u001b[48;2;100;150;200m"));
+        Assert.That(AnsiEscapeCodes.BgColorRgb(100, 150, 200), Is.EqualTo("\e[48;2;100;150;200m"));
     }
 
     [Test]
     public void EnterAlternateScreen_ShouldReturnCorrectSequence()
     {
-        Assert.That(AnsiEscapeCodes.EnterAlternateScreen, Is.EqualTo("\u001b[?1049h"));
+        Assert.That(AnsiEscapeCodes.EnterAlternateScreen, Is.EqualTo("\e[?1049h"));
     }
 
     [Test]
     public void ExitAlternateScreen_ShouldReturnCorrectSequence()
     {
-        Assert.That(AnsiEscapeCodes.ExitAlternateScreen, Is.EqualTo("\u001b[?1049l"));
+        Assert.That(AnsiEscapeCodes.ExitAlternateScreen, Is.EqualTo("\e[?1049l"));
     }
 
     [Test]
     public void EnableMouseTracking_ShouldReturnCorrectSequence()
     {
-        Assert.That(AnsiEscapeCodes.EnableMouseTracking, Is.EqualTo("\u001b[?1000h\u001b[?1002h\u001b[?1015h\u001b[?1006h"));
+        Assert.That(AnsiEscapeCodes.EnableMouseTracking, Is.EqualTo("\e[?1000h\e[?1002h\e[?1015h\e[?1006h"));
     }
 
     [Test]
     public void DisableMouseTracking_ShouldReturnCorrectSequence()
     {
-        Assert.That(AnsiEscapeCodes.DisableMouseTracking, Is.EqualTo("\u001b[?1006l\u001b[?1015l\u001b[?1002l\u001b[?1000l"));
+        Assert.That(AnsiEscapeCodes.DisableMouseTracking, Is.EqualTo("\e[?1006l\e[?1015l\e[?1002l\e[?1000l"));
     }
 
     [Test]
@@ -242,12 +242,12 @@ public class AnsiEscapeCodesTests
     [Test]
     public void EnableBracketedPaste_ShouldReturnCorrectSequence()
     {
-        Assert.That(AnsiEscapeCodes.EnableBracketedPaste, Is.EqualTo("\u001b[?2004h"));
+        Assert.That(AnsiEscapeCodes.EnableBracketedPaste, Is.EqualTo("\e[?2004h"));
     }
 
     [Test]
     public void DisableBracketedPaste_ShouldReturnCorrectSequence()
     {
-        Assert.That(AnsiEscapeCodes.DisableBracketedPaste, Is.EqualTo("\u001b[?2004l"));
+        Assert.That(AnsiEscapeCodes.DisableBracketedPaste, Is.EqualTo("\e[?2004l"));
     }
 }

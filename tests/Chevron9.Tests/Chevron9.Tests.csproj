@@ -40,6 +40,7 @@
     <ItemGroup>
         <ProjectReference Include="..\..\src\Chevron9.Core\Chevron9.Core.csproj"/>
         <ProjectReference Include="..\..\src\Chevron9.Shared\Chevron9.Shared.csproj"/>
+        <ProjectReference Include="..\..\src\Chevron9.Backends.Terminal\Chevron9.Backends.Terminal.csproj"/>
     </ItemGroup>
 
 </Project>

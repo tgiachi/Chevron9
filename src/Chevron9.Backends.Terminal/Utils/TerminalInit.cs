@@ -128,7 +128,9 @@ public static class TerminalInit
         // Basic check for ANSI support
         var term = Environment.GetEnvironmentVariable("TERM");
         if (string.IsNullOrEmpty(term))
+        {
             return false;
+        }
 
         // Common terminals that support ANSI
         return term.Contains("xterm") ||

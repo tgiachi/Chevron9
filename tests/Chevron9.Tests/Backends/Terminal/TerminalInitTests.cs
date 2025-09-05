@@ -55,7 +55,7 @@ public class TerminalInitTests
     {
         var sequence = TerminalInit.GetTerminalSize();
 
-        Assert.That(sequence, Is.EqualTo("\u001b[14t"));
+        Assert.That(sequence, Is.EqualTo("\e[15t"));
     }
 
     [Test]
@@ -64,8 +64,8 @@ public class TerminalInitTests
         var sequence = TerminalInit.SetupHighPerformance();
 
         // Should include color capability tests
-        Assert.That(sequence, Contains.Substring("\u001b[38;5;0m")); // 256-color test
-        Assert.That(sequence, Contains.Substring("\u001b[38;2;0;0;0m")); // True color test
+        Assert.That(sequence, Contains.Substring("\e[48;5;0m")); // 256-color test
+        Assert.That(sequence, Contains.Substring("\e[48;2;0;0;0m")); // True color test
     }
 
     [Test]
