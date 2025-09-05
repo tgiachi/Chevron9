@@ -6,7 +6,7 @@ namespace Chevron9.Core.Internal;
 ///     Internal entry structure combining a scene with its optional DI scope
 ///     Used by SceneManager to manage scene lifecycle and resource cleanup
 /// </summary>
-internal readonly struct Entry
+internal readonly struct SceneEntry
 {
     /// <summary>Gets the scene instance</summary>
     public readonly IScene Scene;
@@ -19,7 +19,7 @@ internal readonly struct Entry
     /// </summary>
     /// <param name="scene">Scene instance to manage</param>
     /// <param name="scope">Optional DI scope for cleanup</param>
-    public Entry(IScene scene, IDisposable? scope)
+    public SceneEntry(IScene scene, IDisposable? scope)
     {
         Scene = scene;
         Scope = scope;

@@ -13,11 +13,10 @@ public sealed class SceneManager : ISceneManager, IDisposable
 {
     private readonly Queue<Action> _pendingOps = new();
 
-    private readonly Stack<Entry> _stack = new();
+    private readonly Stack<SceneEntry> _stack = new();
     private bool _disposed;
     private bool _mutating; // Prevents stack modifications during Update/Render
 
-    // ----------------- IDisposable Implementation -----------------
 
     /// <summary>
     ///     Disposes the scene manager and all managed scenes
@@ -195,7 +194,7 @@ public sealed class SceneManager : ISceneManager, IDisposable
     {
         // Enter BEFORE pushing to ensure initialization before any potential Render calls
         scene.Enter();
-        _stack.Push(new Entry(scene, scope));
+        _stack.Push(new SceneEntry(scene, scope));
     }
 
     /// <summary>
