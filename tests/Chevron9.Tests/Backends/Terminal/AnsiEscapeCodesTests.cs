@@ -250,4 +250,139 @@ public class AnsiEscapeCodesTests
     {
         Assert.That(AnsiEscapeCodes.DisableBracketedPaste, Is.EqualTo("\e[?2004l"));
     }
+
+    [Test]
+    public void UnicodeEscapeAndCSharpEscape_ShouldProduceIdenticalResults()
+    {
+        // Verifica che \u001b e \e producano esattamente lo stesso risultato
+        const string unicodeEscape = "\u001b[31m";  // Unicode escape
+        const string csharpEscape = "\e[31m";      // C# escape sequence
+
+        Assert.That(unicodeEscape, Is.EqualTo(csharpEscape));
+        Assert.That(unicodeEscape.Length, Is.EqualTo(csharpEscape.Length));
+
+        // Verifica che entrambi abbiano la stessa rappresentazione byte
+        var unicodeBytes = System.Text.Encoding.UTF8.GetBytes(unicodeEscape);
+        var csharpBytes = System.Text.Encoding.UTF8.GetBytes(csharpEscape);
+        Assert.That(unicodeBytes, Is.EqualTo(csharpBytes));
+    }
+
+    [Test]
+    public void EscapeSequencesEquivalence_ShouldWorkForAllCommonCodes()
+    {
+        // Testa varie sequenze comuni per assicurarsi che siano equivalenti
+        var testCases = new[]
+        {
+            ("\u001b[0m", "\e[0m"),     // Reset
+            ("\u001b[31m", "\e[31m"),   // Red
+            ("\u001b[2J", "\e[2J"),     // Clear screen
+            ("\u001b[H", "\e[H"),       // Cursor home
+            ("\u001b[?25l", "\e[?25l"), // Hide cursor
+        };
+
+        foreach (var (unicode, csharp) in testCases)
+        {
+            Assert.That(unicode, Is.EqualTo(csharp), $"Sequences should be equal: {unicode} vs {csharp}");
+
+            // Verifica anche che abbiano gli stessi byte
+            var unicodeBytes = System.Text.Encoding.UTF8.GetBytes(unicode);
+            var csharpBytes = System.Text.Encoding.UTF8.GetBytes(csharp);
+            Assert.That(unicodeBytes, Is.EqualTo(csharpBytes), $"Byte sequences should be equal for: {unicode}");
+        }
+    }
+
+    [Test]
+    public void AdditionalTextStyles_ShouldReturnCorrectSequences()
+    {
+        Assert.That(AnsiEscapeCodes.Italic, Is.EqualTo("\e[3m"));
+        Assert.That(AnsiEscapeCodes.DoubleUnderline, Is.EqualTo("\e[21m"));
+        Assert.That(AnsiEscapeCodes.Overline, Is.EqualTo("\e[53m"));
+        Assert.That(AnsiEscapeCodes.Superscript, Is.EqualTo("\e[73m"));
+        Assert.That(AnsiEscapeCodes.Subscript, Is.EqualTo("\e[74m"));
+    }
+
+    [Test]
+    public void CommonRgbColors_ShouldHaveCorrectValues()
+    {
+        Assert.That(AnsiEscapeCodes.ColorOrange, Is.EqualTo((255, 165, 0)));
+        Assert.That(AnsiEscapeCodes.ColorPurple, Is.EqualTo((128, 0, 128)));
+        Assert.That(AnsiEscapeCodes.ColorPink, Is.EqualTo((255, 192, 203)));
+        Assert.That(AnsiEscapeCodes.ColorGray, Is.EqualTo((128, 128, 128)));
+    }
+
+    [Test]
+    public void TerminalControlCharacters_ShouldReturnCorrectSequences()
+    {
+        Assert.That(AnsiEscapeCodes.Bell, Is.EqualTo("\a"));
+        Assert.That(AnsiEscapeCodes.Backspace, Is.EqualTo("\b"));
+        Assert.That(AnsiEscapeCodes.Tab, Is.EqualTo("\t"));
+        Assert.That(AnsiEscapeCodes.LineFeed, Is.EqualTo("\n"));
+        Assert.That(AnsiEscapeCodes.CarriageReturn, Is.EqualTo("\r"));
+    }
+
+    [Test]
+    public void Combine_ShouldConcatenateSequences()
+    {
+        var result = AnsiEscapeCodes.Combine("\e[31m", "\e[1m", "\e[4m");
+        Assert.That(result, Is.EqualTo("\e[31m\e[1m\e[4m"));
+    }
+
+    [Test]
+    public void Style_ShouldCombineColorsAndStyles()
+    {
+        var result = AnsiEscapeCodes.Style("\e[31m", "\e[40m", "\e[1m", "\e[4m");
+        Assert.That(result, Is.EqualTo("\e[31m\e[40m\e[1m\e[4m"));
+    }
+
+    [Test]
+    public void ColoredText_ShouldApplyStyleAndReset()
+    {
+        var result = AnsiEscapeCodes.ColoredText("Hello", "\e[31m", "\e[40m", "\e[1m");
+        Assert.That(result, Is.EqualTo("\e[31m\e[40m\e[1mHello\e[0m"));
+    }
+
+    [Test]
+    public void ColoredText_WithoutStyles_ShouldReturnTextAsIs()
+    {
+        var result = AnsiEscapeCodes.ColoredText("Hello");
+        Assert.That(result, Is.EqualTo("Hello"));
+    }
+
+    [Test]
+    public void GradientText_ShouldApplyColorGradient()
+    {
+        var result = AnsiEscapeCodes.GradientText("AB", 1, 2);
+        Assert.That(result, Is.EqualTo("\e[38;5;1mA\e[38;5;2mB\e[0m"));
+    }
+
+    [Test]
+    public void GradientText_SingleCharacter_ShouldApplySingleColor()
+    {
+        var result = AnsiEscapeCodes.GradientText("A", 10, 20);
+        Assert.That(result, Is.EqualTo("\e[38;5;10mA\e[0m"));
+    }
+
+    [Test]
+    public void Hyperlink_ShouldGenerateCorrectSequence()
+    {
+        var result = AnsiEscapeCodes.Hyperlink("https://example.com", "Click here");
+        Assert.That(result, Is.EqualTo("\e]8;;https://example.com\e\\Click here\e]8;;\e\\"));
+    }
+
+    [Test]
+    public void ScrollRegion_ShouldGenerateCorrectSequence()
+    {
+        var result = AnsiEscapeCodes.ScrollRegion(1, 10);
+        Assert.That(result, Is.EqualTo("\e[1;10r"));
+    }
+
+    [Test]
+    public void ScreenManipulationConstants_ShouldReturnCorrectSequences()
+    {
+        Assert.That(AnsiEscapeCodes.SaveScreen, Is.EqualTo("\e[?47h"));
+        Assert.That(AnsiEscapeCodes.RestoreScreen, Is.EqualTo("\e[?47l"));
+        Assert.That(AnsiEscapeCodes.EnableSyncOutput, Is.EqualTo("\e[?2026h"));
+        Assert.That(AnsiEscapeCodes.DisableSyncOutput, Is.EqualTo("\e[?2026l"));
+        Assert.That(AnsiEscapeCodes.ResetScrollRegion, Is.EqualTo("\e[r"));
+    }
 }

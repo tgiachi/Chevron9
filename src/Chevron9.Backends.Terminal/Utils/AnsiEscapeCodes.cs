@@ -112,4 +112,118 @@ public static class AnsiEscapeCodes
     // Focus reporting
     public const string EnableFocusReporting = "\e[?1004h";
     public const string DisableFocusReporting = "\e[?1004l";
+
+    // Additional text styles
+    public const string Italic = "\e[3m";
+    public const string DoubleUnderline = "\e[21m";
+    public const string Overline = "\e[53m";
+    public const string Superscript = "\e[73m";
+    public const string Subscript = "\e[74m";
+
+    // Common RGB colors (convenience constants)
+    public static readonly (int R, int G, int B) ColorOrange = (255, 165, 0);
+    public static readonly (int R, int G, int B) ColorPurple = (128, 0, 128);
+    public static readonly (int R, int G, int B) ColorPink = (255, 192, 203);
+    public static readonly (int R, int G, int B) ColorGray = (128, 128, 128);
+    public static readonly (int R, int G, int B) ColorLightGray = (211, 211, 211);
+    public static readonly (int R, int G, int B) ColorDarkGray = (64, 64, 64);
+
+    // Terminal control characters
+    public const string Bell = "\a";
+    public const string Backspace = "\b";
+    public const string Tab = "\t";
+    public const string LineFeed = "\n";
+    public const string CarriageReturn = "\r";
+    public const string FormFeed = "\f";
+    public const string VerticalTab = "\v";
+
+    // Screen manipulation
+    public const string ScrollUp = "\e[M";
+    public const string ScrollDown = "\e[L";
+    public static string ScrollRegion(int top, int bottom) => $"\e[{top};{bottom}r";
+    public const string ResetScrollRegion = "\e[r";
+
+    // Cursor styles (some terminals)
+    public const string CursorBlock = "\e[2 q";
+    public const string CursorUnderline = "\e[4 q";
+    public const string CursorBar = "\e[6 q";
+
+    // Hyperlink support (some terminals like iTerm2, GNOME Terminal)
+    public static string Hyperlink(string url, string text = "") => $"\e]8;;{url}\e\\{text}\e]8;;\e\\";
+
+    /// <summary>
+    /// Combines multiple ANSI sequences into a single sequence
+    /// </summary>
+    public static string Combine(params string[] sequences)
+    {
+        return string.Concat(sequences);
+    }
+
+    /// <summary>
+    /// Creates a style sequence combining foreground color, background color, and text styles
+    /// </summary>
+    public static string Style(string fgColor = "", string bgColor = "", params string[] styles)
+    {
+        var parts = new List<string>();
+
+        if (!string.IsNullOrEmpty(fgColor)) parts.Add(fgColor);
+        if (!string.IsNullOrEmpty(bgColor)) parts.Add(bgColor);
+        parts.AddRange(styles.Where(s => !string.IsNullOrEmpty(s)));
+
+        return string.Concat(parts);
+    }
+
+    /// <summary>
+    /// Creates a colored text sequence with automatic reset
+    /// </summary>
+    public static string ColoredText(string text, string fgColor = "", string bgColor = "", params string[] styles)
+    {
+        if (string.IsNullOrEmpty(fgColor) && string.IsNullOrEmpty(bgColor) && styles.Length == 0)
+            return text;
+
+        var styleSequence = Style(fgColor, bgColor, styles);
+        return $"{styleSequence}{text}{Reset}";
+    }
+
+    /// <summary>
+    /// Creates a gradient text effect using 256-color mode
+    /// </summary>
+    public static string GradientText(string text, int startColor, int endColor)
+    {
+        if (string.IsNullOrEmpty(text) || text.Length <= 1)
+            return ColoredText(text, FgColor256(startColor));
+
+        var result = new System.Text.StringBuilder();
+        var colorStep = (endColor - startColor) / (text.Length - 1);
+
+        for (int i = 0; i < text.Length; i++)
+        {
+            var color = startColor + (int)(colorStep * i);
+            color = Math.Clamp(color, 0, 255);
+            result.Append($"{FgColor256(color)}{text[i]}");
+        }
+
+        result.Append(Reset);
+        return result.ToString();
+    }
+
+    /// <summary>
+    /// Saves the current cursor position and screen content
+    /// </summary>
+    public const string SaveScreen = "\e[?47h";
+
+    /// <summary>
+    /// Restores the previously saved cursor position and screen content
+    /// </summary>
+    public const string RestoreScreen = "\e[?47l";
+
+    /// <summary>
+    /// Enables synchronized output mode (prevents flickering during updates)
+    /// </summary>
+    public const string EnableSyncOutput = "\e[?2026h";
+
+    /// <summary>
+    /// Disables synchronized output mode
+    /// </summary>
+    public const string DisableSyncOutput = "\e[?2026l";
 }
