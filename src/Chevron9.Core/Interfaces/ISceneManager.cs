@@ -39,11 +39,11 @@ public interface ISceneManager
     void Update(double fixedDt, IInputDevice input);
     
     /// <summary>
-    /// Renders the current scene to the render queue
+    /// Renders the current scene to the render command collector
     /// </summary>
-    /// <param name="rq">Render queue to submit commands to</param>
+    /// <param name="rq">Render command collector to submit commands to</param>
     /// <param name="alpha">Interpolation alpha for smooth rendering between updates</param>
-    void Render(IRenderQueue rq, float alpha);
+    void Render(IRenderCommandCollector rq, float alpha);
     
     /// <summary>
     /// Processes input through the current scene

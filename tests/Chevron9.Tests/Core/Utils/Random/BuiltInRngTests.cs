@@ -23,7 +23,7 @@ public class BuiltInRngTests
         var originalGenerator = BuiltInRng.Generator;
         BuiltInRng.Reset();
         var newGenerator = BuiltInRng.Generator;
-        
+
         Assert.That(newGenerator, Is.Not.SameAs(originalGenerator));
     }
 
@@ -53,7 +53,7 @@ public class BuiltInRngTests
     {
         const int minValue = 50;
         const int count = 30;
-        
+
         for (int i = 0; i < 100; i++)
         {
             var result = BuiltInRng.Next(minValue, count);
@@ -86,17 +86,17 @@ public class BuiltInRngTests
     public void NextBytes_ShouldFillBuffer()
     {
         var buffer = new byte[20];
-        
+
         BuiltInRng.NextBytes(buffer);
-        
+
         Assert.That(buffer.Length, Is.EqualTo(20));
     }
 
     [Test]
     public void NextBytes_WithEmptyBuffer_ShouldNotThrow()
     {
-        var buffer = new byte[0];
-        
+        var buffer = Array.Empty<byte>();
+
         Assert.DoesNotThrow(() => BuiltInRng.NextBytes(buffer));
     }
 }

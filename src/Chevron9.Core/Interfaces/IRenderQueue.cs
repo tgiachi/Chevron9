@@ -6,7 +6,7 @@ namespace Chevron9.Core.Interfaces;
 /// Interface for collecting and sorting render commands for optimal batching
 /// Commands are sorted by layer, material, and custom sort keys for performance
 /// </summary>
-public interface IRenderQueue
+public interface IRenderCommandCollector
 {
     /// <summary>
     /// Submits a render command with full sorting control

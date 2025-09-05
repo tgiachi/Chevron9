@@ -12,22 +12,22 @@ public interface ILayer
     /// Gets the layer name for identification and debugging
     /// </summary>
     string Name { get; }
-    
+
     /// <summary>
     /// Gets the Z-index for depth sorting (higher values render on top)
     /// </summary>
     int ZIndex { get; }
-    
+
     /// <summary>
     /// Gets whether this layer processes updates and input
     /// </summary>
     bool Enabled { get; }
-    
+
     /// <summary>
     /// Gets whether this layer is rendered to screen
     /// </summary>
     bool Visible { get; }
-    
+
     /// <summary>
     /// Gets the camera for world-to-screen coordinate transformation
     /// </summary>
@@ -36,8 +36,8 @@ public interface ILayer
     /// <summary>
     /// Gets the clear flags determining what to clear before rendering this layer
     /// </summary>
-    LayerClearFlags Clear { get; }
-    
+    LayerClear Clear { get; }
+
     /// <summary>
     /// Gets the compositing mode for blending this layer with previous layers
     /// </summary>
@@ -49,14 +49,14 @@ public interface ILayer
     /// <param name="fixedDt">Fixed delta time in seconds</param>
     /// <param name="input">Input device for user interaction</param>
     void Update(double fixedDt, IInputDevice input);
-    
+
     /// <summary>
-    /// Renders layer content to the render queue using layer camera
+    /// Renders layer content to the render command collector using layer camera
     /// </summary>
-    /// <param name="rq">Render queue to submit commands to</param>
+    /// <param name="rq">Render command collector to submit commands to</param>
     /// <param name="alpha">Interpolation alpha for smooth rendering</param>
-    void Render(IRenderQueue rq, float alpha);
-    
+    void Render(IRenderCommandCollector rq, float alpha);
+
     /// <summary>
     /// Processes input for this layer
     /// </summary>

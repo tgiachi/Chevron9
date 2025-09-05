@@ -12,7 +12,7 @@ public class DirectoriesConfigTests
     public void SetUp()
     {
         _tempRootPath = Path.Combine(Path.GetTempPath(), $"DirectoriesConfigTest_{Guid.NewGuid():N}");
-        _directoriesConfig = new DirectoriesConfig(_tempRootPath, new[] { "Logs", "Data", "Cache" });
+        _directoriesConfig = new DirectoriesConfig(_tempRootPath, ["Logs", "Data", "Cache"]);
     }
 
     [TearDown]
@@ -53,7 +53,7 @@ public class DirectoriesConfigTests
     {
         var logsPath = _directoriesConfig["Logs"];
         var expectedPath = Path.Combine(_tempRootPath, "logs");
-        
+
         Assert.That(logsPath, Is.EqualTo(expectedPath));
         Assert.That(Directory.Exists(logsPath), Is.True);
     }
@@ -63,7 +63,7 @@ public class DirectoriesConfigTests
     {
         var newPath = _directoriesConfig["NewDirectory"];
         var expectedPath = Path.Combine(_tempRootPath, "new_directory");
-        
+
         Assert.That(newPath, Is.EqualTo(expectedPath));
         Assert.That(Directory.Exists(newPath), Is.True);
     }
@@ -73,7 +73,7 @@ public class DirectoriesConfigTests
     {
         var logsPath = _directoriesConfig[TestDirectoryType.Logs];
         var expectedPath = Path.Combine(_tempRootPath, "logs");
-        
+
         Assert.That(logsPath, Is.EqualTo(expectedPath));
         Assert.That(Directory.Exists(logsPath), Is.True);
     }
@@ -83,7 +83,7 @@ public class DirectoriesConfigTests
     {
         var logsPath = _directoriesConfig.GetPath(TestDirectoryType.Logs);
         var expectedPath = Path.Combine(_tempRootPath, "logs");
-        
+
         Assert.That(logsPath, Is.EqualTo(expectedPath));
         Assert.That(Directory.Exists(logsPath), Is.True);
     }
@@ -93,7 +93,7 @@ public class DirectoriesConfigTests
     {
         var path = _directoriesConfig.GetPath("TempFiles");
         var expectedPath = Path.Combine(_tempRootPath, "temp_files");
-        
+
         Assert.That(path, Is.EqualTo(expectedPath));
         Assert.That(Directory.Exists(path), Is.True);
     }

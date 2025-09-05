@@ -98,9 +98,10 @@ public readonly partial struct Color : IEquatable<Color>
     {
         try
         {
-            var r = Convert.ToByte(hex.Substring(0, 1) + hex.Substring(0, 1), 16);
-            var g = Convert.ToByte(hex.Substring(1, 1) + hex.Substring(1, 1), 16);
-            var b = Convert.ToByte(hex.Substring(2, 1) + hex.Substring(2, 1), 16);
+            var hexSpan = hex.AsSpan();
+            var r = Convert.ToByte(string.Concat(hexSpan[0].ToString(), hexSpan[0].ToString()), 16);
+            var g = Convert.ToByte(string.Concat(hexSpan[1].ToString(), hexSpan[1].ToString()), 16);
+            var b = Convert.ToByte(string.Concat(hexSpan[2].ToString(), hexSpan[2].ToString()), 16);
             return new Color(r, g, b);
         }
         catch (FormatException)
@@ -111,27 +112,30 @@ public readonly partial struct Color : IEquatable<Color>
 
     private static Color ParseArgbHex(string hex)
     {
-        var a = Convert.ToByte(hex.Substring(0, 1) + hex.Substring(0, 1), 16);
-        var r = Convert.ToByte(hex.Substring(1, 1) + hex.Substring(1, 1), 16);
-        var g = Convert.ToByte(hex.Substring(2, 1) + hex.Substring(2, 1), 16);
-        var b = Convert.ToByte(hex.Substring(3, 1) + hex.Substring(3, 1), 16);
+        var hexSpan = hex.AsSpan();
+        var a = Convert.ToByte(string.Concat(hexSpan[0].ToString(), hexSpan[0].ToString()), 16);
+        var r = Convert.ToByte(string.Concat(hexSpan[1].ToString(), hexSpan[1].ToString()), 16);
+        var g = Convert.ToByte(string.Concat(hexSpan[2].ToString(), hexSpan[2].ToString()), 16);
+        var b = Convert.ToByte(string.Concat(hexSpan[3].ToString(), hexSpan[3].ToString()), 16);
         return new Color(r, g, b, a);
     }
 
     private static Color ParseRrggbbHex(string hex)
     {
-        var r = Convert.ToByte(hex.Substring(0, 2), 16);
-        var g = Convert.ToByte(hex.Substring(2, 2), 16);
-        var b = Convert.ToByte(hex.Substring(4, 2), 16);
+        var hexSpan = hex.AsSpan();
+        var r = Convert.ToByte(hexSpan.Slice(0, 2).ToString(), 16);
+        var g = Convert.ToByte(hexSpan.Slice(2, 2).ToString(), 16);
+        var b = Convert.ToByte(hexSpan.Slice(4, 2).ToString(), 16);
         return new Color(r, g, b);
     }
 
     private static Color ParseAarrggbbHex(string hex)
     {
-        var a = Convert.ToByte(hex.Substring(0, 2), 16);
-        var r = Convert.ToByte(hex.Substring(2, 2), 16);
-        var g = Convert.ToByte(hex.Substring(4, 2), 16);
-        var b = Convert.ToByte(hex.Substring(6, 2), 16);
+        var hexSpan = hex.AsSpan();
+        var a = Convert.ToByte(hexSpan.Slice(0, 2).ToString(), 16);
+        var r = Convert.ToByte(hexSpan.Slice(2, 2).ToString(), 16);
+        var g = Convert.ToByte(hexSpan.Slice(4, 2).ToString(), 16);
+        var b = Convert.ToByte(hexSpan.Slice(6, 2).ToString(), 16);
         return new Color(r, g, b, a);
     }
 

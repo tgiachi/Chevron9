@@ -14,14 +14,14 @@ namespace Chevron9.Shared.Primitives;
 /// </typeparam>
 public readonly record struct Cell<TVisual> : IEquatable<Cell<TVisual>>
 {
-    /// <summary> Visual payload (glyph/sprite/etc). </summary>
-    public readonly TVisual Visual;
+    /// <summary> Gets the visual payload (glyph/sprite/etc). </summary>
+    public TVisual Visual { get; }
 
-    /// <summary> Foreground color. </summary>
-    public readonly Color Fg;
+    /// <summary> Gets the foreground color. </summary>
+    public Color Fg { get; }
 
-    /// <summary> Background color. </summary>
-    public readonly Color Bg;
+    /// <summary> Gets the background color. </summary>
+    public Color Bg { get; }
 
     public Cell(TVisual visual, Color fg, Color bg)
     {
@@ -67,10 +67,4 @@ public readonly record struct Cell<TVisual> : IEquatable<Cell<TVisual>>
     /// <returns>Cell with updated visual</returns>
     public Cell<TVisual> WithVisual(TVisual visual) => new(visual, Fg, Bg);
 
-    /// <summary>
-    /// Creates an "empty" cell with a given visual.
-    /// Typically used for initializing buffers.
-    /// </summary>
-    public static Cell<TVisual> Empty(TVisual visual) =>
-        new(visual, new Color(255, 255, 255), new Color(0, 0, 0));
 }

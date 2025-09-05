@@ -10,7 +10,7 @@ public interface IScene : IDisposable
     /// Gets the scene name for identification and debugging
     /// </summary>
     string Name { get; }
-    
+
     /// <summary>
     /// Gets the read-only list of rendering layers in this scene
     /// Layers are rendered in order with Z-sorting
@@ -22,12 +22,12 @@ public interface IScene : IDisposable
     /// Use for initialization, resource loading, state setup
     /// </summary>
     void Enter();
-    
+
     /// <summary>
     /// Called when scene becomes inactive (popped from scene stack)
     /// Use for cleanup, state saving, resource unloading
     /// </summary>
-    void Exit();
+    void Close();
 
     /// <summary>
     /// Updates scene logic with fixed timestep for consistent gameplay
@@ -35,13 +35,13 @@ public interface IScene : IDisposable
     /// <param name="fixedDt">Fixed delta time in seconds</param>
     /// <param name="input">Input device for user interaction</param>
     void Update(double fixedDt, IInputDevice input);
-    
+
     /// <summary>
-    /// Renders all scene layers to the render queue
+    /// Renders all scene layers to the render command collector
     /// </summary>
-    /// <param name="rq">Render queue to submit commands to</param>
+    /// <param name="rq">Render command collector to submit commands to</param>
     /// <param name="alpha">Interpolation alpha for smooth rendering between updates</param>
-    void Render(IRenderQueue rq, float alpha);
+    void Render(IRenderCommandCollector rq, float alpha);
 
     /// <summary>
     /// Processes input through scene layers, typically from top to bottom
