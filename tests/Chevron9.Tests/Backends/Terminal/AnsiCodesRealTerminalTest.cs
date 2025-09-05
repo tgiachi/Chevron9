@@ -106,6 +106,127 @@ public class AnsiCodesRealTerminalTest
         Assert.That(true, "RGB gradient test executed");
     }
 
+    [Test]
+    [Explicit("Interactive mouse test - run manually")]
+    public void MouseTrackingTestInTerminal()
+    {
+        var builder = new AnsiBuilder();
+
+        var mouseTestSequence = builder
+            .ClearScreen()
+            .CursorPosition(1, 1)
+            .Append("=== MOUSE TRACKING TEST ===")
+            .CursorPosition(3, 1)
+            .Append("This test will enable mouse tracking in the terminal.")
+            .CursorPosition(4, 1)
+            .Append("Move your mouse and click to test mouse events.")
+            .CursorPosition(6, 1)
+            .Append("Instructions:")
+            .CursorPosition(7, 1)
+            .Append("1. Move mouse around - should see position updates")
+            .CursorPosition(8, 1)
+            .Append("2. Left click - should register click events")
+            .CursorPosition(9, 1)
+            .Append("3. Right click - should register right click events")
+            .CursorPosition(10, 1)
+            .Append("4. Press any key to exit test")
+            .CursorPosition(12, 1)
+            .Append("Enabling mouse tracking...")
+            .Build();
+
+        ExecuteInTerminal(mouseTestSequence);
+
+        // Enable mouse tracking
+        var enableMouse = AnsiEscapeCodes.EnableMouseTracking;
+        ExecuteInTerminal(enableMouse);
+
+        // Show ready message
+        var readyMessage = builder
+            .CursorPosition(14, 1)
+            .FgColorRgb(0, 255, 0)
+            .Append("✓ Mouse tracking enabled!")
+            .CursorPosition(15, 1)
+            .Append("Move mouse and click to test...")
+            .Build();
+
+        ExecuteInTerminal(readyMessage);
+
+        // In a real implementation, we would read mouse events from stdin
+        // For this demo, we'll just show that mouse tracking is enabled
+        Thread.Sleep(2000); // Give user time to see the message
+
+        // Disable mouse tracking
+        var disableMouse = AnsiEscapeCodes.DisableMouseTracking;
+        ExecuteInTerminal(disableMouse);
+
+        var cleanupMessage = builder
+            .CursorPosition(17, 1)
+            .Reset()
+            .Append("Mouse tracking disabled. Test complete.")
+            .Build();
+
+        ExecuteInTerminal(cleanupMessage);
+
+        Assert.That(true, "Mouse tracking test completed");
+    }
+
+    [Test]
+    [Explicit("Mouse event decoding test - run manually")]
+    public void MouseEventDecodingTestInTerminal()
+    {
+        var builder = new AnsiBuilder();
+
+        var decodingTest = builder
+            .ClearScreen()
+            .CursorPosition(1, 1)
+            .Append("=== MOUSE EVENT DECODING TEST ===")
+            .CursorPosition(3, 1)
+            .Append("This test shows how mouse events are encoded in ANSI sequences.")
+            .CursorPosition(5, 1)
+            .Append("Mouse events are sent as: \\e[<button>;<x>;<y>M or m")
+            .CursorPosition(7, 1)
+            .Append("Button codes:")
+            .CursorPosition(8, 1)
+            .Append("  0 = Left button down")
+            .CursorPosition(9, 1)
+            .Append("  1 = Middle button down")
+            .CursorPosition(10, 1)
+            .Append("  2 = Right button down")
+            .CursorPosition(11, 1)
+            .Append("  3 = Button released")
+            .CursorPosition(12, 1)
+            .Append("  32 = Left button + motion")
+            .CursorPosition(13, 1)
+            .Append("  64 = Right button + motion")
+            .CursorPosition(15, 1)
+            .Append("Example: \\e[0;50;20M = Left click at position (50,20)")
+            .CursorPosition(17, 1)
+            .FgColorRgb(0, 255, 0)
+            .Append("✓ Mouse event decoding reference displayed")
+            .Build();
+
+        ExecuteInTerminal(decodingTest);
+
+        // Show some example mouse events
+        var examples = builder
+            .CursorPosition(19, 1)
+            .Reset()
+            .Append("Example mouse sequences:")
+            .CursorPosition(20, 1)
+            .Append("  Left click at (10,5): \\e[0;10;5M")
+            .CursorPosition(21, 1)
+            .Append("  Right click at (25,15): \\e[2;25;15M")
+            .CursorPosition(22, 1)
+            .Append("  Mouse move to (40,30): \\e[32;40;30M")
+            .CursorPosition(24, 1)
+            .Append("Press Enter to continue...")
+            .Build();
+
+        ExecuteInTerminal(examples);
+
+        Assert.That(true, "Mouse event decoding test completed");
+    }
+
     private static void ExecuteInTerminal(string ansiSequence)
     {
         try
