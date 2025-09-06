@@ -17,7 +17,7 @@ public sealed class AnsiBuilder : IDisposable
     /// </summary>
     public AnsiBuilder()
     {
-        _builder = new StringBuilder(256);
+        _builder = new StringBuilder(1024);
         _hasPendingSequence = false;
     }
 

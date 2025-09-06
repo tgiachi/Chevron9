@@ -8,6 +8,11 @@ using Chevron9.Shared.Primitives;
 
 namespace Chevron9.Backends.Terminal.Input;
 
+/// <summary>
+///     Terminal-based input device that processes keyboard and mouse input from console
+///     Parses ANSI escape sequences for advanced input detection and supports key repeat functionality
+///     Optimized for 30+ FPS game loops with non-blocking I/O operations
+/// </summary>
 public class ConsoleInputDevice : IInputDevice, IDisposable
 {
     private readonly Stream _reader;
@@ -19,6 +24,12 @@ public class ConsoleInputDevice : IInputDevice, IDisposable
     private readonly HashSet<(InputKey key, InputKeyModifierType modifiers)> _releasedThisFrame = new();
     private readonly HashSet<(InputKey key, InputKeyModifierType modifiers)> _currentlyDown = new();
 
+    // Key repeat tracking
+    private readonly Dictionary<(InputKey key, InputKeyModifierType modifiers), DateTime> _keyPressStartTimes = new();
+    private readonly Dictionary<(InputKey key, InputKeyModifierType modifiers), DateTime> _lastKeyRepeatTimes = new();
+    private readonly HashSet<(InputKey key, InputKeyModifierType modifiers)> _repeatedThisFrame = new();
+    private readonly List<(InputKey key, InputKeyModifierType modifiers)> _keysToRepeat = new();
+
     // Mouse state tracking  
     private readonly HashSet<MouseButtonType> _mousePressedThisFrame = new();
     private readonly HashSet<MouseButtonType> _mouseReleasedThisFrame = new();
@@ -29,6 +40,9 @@ public class ConsoleInputDevice : IInputDevice, IDisposable
     private Position _mouseDelta = new(0, 0);
     private Position _mouseWheelDelta = new(0, 0);
     private InputKeyModifierType _activeModifiers = InputKeyModifierType.None;
+
+    // Key repeat configuration  
+    public TimeSpan KeyRepeatDelay { get; set; } = TimeSpan.FromMilliseconds(500);
 
     public ConsoleInputDevice()
     {
@@ -45,11 +59,15 @@ public class ConsoleInputDevice : IInputDevice, IDisposable
         // Clear previous frame state
         _pressedThisFrame.Clear();
         _releasedThisFrame.Clear();
+        _repeatedThisFrame.Clear();
         _mousePressedThisFrame.Clear();
         _mouseReleasedThisFrame.Clear();
         _mouseClickedThisFrame.Clear();
         _mouseDelta = new Position(0, 0);
         _mouseWheelDelta = new Position(0, 0);
+
+        // Process key repeats for currently held keys
+        ProcessKeyRepeats();
 
         // Read available input data with non-blocking approach
         try
@@ -99,6 +117,10 @@ public class ConsoleInputDevice : IInputDevice, IDisposable
                 {
                     _pressedThisFrame.Add(keyTuple);
                     _currentlyDown.Add(keyTuple);
+
+                    // Start tracking for key repeat
+                    _keyPressStartTimes[keyTuple] = DateTime.UtcNow;
+                    _lastKeyRepeatTimes[keyTuple] = DateTime.UtcNow;
                 }
             }
             else
@@ -108,6 +130,10 @@ public class ConsoleInputDevice : IInputDevice, IDisposable
                 {
                     _releasedThisFrame.Add(keyTuple);
                     _currentlyDown.Remove(keyTuple);
+
+                    // Stop tracking for key repeat
+                    _keyPressStartTimes.Remove(keyTuple);
+                    _lastKeyRepeatTimes.Remove(keyTuple);
                 }
             }
         }
@@ -208,6 +234,16 @@ public class ConsoleInputDevice : IInputDevice, IDisposable
         return _releasedThisFrame.Contains((key, modifiers));
     }
 
+    public bool IsRepeating(InputKey key)
+    {
+        return _repeatedThisFrame.Any(tuple => tuple.key.Equals(key));
+    }
+
+    public bool IsRepeating(InputKey key, InputKeyModifierType modifiers)
+    {
+        return _repeatedThisFrame.Contains((key, modifiers));
+    }
+
     public InputKeyModifierType GetActiveModifiers()
     {
         return _activeModifiers;
@@ -260,6 +296,41 @@ public class ConsoleInputDevice : IInputDevice, IDisposable
         // In a terminal environment, we assume focus is always true
         // This could be enhanced with terminal focus detection sequences
         return true;
+    }
+
+    private void ProcessKeyRepeats()
+    {
+        var currentTime = DateTime.UtcNow;
+        _keysToRepeat.Clear(); // Reuse existing list to avoid allocations
+
+        foreach (var keyTuple in _currentlyDown)
+        {
+            if (!_keyPressStartTimes.TryGetValue(keyTuple, out var pressTime))
+                continue;
+
+            // Check if enough time has passed for initial repeat
+            var timeSincePress = currentTime - pressTime;
+            if (timeSincePress >= KeyRepeatDelay)
+            {
+                // Check if it's time for another repeat
+                var lastRepeatTime = _lastKeyRepeatTimes.TryGetValue(keyTuple, out var lastTime)
+                    ? lastTime
+                    : pressTime;
+
+                var timeSinceLastRepeat = currentTime - lastRepeatTime;
+                if (timeSinceLastRepeat >= KeyRepeatDelay)
+                {
+                    _keysToRepeat.Add(keyTuple);
+                    _lastKeyRepeatTimes[keyTuple] = currentTime;
+                }
+            }
+        }
+
+        // Add repeated keys to the frame
+        foreach (var keyTuple in _keysToRepeat)
+        {
+            _repeatedThisFrame.Add(keyTuple);
+        }
     }
 
     public void Dispose()
