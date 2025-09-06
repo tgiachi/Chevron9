@@ -115,4 +115,39 @@ public static class InputKeys
     public static readonly InputKey ScrollLock = new("ScrollLock", 145);
     public static readonly InputKey PrintScreen = new("PrintScreen", 44);
     public static readonly InputKey Pause = new("Pause", 19);
+
+    private static readonly Dictionary<char, InputKey> _charToKeyMap = new()
+    {
+        ['A'] = A, ['B'] = B, ['C'] = C, ['D'] = D, ['E'] = E, ['F'] = F, ['G'] = G,
+        ['H'] = H, ['I'] = I, ['J'] = J, ['K'] = K, ['L'] = L, ['M'] = M, ['N'] = N,
+        ['O'] = O, ['P'] = P, ['Q'] = Q, ['R'] = R, ['S'] = S, ['T'] = T, ['U'] = U,
+        ['V'] = V, ['W'] = W, ['X'] = X, ['Y'] = Y, ['Z'] = Z,
+        ['0'] = D0, ['1'] = D1, ['2'] = D2, ['3'] = D3, ['4'] = D4,
+        ['5'] = D5, ['6'] = D6, ['7'] = D7, ['8'] = D8, ['9'] = D9,
+        [' '] = Space, [';'] = Semicolon, ['='] = Equal, [','] = Comma,
+        ['-'] = Minus, ['.'] = Period, ['/'] = Slash, ['`'] = Grave,
+        ['['] = LeftBracket, ['\\'] = Backslash, [']'] = RightBracket, ['\''] = Quote,
+        ['a'] = A, ['b'] = B, ['c'] = C, ['d'] = D, ['e'] = E, ['f'] = F, ['g'] = G,
+        ['h'] = H, ['i'] = I, ['j'] = J, ['k'] = K, ['l'] = L, ['m'] = M, ['n'] = N,
+        ['o'] = O, ['p'] = P, ['q'] = Q, ['r'] = R, ['s'] = S, ['t'] = T, ['u'] = U,
+        ['v'] = V, ['w'] = W, ['x'] = X, ['y'] = Y, ['z'] = Z
+    };
+
+    /// <summary>
+    ///     Gets the InputKey for a given character
+    /// </summary>
+    /// <param name="character">Character to get InputKey for</param>
+    /// <returns>InputKey corresponding to the character, or a new InputKey if not found</returns>
+    public static InputKey GetKey(char character)
+    {
+        return _charToKeyMap.TryGetValue(character, out var key)
+            ? key
+            : new InputKey(character.ToString(), character);
+    }
+
+    // Arrow key aliases for better naming consistency
+    public static readonly InputKey ArrowUp = Up;
+    public static readonly InputKey ArrowDown = Down;
+    public static readonly InputKey ArrowLeft = Left;
+    public static readonly InputKey ArrowRight = Right;
 }
