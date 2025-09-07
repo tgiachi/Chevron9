@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Chevron9.Core\Chevron9.Core.csproj" />
+        <ProjectReference Include="..\Chevron9.Shared\Chevron9.Shared.csproj" />
+    </ItemGroup>
+
+</Project>
