@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chevron9.Bootstrap", "src\C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chevron9.Backends.Terminal", "src\Chevron9.Backends.Terminal\Chevron9.Backends.Terminal.csproj", "{DBF2EDAA-8A8D-43E2-8AA6-FC7FC0A2436C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chevron9.Host.Terminal", "src\Chevron9.Host.Terminal\Chevron9.Host.Terminal.csproj", "{9D427F37-5485-4959-BE39-C41106A0178C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,18 @@ Global
 		{DBF2EDAA-8A8D-43E2-8AA6-FC7FC0A2436C}.Release|x64.Build.0 = Release|Any CPU
 		{DBF2EDAA-8A8D-43E2-8AA6-FC7FC0A2436C}.Release|x86.ActiveCfg = Release|Any CPU
 		{DBF2EDAA-8A8D-43E2-8AA6-FC7FC0A2436C}.Release|x86.Build.0 = Release|Any CPU
+		{9D427F37-5485-4959-BE39-C41106A0178C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D427F37-5485-4959-BE39-C41106A0178C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D427F37-5485-4959-BE39-C41106A0178C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9D427F37-5485-4959-BE39-C41106A0178C}.Debug|x64.Build.0 = Debug|Any CPU
+		{9D427F37-5485-4959-BE39-C41106A0178C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9D427F37-5485-4959-BE39-C41106A0178C}.Debug|x86.Build.0 = Debug|Any CPU
+		{9D427F37-5485-4959-BE39-C41106A0178C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D427F37-5485-4959-BE39-C41106A0178C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D427F37-5485-4959-BE39-C41106A0178C}.Release|x64.ActiveCfg = Release|Any CPU
+		{9D427F37-5485-4959-BE39-C41106A0178C}.Release|x64.Build.0 = Release|Any CPU
+		{9D427F37-5485-4959-BE39-C41106A0178C}.Release|x86.ActiveCfg = Release|Any CPU
+		{9D427F37-5485-4959-BE39-C41106A0178C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -97,5 +111,6 @@ Global
 		{894D9319-A714-4487-AA54-8B723BE4D564} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{F4044AF5-86AD-4CF2-9A5C-C3884FB147A9} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{DBF2EDAA-8A8D-43E2-8AA6-FC7FC0A2436C} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+		{9D427F37-5485-4959-BE39-C41106A0178C} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 	EndGlobalSection
 EndGlobal
