@@ -146,11 +146,11 @@ public sealed class InfoDebugLayer : ILayer
 
         // Render FPS
         var fpsText = $"FPS: {_fps:F1}";
-        rq.Submit(ZIndex, new DrawTextCommand(fpsText, new Position(startX - 80, startY), Color.Yellow, fontSize));
+        rq.SubmitText(ZIndex, fpsText, startX - 80, startY, Color.Yellow, fontSize);
 
         // Render mouse position
         var mouseText = $"Mouse: ({_mousePosition.X:F0}, {_mousePosition.Y:F0})";
-        rq.SubmitText(ZIndex, mouseText, new Position(startX - 150, startY + lineHeight), Color.Cyan, fontSize);
+        rq.SubmitText(ZIndex, mouseText, startX - 150, startY + lineHeight, Color.Cyan, fontSize);
 
         // Optional: Render a small background for better readability
         var backgroundWidth = 160.0f;

@@ -66,10 +66,10 @@ public class RectangleLayer : AbstractLayer
 
         // Render info text
         var infoText = $"Rectangle Demo - Rotation: {_rotationAngle:F1}°";
-        rq.SubmitText(ZIndex, infoText, new Position(20, 20), Color.White, 14.0f);
+        rq.SubmitText(ZIndex, infoText, 20, 20, Color.White, 14.0f);
 
         // Render bounds info
         var boundsText = $"Bounds: ({_rectangleBounds.X:F0}, {_rectangleBounds.Y:F0}) Size: {_rectangleBounds.Width:F0}x{_rectangleBounds.Height:F0}";
-        rq.SubmitText(ZIndex, boundsText, new Position(20, 50), Color.Gray, 12.0f);
+        rq.SubmitText(ZIndex, boundsText, 20, 50, Color.Gray, 12.0f);
     }
 }

@@ -1,15 +1,14 @@
 using Chevron9.Core.Interfaces;
 using Chevron9.Core.Layers;
 using Chevron9.Core.Render.Commands;
-using Chevron9.Core.Scenes;
 using Chevron9.Shared.Graphics;
 using Chevron9.Shared.Primitives;
 
-namespace Chevron9.Demo.Core.Scenes;
+namespace Chevron9.Core.Scenes;
 
 /// <summary>
-///     Abstract base class for demo screens providing common functionality
-///     and simplified layer management for demonstration purposes
+///     Abstract base class for screens providing common functionality
+///     and simplified layer management for scene implementations
 /// </summary>
 public abstract class AbstractScreen : Scene
 {

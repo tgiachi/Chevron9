@@ -70,26 +70,25 @@ public class MenuLayer : AbstractLayer
         const float lineHeight = 30.0f;
 
         // Render title
-        rq.SubmitText(ZIndex, "Chevron9 Demo Menu", new Position(50, 50), Color.White, fontSize * 1.5f);
+        rq.SubmitText(ZIndex, "Chevron9 Demo Menu", 50, 50, Color.White, fontSize * 1.5f);
 
         // Render menu items
         for (int i = 0; i < _menuItems.Length; i++)
         {
             var color = i == _selectedIndex ? Color.Yellow : Color.White;
-            var position = new Position(50, startY + i * lineHeight);
 
             // Render selection indicator
             if (i == _selectedIndex)
             {
-                rq.SubmitText(ZIndex, ">", new Position(30, startY + i * lineHeight), Color.Yellow, fontSize);
+                rq.SubmitText(ZIndex, ">", 30, startY + i * lineHeight, Color.Yellow, fontSize);
             }
 
-            rq.SubmitText(ZIndex, _menuItems[i], position, color, fontSize);
+            rq.SubmitText(ZIndex, _menuItems[i], 50, startY + i * lineHeight, color, fontSize);
         }
 
         // Render instructions
         rq.SubmitText(ZIndex, "Use UP/DOWN arrows to navigate, ENTER to select",
-            new Position(50, startY + _menuItems.Length * lineHeight + 20),
+            50, startY + _menuItems.Length * lineHeight + 20,
             Color.Gray, fontSize * 0.8f);
     }
 }

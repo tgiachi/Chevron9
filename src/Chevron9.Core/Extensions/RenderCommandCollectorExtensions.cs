@@ -35,6 +35,31 @@ public static class RenderCommandCollectorExtensions
     }
 
     /// <summary>
+    ///     Submits a text rendering command with default material and sort keys using coordinates
+    /// </summary>
+    /// <param name="collector">The render command collector</param>
+    /// <param name="layerZ">Layer Z-index for depth sorting</param>
+    /// <param name="text">Text content to render</param>
+    /// <param name="x">X coordinate</param>
+    /// <param name="y">Y coordinate</param>
+    /// <param name="color">Text color</param>
+    /// <param name="fontSize">Font size in points</param>
+    public static void SubmitText(
+        this IRenderCommandCollector collector,
+        int layerZ,
+        string text,
+        float x,
+        float y,
+        Color color,
+        float fontSize = 12.0f)
+    {
+        ArgumentNullException.ThrowIfNull(collector);
+        ArgumentNullException.ThrowIfNull(text);
+
+        collector.Submit(layerZ, new DrawTextCommand(text, new Position(x, y), color, fontSize));
+    }
+
+    /// <summary>
     ///     Submits a text rendering command with custom material and sort keys
     /// </summary>
     /// <param name="collector">The render command collector</param>
@@ -80,6 +105,30 @@ public static class RenderCommandCollectorExtensions
     }
 
     /// <summary>
+    ///     Submits a rectangle rendering command with default material and sort keys using coordinates
+    /// </summary>
+    /// <param name="collector">The render command collector</param>
+    /// <param name="layerZ">Layer Z-index for depth sorting</param>
+    /// <param name="x">X coordinate</param>
+    /// <param name="y">Y coordinate</param>
+    /// <param name="width">Rectangle width</param>
+    /// <param name="height">Rectangle height</param>
+    /// <param name="color">Fill color</param>
+    public static void SubmitRectangle(
+        this IRenderCommandCollector collector,
+        int layerZ,
+        float x,
+        float y,
+        float width,
+        float height,
+        Color color)
+    {
+        ArgumentNullException.ThrowIfNull(collector);
+
+        collector.Submit(layerZ, new DrawRectangleCommand(new RectF(x, y, width, height), color));
+    }
+
+    /// <summary>
     ///     Submits a rectangle rendering command with custom material and sort keys
     /// </summary>
     /// <param name="collector">The render command collector</param>
@@ -122,6 +171,32 @@ public static class RenderCommandCollectorExtensions
     }
 
     /// <summary>
+    ///     Submits a rectangle outline rendering command with default material and sort keys using coordinates
+    /// </summary>
+    /// <param name="collector">The render command collector</param>
+    /// <param name="layerZ">Layer Z-index for depth sorting</param>
+    /// <param name="x">X coordinate</param>
+    /// <param name="y">Y coordinate</param>
+    /// <param name="width">Rectangle width</param>
+    /// <param name="height">Rectangle height</param>
+    /// <param name="color">Outline color</param>
+    /// <param name="thickness">Line thickness</param>
+    public static void SubmitRectangleOutline(
+        this IRenderCommandCollector collector,
+        int layerZ,
+        float x,
+        float y,
+        float width,
+        float height,
+        Color color,
+        float thickness = 1.0f)
+    {
+        ArgumentNullException.ThrowIfNull(collector);
+
+        collector.Submit(layerZ, new DrawRectangleOutlineCommand(new RectF(x, y, width, height), color, thickness));
+    }
+
+    /// <summary>
     ///     Submits a rectangle outline rendering command with custom material and sort keys
     /// </summary>
     /// <param name="collector">The render command collector</param>
@@ -146,6 +221,36 @@ public static class RenderCommandCollectorExtensions
     }
 
     /// <summary>
+    ///     Submits a rectangle outline rendering command with custom material and sort keys using coordinates
+    /// </summary>
+    /// <param name="collector">The render command collector</param>
+    /// <param name="layerZ">Layer Z-index for depth sorting</param>
+    /// <param name="materialKey">Material/texture key for batching</param>
+    /// <param name="sortKey">Custom sort key for ordering</param>
+    /// <param name="x">X coordinate</param>
+    /// <param name="y">Y coordinate</param>
+    /// <param name="width">Rectangle width</param>
+    /// <param name="height">Rectangle height</param>
+    /// <param name="color">Outline color</param>
+    /// <param name="thickness">Line thickness</param>
+    public static void SubmitRectangleOutline(
+        this IRenderCommandCollector collector,
+        int layerZ,
+        int materialKey,
+        int sortKey,
+        float x,
+        float y,
+        float width,
+        float height,
+        Color color,
+        float thickness = 1.0f)
+    {
+        ArgumentNullException.ThrowIfNull(collector);
+
+        collector.Submit(layerZ, materialKey, sortKey, new DrawRectangleOutlineCommand(new RectF(x, y, width, height), color, thickness));
+    }
+
+    /// <summary>
     ///     Submits a circle rendering command with default material and sort keys
     /// </summary>
     /// <param name="collector">The render command collector</param>
@@ -163,6 +268,28 @@ public static class RenderCommandCollectorExtensions
         ArgumentNullException.ThrowIfNull(collector);
 
         collector.Submit(layerZ, new DrawCircleCommand(center, radius, color));
+    }
+
+    /// <summary>
+    ///     Submits a circle rendering command with default material and sort keys using coordinates
+    /// </summary>
+    /// <param name="collector">The render command collector</param>
+    /// <param name="layerZ">Layer Z-index for depth sorting</param>
+    /// <param name="x">Center X coordinate</param>
+    /// <param name="y">Center Y coordinate</param>
+    /// <param name="radius">Circle radius</param>
+    /// <param name="color">Fill color</param>
+    public static void SubmitCircle(
+        this IRenderCommandCollector collector,
+        int layerZ,
+        float x,
+        float y,
+        float radius,
+        Color color)
+    {
+        ArgumentNullException.ThrowIfNull(collector);
+
+        collector.Submit(layerZ, new DrawCircleCommand(new Position(x, y), radius, color));
     }
 
     /// <summary>
@@ -212,6 +339,30 @@ public static class RenderCommandCollectorExtensions
     }
 
     /// <summary>
+    ///     Submits a circle outline rendering command with default material and sort keys using coordinates
+    /// </summary>
+    /// <param name="collector">The render command collector</param>
+    /// <param name="layerZ">Layer Z-index for depth sorting</param>
+    /// <param name="x">Center X coordinate</param>
+    /// <param name="y">Center Y coordinate</param>
+    /// <param name="radius">Circle radius</param>
+    /// <param name="color">Outline color</param>
+    /// <param name="thickness">Line thickness</param>
+    public static void SubmitCircleOutline(
+        this IRenderCommandCollector collector,
+        int layerZ,
+        float x,
+        float y,
+        float radius,
+        Color color,
+        float thickness = 1.0f)
+    {
+        ArgumentNullException.ThrowIfNull(collector);
+
+        collector.Submit(layerZ, new DrawCircleOutlineCommand(new Position(x, y), radius, color, thickness));
+    }
+
+    /// <summary>
     ///     Submits a circle outline rendering command with custom material and sort keys
     /// </summary>
     /// <param name="collector">The render command collector</param>
@@ -238,6 +389,34 @@ public static class RenderCommandCollectorExtensions
     }
 
     /// <summary>
+    ///     Submits a circle outline rendering command with custom material and sort keys using coordinates
+    /// </summary>
+    /// <param name="collector">The render command collector</param>
+    /// <param name="layerZ">Layer Z-index for depth sorting</param>
+    /// <param name="materialKey">Material/texture key for batching</param>
+    /// <param name="sortKey">Custom sort key for ordering</param>
+    /// <param name="x">Center X coordinate</param>
+    /// <param name="y">Center Y coordinate</param>
+    /// <param name="radius">Circle radius</param>
+    /// <param name="color">Outline color</param>
+    /// <param name="thickness">Line thickness</param>
+    public static void SubmitCircleOutline(
+        this IRenderCommandCollector collector,
+        int layerZ,
+        int materialKey,
+        int sortKey,
+        float x,
+        float y,
+        float radius,
+        Color color,
+        float thickness = 1.0f)
+    {
+        ArgumentNullException.ThrowIfNull(collector);
+
+        collector.Submit(layerZ, materialKey, sortKey, new DrawCircleOutlineCommand(new Position(x, y), radius, color, thickness));
+    }
+
+    /// <summary>
     ///     Submits a line rendering command with default material and sort keys
     /// </summary>
     /// <param name="collector">The render command collector</param>
@@ -257,6 +436,36 @@ public static class RenderCommandCollectorExtensions
         ArgumentNullException.ThrowIfNull(collector);
 
         collector.Submit(layerZ, new DrawLineCommand(start, end, color, thickness));
+    }
+
+    /// <summary>
+    ///     Submits a line rendering command with default material and sort keys using coordinates
+    /// </summary>
+    /// <param name="collector">The render command collector</param>
+    /// <param name="layerZ">Layer Z-index for depth sorting</param>
+    /// <param name="startX">Start X coordinate</param>
+    /// <param name="startY">Start Y coordinate</param>
+    /// <param name="endX">End X coordinate</param>
+    /// <param name="endY">End Y coordinate</param>
+    /// <param name="color">Line color</param>
+    /// <param name="thickness">Line thickness</param>
+    public static void SubmitLine(
+        this IRenderCommandCollector collector,
+        int layerZ,
+        float startX,
+        float startY,
+        float endX,
+        float endY,
+        Color color,
+        float thickness = 1.0f)
+    {
+        ArgumentNullException.ThrowIfNull(collector);
+
+        collector.Submit(layerZ, new DrawLineCommand(
+            new Position(startX, startY),
+            new Position(endX, endY),
+            color,
+            thickness));
     }
 
     /// <summary>
@@ -305,6 +514,30 @@ public static class RenderCommandCollectorExtensions
         ArgumentNullException.ThrowIfNull(collector);
 
         collector.Submit(layerZ, new DrawGlyphCommand(position, codepoint, foreground, background));
+    }
+
+    /// <summary>
+    ///     Submits a glyph rendering command with default material and sort keys using coordinates
+    /// </summary>
+    /// <param name="collector">The render command collector</param>
+    /// <param name="layerZ">Layer Z-index for depth sorting</param>
+    /// <param name="x">X coordinate</param>
+    /// <param name="y">Y coordinate</param>
+    /// <param name="codepoint">Unicode codepoint of the glyph</param>
+    /// <param name="foreground">Foreground color</param>
+    /// <param name="background">Background color</param>
+    public static void SubmitGlyph(
+        this IRenderCommandCollector collector,
+        int layerZ,
+        float x,
+        float y,
+        int codepoint,
+        Color foreground,
+        Color background)
+    {
+        ArgumentNullException.ThrowIfNull(collector);
+
+        collector.Submit(layerZ, new DrawGlyphCommand(new Position(x, y), codepoint, foreground, background));
     }
 
     /// <summary>
