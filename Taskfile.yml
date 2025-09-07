@@ -110,14 +110,14 @@ tasks:
         if ! command -v docfx >/dev/null 2>&1; then
           dotnet tool install -g docfx
         fi
-        docfx build
+        cd docs && docfx docfx.json
 
   serve-docs:
     desc: Serve documentation locally
     deps: [docs]
     cmds:
-      - echo "Documentation available at: http://localhost:8080"
-      - docfx serve "{{.DOCS_DIR}}" -p 8080
+      - "echo 'Documentation available at: http://localhost:8080'"
+      - "docfx serve docs/_site -p 8080"
 
   format:
     desc: Format code

@@ -32,10 +32,12 @@ jobs:
       with:
         dotnet-version: '9.0.x'
 
-    - name: Install Task
+    - name: Install Task (Windows)
       run: |
-        curl -sL https://taskfile.dev/install.sh | sh
-        export PATH="$HOME/.local/bin:$PATH"
+        Invoke-WebRequest -Uri "https://github.com/go-task/task/releases/latest/download/task_windows_amd64.zip" -OutFile "task.zip"
+        Expand-Archive task.zip -DestinationPath "$env:USERPROFILE\.local\bin" -Force
+        echo "$env:USERPROFILE\.local\bin" >> $env:GITHUB_PATH
+      shell: powershell
 
     - name: Build for Windows x64
       run: task build RUNTIME=win-x64
@@ -63,10 +65,10 @@ jobs:
       with:
         dotnet-version: '9.0.x'
 
-    - name: Install Task
+    - name: Install Task (Linux)
       run: |
         curl -sL https://taskfile.dev/install.sh | sh
-        export PATH="$HOME/.local/bin:$PATH"
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
 
     - name: Build for Linux x64
       run: task build RUNTIME=linux-x64
@@ -94,10 +96,10 @@ jobs:
       with:
         dotnet-version: '9.0.x'
 
-    - name: Install Task
+    - name: Install Task (macOS)
       run: |
         curl -sL https://taskfile.dev/install.sh | sh
-        export PATH="$HOME/.local/bin:$PATH"
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
 
     - name: Build for macOS x64
       run: task build RUNTIME=osx-x64

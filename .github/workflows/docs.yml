@@ -6,16 +6,14 @@ on:
     paths:
       - 'src/**/*.cs'
       - 'README.md'
-      - 'docfx.json'
-      - 'toc.yml'
+      - 'docs/**'
       - '.github/workflows/docs.yml'
   pull_request:
     branches: [ main, develop ]
     paths:
       - 'src/**/*.cs'
       - 'README.md'
-      - 'docfx.json'
-      - 'toc.yml'
+      - 'docs/**'
 
 jobs:
   build-docs:
@@ -35,7 +33,7 @@ jobs:
     - name: Install Task
       run: |
         curl -sL https://taskfile.dev/install.sh | sh
-        export PATH="$HOME/.local/bin:$PATH"
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
 
     - name: Install DocFX
       run: dotnet tool install -g docfx
@@ -47,7 +45,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: documentation
-        path: _site/
+        path: docs/_site/
         retention-days: 30
 
     - name: Deploy to GitHub Pages (only on main branch)
@@ -55,5 +53,5 @@ jobs:
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: _site
+        publish_dir: docs/_site
         cname: docs.chevron9.dev  # Optional: add custom domain
