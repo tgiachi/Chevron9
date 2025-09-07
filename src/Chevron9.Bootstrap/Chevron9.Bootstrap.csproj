@@ -9,12 +9,15 @@
     <ItemGroup>
         <PackageReference Include="DryIoc.dll" Version="5.4.3"/>
         <PackageReference Include="Serilog" Version="4.3.0"/>
+        <PackageReference Include="Serilog.Formatting.Compact" Version="3.0.0" />
         <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0"/>
+        <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
         <PackageReference Include="System.Reactive" Version="6.0.2" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Extensions\" />
+      <ProjectReference Include="..\Chevron9.Core\Chevron9.Core.csproj" />
+      <ProjectReference Include="..\Chevron9.Shared\Chevron9.Shared.csproj" />
     </ItemGroup>
 
 </Project>

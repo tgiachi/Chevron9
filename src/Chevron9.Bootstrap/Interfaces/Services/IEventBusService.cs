@@ -9,7 +9,6 @@ public interface IEventBusService
     /// </summary>
     IObservable<object> AllEventsObservable { get; }
 
-
     /// <summary>
     ///  Registers a listener for a specific event type.
     /// </summary>
