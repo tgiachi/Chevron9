@@ -16,7 +16,7 @@ public class AbstractLayerTests
         }
 
         public TestAbstractLayer(
-            string name, int zIndex, bool enabled, bool visible, LayerClear clear, LayerComposeMode compose
+            string name, int zIndex, bool enabled, bool visible, LayerClear clear, LayerCompositeMode compose
         )
             : base(name, zIndex, enabled, visible, clear, compose)
         {
@@ -41,7 +41,7 @@ public class AbstractLayerTests
         Assert.That(layer.Enabled, Is.True);
         Assert.That(layer.Visible, Is.True);
         Assert.That(layer.Clear, Is.EqualTo(LayerClear.None));
-        Assert.That(layer.Compose, Is.EqualTo(LayerComposeMode.Overwrite));
+        Assert.That(layer.Compose, Is.EqualTo(LayerCompositeMode.Overwrite));
     }
 
     [Test]
@@ -52,7 +52,7 @@ public class AbstractLayerTests
         const bool expectedEnabled = false;
         const bool expectedVisible = false;
         const LayerClear expectedClear = LayerClear.Color;
-        const LayerComposeMode expectedCompose = LayerComposeMode.TransparentIfEmpty;
+        const LayerCompositeMode expectedCompose = LayerCompositeMode.TransparentIfEmpty;
 
         var layer = new TestAbstractLayer(
             expectedName,
@@ -108,6 +108,6 @@ public class AbstractLayerTests
         Assert.That(layer.Enabled, Is.True);
         Assert.That(layer.Visible, Is.True);
         Assert.That(layer.Clear, Is.EqualTo(LayerClear.None));
-        Assert.That(layer.Compose, Is.EqualTo(LayerComposeMode.Overwrite));
+        Assert.That(layer.Compose, Is.EqualTo(LayerCompositeMode.Overwrite));
     }
 }

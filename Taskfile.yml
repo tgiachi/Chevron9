@@ -1,0 +1,222 @@
+version: '3'
+
+vars:
+  SOLUTION: Chevron9.sln
+  CONFIGURATION: Release
+  RUNTIME: ""
+  FRAMEWORK: ""
+  ARTIFACTS_DIR: artifacts
+  DOCS_DIR: _site
+  SRC_DIR: src
+  TESTS_DIR: tests
+  COVERAGE_DIR: coverage
+
+tasks:
+  default:
+    cmds:
+      - task: help
+
+  help:
+    desc: Show available tasks
+    cmds:
+      - echo "Common tasks:"
+      - echo "  dev          - Development build (incremental)"
+      - echo "  dev-clean    - Development build (clean)"
+      - echo "  test         - Run tests"
+      - echo "  test-coverage - Run tests with coverage"
+      - echo "  check        - Quick health check"
+      - echo "  ci           - Full CI pipeline"
+      - echo ""
+      - echo "Build tasks:"
+      - echo "  clean        - Clean build artifacts"
+      - echo "  restore      - Restore NuGet packages"  
+      - echo "  build        - Build the solution"
+      - echo "  pack         - Create NuGet packages"
+      - echo ""
+      - echo "Quality tasks:"
+      - echo "  format       - Format code"
+      - echo "  format-check - Check code formatting"
+      - echo "  lint         - Run code analysis"
+      - echo "  audit        - Security audit"
+      - echo "  outdated     - Check for outdated packages"
+      - echo "  analyze      - Run all analysis tasks"
+      - echo ""
+      - echo "Documentation:"
+      - echo "  docs         - Generate documentation"
+      - echo "  serve-docs   - Serve documentation locally"
+      - echo ""
+      - echo "Variables:"
+      - echo "  CONFIGURATION={{.CONFIGURATION}} (Debug/Release)"
+      - echo "  RUNTIME={{.RUNTIME}} (win-x64, linux-x64, osx-x64)"
+      - echo "  FRAMEWORK={{.FRAMEWORK}} (target framework)"
+
+  clean:
+    desc: Clean build artifacts
+    cmds:
+      - find {{.SRC_DIR}} -type d \( -name bin -o -name obj \) -exec rm -rf {} + 2>/dev/null || true
+      - find {{.TESTS_DIR}} -type d \( -name bin -o -name obj \) -exec rm -rf {} + 2>/dev/null || true
+      - rm -rf {{.ARTIFACTS_DIR}} {{.DOCS_DIR}} {{.COVERAGE_DIR}}
+      - mkdir -p {{.ARTIFACTS_DIR}} {{.COVERAGE_DIR}}
+
+  restore:
+    desc: Restore NuGet packages
+    cmds:
+      - dotnet restore {{.SOLUTION}}
+
+  build:
+    desc: Build the solution
+    deps: [restore]
+    cmds:
+      - |
+        if [ -n "{{.RUNTIME}}" ]; then
+          dotnet build {{.SOLUTION}} --configuration {{.CONFIGURATION}} --runtime {{.RUNTIME}} --no-restore
+        elif [ -n "{{.FRAMEWORK}}" ]; then
+          dotnet build {{.SOLUTION}} --configuration {{.CONFIGURATION}} --framework {{.FRAMEWORK}} --no-restore
+        else
+          dotnet build {{.SOLUTION}} --configuration {{.CONFIGURATION}} --no-restore
+        fi
+
+  test:
+    desc: Run tests
+    deps: [build]
+    cmds:
+      - |
+        if [ -n "{{.RUNTIME}}" ]; then
+          dotnet test {{.SOLUTION}} --configuration {{.CONFIGURATION}} --runtime {{.RUNTIME}} --no-restore --no-build --logger trx --results-directory {{.ARTIFACTS_DIR}}
+        else
+          dotnet test {{.SOLUTION}} --configuration {{.CONFIGURATION}} --no-restore --no-build --logger trx --results-directory {{.ARTIFACTS_DIR}}
+        fi
+
+  test-coverage:
+    desc: Run tests with coverage
+    deps: [build]
+    cmds:
+      - |
+        dotnet test {{.SOLUTION}} --configuration {{.CONFIGURATION}} --no-restore --no-build \
+          --collect:"XPlat Code Coverage" --results-directory {{.COVERAGE_DIR}} \
+          --logger trx --results-directory {{.ARTIFACTS_DIR}}
+
+  pack:
+    desc: Create NuGet packages
+    deps: [test]
+    cmds:
+      - dotnet pack {{.SOLUTION}} --configuration {{.CONFIGURATION}} --output {{.ARTIFACTS_DIR}} --no-restore --no-build
+
+  docs:
+    desc: Generate documentation
+    deps: [build]
+    cmds:
+      - |
+        if ! command -v docfx >/dev/null 2>&1; then
+          dotnet tool install -g docfx
+        fi
+        docfx build
+
+  serve-docs:
+    desc: Serve documentation locally
+    deps: [docs]
+    cmds:
+      - echo "Documentation available at: http://localhost:8080"
+      - docfx serve "{{.DOCS_DIR}}" -p 8080
+
+  format:
+    desc: Format code
+    cmds:
+      - dotnet format {{.SOLUTION}}
+
+  format-check:
+    desc: Check code formatting
+    cmds:
+      - dotnet format --verify-no-changes {{.SOLUTION}}
+
+  lint:
+    desc: Run code analysis
+    cmds:
+      - dotnet build {{.SOLUTION}} --configuration {{.CONFIGURATION}} --no-restore -p:RunAnalyzersDuringBuild=true -p:EnforceCodeStyleInBuild=true
+
+  audit:
+    desc: Security audit
+    cmds:
+      - dotnet list package --vulnerable {{.SOLUTION}} --include-transitive
+
+  outdated:
+    desc: Check for outdated packages
+    cmds:
+      - dotnet list package --outdated {{.SOLUTION}} --include-transitive
+
+  analyze:
+    desc: Run all analysis tasks
+    deps: [format-check, lint, audit, outdated]
+    cmds: []
+
+  ci:
+    desc: Full CI pipeline
+    deps: [clean, analyze, pack]
+    cmds: []
+
+  dev:
+    desc: Development build (incremental)
+    deps: [format-check, lint, test]
+    cmds: []
+
+  dev-clean:
+    desc: Development build (clean)
+    deps: [clean, restore, format-check, lint, test]
+    cmds: []
+
+  all:
+    desc: Build everything
+    deps: [clean, analyze, test-coverage, docs, pack]
+    cmds: []
+
+  # Multi-platform targets
+  build-win:
+    desc: Build for Windows
+    cmds:
+      - task: build RUNTIME=win-x64
+
+  build-linux:
+    desc: Build for Linux
+    cmds:
+      - task: build RUNTIME=linux-x64
+
+  build-osx:
+    desc: Build for macOS
+    cmds:
+      - task: build RUNTIME=osx-x64
+
+  # Utility targets
+  setup:
+    desc: Setup development environment
+    cmds:
+      - echo "Setting up development environment..."
+      - |
+        if ! command -v dotnet >/dev/null 2>&1; then
+          echo ".NET SDK not found. Please install .NET 9.0"
+          exit 1
+        fi
+      - dotnet --version
+      - echo "Development environment ready"
+
+  version:
+    desc: Show version information
+    cmds:
+      - echo "Version Information:"
+      - dotnet --version
+      - |
+        if command -v gitversion >/dev/null 2>&1; then
+          gitversion /showvariable NuGetVersionV2
+        else
+          echo "GitVersion not available"
+        fi
+
+  # Quick development targets
+  quick:
+    desc: Quick build without tests
+    deps: [restore, build]
+    cmds: []
+
+  check:
+    desc: Quick health check
+    deps: [format-check, lint]
+    cmds: []

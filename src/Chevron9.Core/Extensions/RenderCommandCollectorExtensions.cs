@@ -20,6 +20,9 @@ public static class RenderCommandCollectorExtensions
     /// <param name="position">Text position</param>
     /// <param name="color">Text color</param>
     /// <param name="fontSize">Font size in points</param>
+    /// <exception cref="ArgumentNullException">Thrown when collector or text is null</exception>
+    /// <exception cref="ArgumentException">Thrown when text is empty</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown when fontSize is negative or zero</exception>
     public static void SubmitText(
         this IRenderCommandCollector collector,
         int layerZ,
@@ -29,7 +32,8 @@ public static class RenderCommandCollectorExtensions
         float fontSize = 12.0f)
     {
         ArgumentNullException.ThrowIfNull(collector);
-        ArgumentNullException.ThrowIfNull(text);
+        ArgumentException.ThrowIfNullOrEmpty(text);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(fontSize);
 
         collector.Submit(layerZ, new DrawTextCommand(text, position, color, fontSize));
     }
@@ -93,6 +97,8 @@ public static class RenderCommandCollectorExtensions
     /// <param name="layerZ">Layer Z-index for depth sorting</param>
     /// <param name="bounds">Rectangle boundaries</param>
     /// <param name="color">Fill color</param>
+    /// <exception cref="ArgumentNullException">Thrown when collector is null</exception>
+    /// <exception cref="ArgumentException">Thrown when bounds have negative width or height</exception>
     public static void SubmitRectangle(
         this IRenderCommandCollector collector,
         int layerZ,
@@ -100,6 +106,8 @@ public static class RenderCommandCollectorExtensions
         Color color)
     {
         ArgumentNullException.ThrowIfNull(collector);
+        ArgumentOutOfRangeException.ThrowIfLessThan(bounds.Width, 0, nameof(bounds.Width));
+        ArgumentOutOfRangeException.ThrowIfLessThan(bounds.Height, 0, nameof(bounds.Height));
 
         collector.Submit(layerZ, new DrawRectangleCommand(bounds, color));
     }
@@ -114,6 +122,8 @@ public static class RenderCommandCollectorExtensions
     /// <param name="width">Rectangle width</param>
     /// <param name="height">Rectangle height</param>
     /// <param name="color">Fill color</param>
+    /// <exception cref="ArgumentNullException">Thrown when collector is null</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown when width or height are negative</exception>
     public static void SubmitRectangle(
         this IRenderCommandCollector collector,
         int layerZ,
@@ -124,6 +134,8 @@ public static class RenderCommandCollectorExtensions
         Color color)
     {
         ArgumentNullException.ThrowIfNull(collector);
+        ArgumentOutOfRangeException.ThrowIfNegative(width);
+        ArgumentOutOfRangeException.ThrowIfNegative(height);
 
         collector.Submit(layerZ, new DrawRectangleCommand(new RectF(x, y, width, height), color));
     }
@@ -258,6 +270,8 @@ public static class RenderCommandCollectorExtensions
     /// <param name="center">Circle center position</param>
     /// <param name="radius">Circle radius</param>
     /// <param name="color">Fill color</param>
+    /// <exception cref="ArgumentNullException">Thrown when collector is null</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown when radius is negative</exception>
     public static void SubmitCircle(
         this IRenderCommandCollector collector,
         int layerZ,
@@ -266,6 +280,7 @@ public static class RenderCommandCollectorExtensions
         Color color)
     {
         ArgumentNullException.ThrowIfNull(collector);
+        ArgumentOutOfRangeException.ThrowIfNegative(radius);
 
         collector.Submit(layerZ, new DrawCircleCommand(center, radius, color));
     }

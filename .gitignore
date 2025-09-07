@@ -571,6 +571,22 @@ crashlytics-build.properties
 coverage/*
 
 # DocFX generated documentation
+_site/
+api/
+obj/
+log.txt
+.docfx/
+**/.manifest
+
+# Task build artifacts
+artifacts/
+*.received.*
+
+# Task temporary files
+.task/
+.task.sum
+
+# DocFX generated documentation
 docs/_site/
 docs/obj/
 docs/api/

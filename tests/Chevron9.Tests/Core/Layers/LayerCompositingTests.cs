@@ -29,6 +29,16 @@ public class LayerCompositingTests
         {
             Items.Clear();
         }
+
+        public void SubmitRectangle(int layerZ, RectF bounds, Color color)
+        {
+            Submit(layerZ, 0, 0, new DrawRectangleCommand(bounds, color));
+        }
+
+        public void SubmitText(int layerZ, string text, Position position, Color color, float fontSize = 12.0f)
+        {
+            Submit(layerZ, 0, 0, new DrawTextCommand(text, position, color, fontSize));
+        }
     }
 
     private sealed class TestLayer : AbstractLayer
@@ -37,7 +47,7 @@ public class LayerCompositingTests
 
         public TestLayer(
             string name, int zIndex, LayerClear clear = LayerClear.None,
-            LayerComposeMode compose = LayerComposeMode.Overwrite
+            LayerCompositeMode compose = LayerCompositeMode.Overwrite
         )
             : base(name, zIndex, true, true, clear, compose)
         {
@@ -73,8 +83,8 @@ public class LayerCompositingTests
     [Test]
     public void LayerCompositing_OverwriteMode_ReplacesPreviousContent()
     {
-        var layer1 = new TestLayer("Background", 100, LayerClear.Color, LayerComposeMode.Overwrite);
-        var layer2 = new TestLayer("Foreground", 200, LayerClear.None, LayerComposeMode.Overwrite);
+        var layer1 = new TestLayer("Background", 100, LayerClear.Color, LayerCompositeMode.Overwrite);
+        var layer2 = new TestLayer("Foreground", 200, LayerClear.None, LayerCompositeMode.Overwrite);
         var collector = new TestRenderCommandCollector();
 
         // Render background layer
@@ -92,7 +102,7 @@ public class LayerCompositingTests
     [Test]
     public void LayerCompositing_TransparentIfEmptyMode_SkipsEmptyPixels()
     {
-        var layer = new TestLayer("TransparentLayer", 100, LayerClear.None, LayerComposeMode.TransparentIfEmpty);
+        var layer = new TestLayer("TransparentLayer", 100, LayerClear.None, LayerCompositeMode.TransparentIfEmpty);
         var collector = new TestRenderCommandCollector();
 
         layer.Render(collector, 1.0f);
@@ -105,7 +115,7 @@ public class LayerCompositingTests
     [Test]
     public void LayerClear_Color_ClearsWithSpecifiedColor()
     {
-        var layer = new TestLayer("ClearLayer", 100, LayerClear.Color, LayerComposeMode.Overwrite);
+        var layer = new TestLayer("ClearLayer", 100, LayerClear.Color, LayerCompositeMode.Overwrite);
         var collector = new TestRenderCommandCollector();
 
         layer.Render(collector, 1.0f);
@@ -118,7 +128,7 @@ public class LayerCompositingTests
     [Test]
     public void LayerClear_None_DoesNotClear()
     {
-        var layer = new TestLayer("NoClearLayer", 100, LayerClear.None, LayerComposeMode.Overwrite);
+        var layer = new TestLayer("NoClearLayer", 100, LayerClear.None, LayerCompositeMode.Overwrite);
         var collector = new TestRenderCommandCollector();
 
         layer.Render(collector, 1.0f);
@@ -178,19 +188,19 @@ public class LayerCompositingTests
     }
 
     [Test]
-    public void LayerComposeMode_Overwrite_IsDefault()
+    public void LayerCompositeMode_Overwrite_IsDefault()
     {
         var layer = new TestLayer("DefaultLayer", 100);
 
-        Assert.That(layer.Compose, Is.EqualTo(LayerComposeMode.Overwrite));
+        Assert.That(layer.Compose, Is.EqualTo(LayerCompositeMode.Overwrite));
     }
 
     [Test]
-    public void LayerComposeMode_TransparentIfEmpty_CanBeSet()
+    public void LayerCompositeMode_TransparentIfEmpty_CanBeSet()
     {
-        var layer = new TestLayer("TransparentLayer", 100, LayerClear.None, LayerComposeMode.TransparentIfEmpty);
+        var layer = new TestLayer("TransparentLayer", 100, LayerClear.None, LayerCompositeMode.TransparentIfEmpty);
 
-        Assert.That(layer.Compose, Is.EqualTo(LayerComposeMode.TransparentIfEmpty));
+        Assert.That(layer.Compose, Is.EqualTo(LayerCompositeMode.TransparentIfEmpty));
     }
 
     [Test]

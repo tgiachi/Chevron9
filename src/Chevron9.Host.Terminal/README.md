@@ -1,34 +1,34 @@
 # Chevron9.Host.Terminal
 
-Host completo per applicazioni terminal che combina Chevron9.Bootstrap con i servizi del backend terminal (Chevron9.Backends.Terminal).
+Complete host for terminal applications that combines Chevron9.Bootstrap with terminal backend services (Chevron9.Backends.Terminal).
 
-## Caratteristiche
+## Features
 
-- 🔧 **Integrazione completa**: Combina Bootstrap e backend terminal in un unico host
-- ⚡ **Gestione servizi**: Caricamento e avvio automatico dei servizi con priorità
-- 🎨 **Rendering**: Supporto per rendering in tempo reale con double buffering
-- 🖱️ **Input**: Gestione di input da tastiera e mouse con eventi asincroni
-- 🔄 **Lifecycle**: Gestione completa del ciclo di vita dell'applicazione
-- ⚙️ **Configurabile**: Configurazione flessibile per diverse esigenze
-- 📝 **Logging**: Integrazione con Serilog per logging strutturato
+- 🔧 **Complete Integration**: Combines Bootstrap and terminal backend into a single host
+- ⚡ **Service Management**: Automatic loading and startup of services with priority
+- 🎨 **Rendering**: Real-time rendering support with double buffering
+- 🖱️ **Input**: Keyboard and mouse input handling with asynchronous events
+- 🔄 **Lifecycle**: Complete application lifecycle management
+- ⚙️ **Configurable**: Flexible configuration for different needs
+- 📝 **Logging**: Serilog integration for structured logging
 
-## Utilizzo Rapido
+## Quick Start
 
-### Applicazione Base
+### Basic Application
 
 ```csharp
 using Chevron9.Host.Terminal.Extensions;
 
-// Crea e avvia un'applicazione terminal
+// Create and start a terminal application
 using var host = Chevron9TerminalHostExtensions.CreateDefaultHost();
 
-// Registra i tuoi servizi
+// Register your services
 host.OnRegisterServices += container =>
 {
     container.AddService<MyAppService>(priority: 50);
 };
 
-// Gestione graceful di Ctrl+C
+// Graceful Ctrl+C handling
 using var cts = new CancellationTokenSource();
 Console.CancelKeyPress += (_, e) =>
 {
@@ -36,11 +36,11 @@ Console.CancelKeyPress += (_, e) =>
     cts.Cancel();
 };
 
-// Avvia l'applicazione
+// Start the application
 await host.RunAsync(cts.Token);
 ```
 
-### Configurazione Personalizzata
+### Custom Configuration
 
 ```csharp
 using var host = Chevron9TerminalHostExtensions.CreateHost(config =>
@@ -53,17 +53,17 @@ using var host = Chevron9TerminalHostExtensions.CreateHost(config =>
 });
 ```
 
-### Configurazione Fluent
+### Fluent Configuration
 
 ```csharp
 using var host = Chevron9TerminalHostExtensions.CreateDefaultHost()
     .WithRefreshRate(16)     // 60 FPS
-    .WithMouse(true)         // Abilita mouse
-    .WithCursor(false)       // Nascondi cursore
-    .WithDimensions(80, 24); // Dimensioni fisse
+    .WithMouse(true)         // Enable mouse
+    .WithCursor(false)       // Hide cursor
+    .WithDimensions(80, 24); // Fixed dimensions
 ```
 
-## Builder Preconfigurati
+## Pre-configured Builders
 
 ### Development Host
 ```csharp
@@ -83,7 +83,7 @@ var host = Chevron9TerminalHostExtensions.CreateProductionHost("./prod-app");
 // - RefreshRate: 60 FPS
 ```
 
-## Controllo Manuale
+## Manual Control
 
 ```csharp
 using var host = Chevron9TerminalHostExtensions.CreateDefaultHost();
@@ -93,28 +93,28 @@ host.OnRegisterServices += container =>
     container.AddService<MyService>(priority: 50);
 };
 
-// Controllo manuale del lifecycle
+// Manual lifecycle control
 await host.InitializeAsync();
 await host.StartAsync();
 
-// La tua logica applicativa qui
+// Your application logic here
 await DoApplicationWork();
 
 // Shutdown
 await host.StopAsync();
 ```
 
-## Accesso ai Servizi Terminal
+## Terminal Services Access
 
 ```csharp
 using var host = Chevron9TerminalHostExtensions.CreateDefaultHost();
 await host.InitializeAsync();
 
-// Accesso ai servizi terminal (disponibili dopo InitializeAsync)
+// Access terminal services (available after InitializeAsync)
 var renderService = host.RenderService;
 var inputService = host.InputService;
 
-// Accesso al renderer per draw commands
+// Access renderer for draw commands
 var renderer = renderService?.Renderer;
 if (renderer != null)
 {
@@ -124,7 +124,7 @@ if (renderer != null)
 }
 ```
 
-## Creazione di Servizi Personalizzati
+## Creating Custom Services
 
 ```csharp
 using Chevron9.Bootstrap.Interfaces.Base;
@@ -133,25 +133,25 @@ public class MyAppService : IChevronAutostartService
 {
     public Task LoadAsync(CancellationToken cancellationToken = default)
     {
-        // Inizializzazione del servizio
+        // Service initialization
         return Task.CompletedTask;
     }
 
     public Task StartAsync(CancellationToken cancellationToken = default)
     {
-        // Avvio del servizio (autostart)
+        // Service startup (autostart)
         return Task.CompletedTask;
     }
 
     public Task StopAsync(CancellationToken cancellationToken = default)
     {
-        // Arresto del servizio
+        // Service shutdown
         return Task.CompletedTask;
     }
 
     public Task UnloadAsync(CancellationToken cancellationToken = default)
     {
-        // Cleanup del servizio
+        // Service cleanup
         return Task.CompletedTask;
     }
 
@@ -162,32 +162,32 @@ public class MyAppService : IChevronAutostartService
 }
 ```
 
-## Configurazione
+## Configuration
 
 ### Chevron9TerminalConfig
 
-- **EnableInput/EnableOutput**: Abilita/disabilita input e output
-- **BufferWidth/BufferHeight**: Dimensioni buffer (0 = auto-detect)
-- **RefreshRateMs**: Frequenza di refresh in millisecondi
-- **EnableMouse**: Supporto mouse
-- **ShowCursor**: Visibilità cursore
-- **UseAlternativeScreenBuffer**: Buffer schermo alternativo
-- Eredita tutte le opzioni di `Chevron9Config` (logging, directories, etc.)
+- **EnableInput/EnableOutput**: Enable/disable input and output
+- **BufferWidth/BufferHeight**: Buffer dimensions (0 = auto-detect)
+- **RefreshRateMs**: Refresh rate in milliseconds
+- **EnableMouse**: Mouse support
+- **ShowCursor**: Cursor visibility
+- **UseAlternativeScreenBuffer**: Alternative screen buffer
+- Inherits all `Chevron9Config` options (logging, directories, etc.)
 
-### Mode Specializzati
+### Specialized Modes
 
 ```csharp
-// Solo output (nessun input)
+// Output only (no input)
 host.WithOutputOnly();
 
-// Solo input (nessun rendering)  
+// Input only (no rendering)
 host.WithInputOnly();
 
-// Modalità headless (no I/O)
+// Headless mode (no I/O)
 host.WithHeadlessMode();
 ```
 
-## Architettura
+## Architecture
 
 ```
 Chevron9TerminalHost
@@ -197,38 +197,38 @@ Chevron9TerminalHost
 └── Your Application Services
 ```
 
-### Priorità dei Servizi
+### Service Priorities
 
-- TerminalRenderService: priorità 100
-- TerminalInputService: priorità 90  
-- I tuoi servizi: priorità personalizzata
-- EventDispatcherService: priorità 0 (built-in)
+- TerminalRenderService: priority 100
+- TerminalInputService: priority 90
+- Your services: custom priority
+- EventDispatcherService: priority 0 (built-in)
 
 ## Thread Safety
 
-- ✅ Services lifecycle è thread-safe
-- ✅ Event dispatching è thread-safe  
-- ⚠️ ConsoleRender richiede sincronizzazione per chiamate concorrenti
-- ⚠️ ConsoleInputDevice usa polling interno thread-safe
+- ✅ Services lifecycle is thread-safe
+- ✅ Event dispatching is thread-safe
+- ⚠️ ConsoleRender requires synchronization for concurrent calls
+- ⚠️ ConsoleInputDevice uses internal thread-safe polling
 
 ## Performance
 
-- **Double Buffering**: Rendering efficiente senza flickering
-- **1D Arrays**: Buffer ottimizzati per performance memoria
-- **Configurable Refresh Rate**: Bilancia performance/responsiveness
-- **Frame-based Input**: Polling ottimizzato per applicazioni real-time
+- **Double Buffering**: Efficient rendering without flickering
+- **1D Arrays**: Memory-optimized buffers
+- **Configurable Refresh Rate**: Balance performance/responsiveness
+- **Frame-based Input**: Optimized polling for real-time applications
 
 ## Logging
 
-Il sistema di logging è configurato automaticamente:
-- File di log salvati in `{RootDirectory}/Logs/`  
-- Console logging disabilitato di default per evitare interferenze con l'UI terminal
-- Livelli: Trace, Debug, Information, Warning, Error, Critical
+The logging system is automatically configured:
+- Log files saved in `{RootDirectory}/Logs/`
+- Console logging disabled by default to avoid UI interference
+- Levels: Trace, Debug, Information, Warning, Error, Critical
 
-## Esempi Completi
+## Complete Examples
 
-Vedi la cartella `Examples/` per implementazioni complete di:
-- Applicazioni console interattive
-- Game loops con rendering real-time
-- Gestori di eventi personalizzati
-- Integrazione con external services
+See the `Examples/` folder for complete implementations of:
+- Interactive console applications
+- Game loops with real-time rendering
+- Custom event handlers
+- Integration with external services

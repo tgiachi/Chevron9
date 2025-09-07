@@ -41,7 +41,7 @@ public interface ILayer
     /// <summary>
     ///     Gets the compositing mode for blending this layer with previous layers
     /// </summary>
-    LayerComposeMode Compose { get; }
+    LayerCompositeMode Compose { get; }
 
     /// <summary>
     ///     Updates layer logic with fixed timestep

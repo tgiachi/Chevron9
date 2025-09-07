@@ -18,7 +18,7 @@ public class PerformanceIntegrationTests
         private readonly int _commandCount;
 
         public PerformanceTestLayer(string name, int zIndex, int commandCount)
-            : base(name, zIndex, true, true, LayerClear.None, LayerComposeMode.Overwrite)
+            : base(name, zIndex, true, true, LayerClear.None, LayerCompositeMode.Overwrite)
         {
             _commandCount = commandCount;
         }
@@ -272,6 +272,16 @@ public class PerformanceIntegrationTests
         public void Clear()
         {
             Items.Clear();
+        }
+
+        public void SubmitRectangle(int layerZ, RectF bounds, Color color)
+        {
+            Submit(layerZ, 0, 0, new DrawRectangleCommand(bounds, color));
+        }
+
+        public void SubmitText(int layerZ, string text, Position position, Color color, float fontSize = 12.0f)
+        {
+            Submit(layerZ, 0, 0, new DrawTextCommand(text, position, color, fontSize));
         }
     }
 }

@@ -1,0 +1,59 @@
+name: Generate Documentation
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'src/**/*.cs'
+      - 'README.md'
+      - 'docfx.json'
+      - 'toc.yml'
+      - '.github/workflows/docs.yml'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'src/**/*.cs'
+      - 'README.md'
+      - 'docfx.json'
+      - 'toc.yml'
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Install Task
+      run: |
+        curl -sL https://taskfile.dev/install.sh | sh
+        export PATH="$HOME/.local/bin:$PATH"
+
+    - name: Install DocFX
+      run: dotnet tool install -g docfx
+
+    - name: Build documentation
+      run: task docs
+
+    - name: Upload documentation
+      uses: actions/upload-artifact@v4
+      with:
+        name: documentation
+        path: _site/
+        retention-days: 30
+
+    - name: Deploy to GitHub Pages (only on main branch)
+      if: github.ref == 'refs/heads/main'
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: _site
+        cname: docs.chevron9.dev  # Optional: add custom domain

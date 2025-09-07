@@ -1,7 +1,7 @@
 using Chevron9.Core.Cameras;
 using Chevron9.Core.Extensions;
 using Chevron9.Core.Interfaces;
-using Chevron9.Core.Render.Commands;
+using Chevron9.Core.Render;
 using Chevron9.Core.Types;
 using Chevron9.Shared.Graphics;
 using Chevron9.Shared.Primitives;
@@ -33,7 +33,7 @@ public sealed class InfoDebugLayer : ILayer
         ZIndex = DefaultZIndex;
         _camera = new Camera2D();
         Clear = LayerClear.None;
-        Compose = LayerComposeMode.Overwrite;
+        Compose = LayerCompositeMode.Overwrite;
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ public sealed class InfoDebugLayer : ILayer
         ZIndex = zIndex;
         _camera = new Camera2D();
         Clear = LayerClear.None;
-        Compose = LayerComposeMode.Overwrite;
+        Compose = LayerCompositeMode.Overwrite;
     }
 
     /// <summary>
@@ -82,7 +82,7 @@ public sealed class InfoDebugLayer : ILayer
     /// <summary>
     ///     Gets the compositing mode for blending this layer with previous layers
     /// </summary>
-    public LayerComposeMode Compose { get; }
+    public LayerCompositeMode Compose { get; }
 
     /// <summary>
     ///     Enables or disables the debug layer
@@ -134,29 +134,36 @@ public sealed class InfoDebugLayer : ILayer
     /// <param name="alpha">Interpolation alpha for smooth rendering</param>
     public void Render(IRenderCommandCollector rq, float alpha)
     {
-        const float fontSize = 12.0f;
         const float lineHeight = 16.0f;
-        const float margin = 10.0f;
+        const float margin = RenderDefaults.Padding.Medium;
 
-        // Assume a default screen size for positioning (this could be made configurable)
-        const float screenWidth = 800.0f;
-
-        var startX = screenWidth - margin;
+        var startX = RenderDefaults.DefaultScreenWidth - margin;
         var startY = margin;
 
-        // Render FPS
+        // Render FPS (legacy calculation)
         var fpsText = $"FPS: {_fps:F1}";
-        rq.SubmitText(ZIndex, fpsText, startX - 80, startY, Color.Yellow, fontSize);
+        rq.SubmitText(ZIndex, fpsText, startX - 80, startY, RenderDefaults.DebugTextColor, RenderDefaults.DefaultFontSize);
 
         // Render mouse position
         var mouseText = $"Mouse: ({_mousePosition.X:F0}, {_mousePosition.Y:F0})";
-        rq.SubmitText(ZIndex, mouseText, startX - 150, startY + lineHeight, Color.Cyan, fontSize);
+        rq.SubmitText(ZIndex, mouseText, startX - 150, startY + lineHeight, Color.Cyan, RenderDefaults.DefaultFontSize);
 
-        // Optional: Render a small background for better readability
+        // Render advanced performance metrics if available
+        if (rq is RenderCommandCollector collector)
+        {
+            var metrics = collector.Metrics;
+            var renderTimeText = $"Render: {metrics.LastFrameRenderTime.TotalMilliseconds:F2}ms";
+            rq.SubmitText(ZIndex, renderTimeText, startX - 120, startY + lineHeight * 2, RenderDefaults.SuccessTextColor, RenderDefaults.SmallFontSize);
+
+            var commandsText = $"Commands: {metrics.CommandsPerFrame}";
+            rq.SubmitText(ZIndex, commandsText, startX - 100, startY + lineHeight * 3, RenderDefaults.DefaultTextColor, RenderDefaults.SmallFontSize);
+        }
+
+        // Render background for better readability
         var backgroundWidth = 160.0f;
-        var backgroundHeight = lineHeight * 2 + 4;
+        var backgroundHeight = lineHeight * 4 + RenderDefaults.Padding.Small;
         var backgroundX = startX - backgroundWidth + margin;
-        var backgroundY = startY - 2;
+        var backgroundY = startY - RenderDefaults.Padding.Small;
 
         rq.SubmitRectangle(ZIndex - 1,
             new RectF(backgroundX, backgroundY, backgroundWidth, backgroundHeight),

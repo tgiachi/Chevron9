@@ -3,7 +3,7 @@ namespace Chevron9.Core.Types;
 /// <summary>
 ///     Defines how this layer's output is combined with layers below it.
 /// </summary>
-public enum LayerComposeMode
+public enum LayerCompositeMode
 {
     /// <summary>
     ///     For terminal/grid backends: only draw non-empty cells,
@@ -14,5 +14,10 @@ public enum LayerComposeMode
     /// <summary>
     ///     Standard: this layer overwrites whatever is below it.
     /// </summary>
-    Overwrite
+    Overwrite,
+
+    /// <summary>
+    ///     Alpha blending: mix this layer with layers below using alpha values.
+    /// </summary>
+    AlphaBlend
 }

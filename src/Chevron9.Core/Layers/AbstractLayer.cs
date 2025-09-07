@@ -25,7 +25,7 @@ public abstract class AbstractLayer : ILayer
         Enabled = true;
         Visible = true;
         Clear = LayerClear.None;
-        Compose = LayerComposeMode.Overwrite;
+        Compose = LayerCompositeMode.Overwrite;
 
         _camera = new Camera2D();
     }
@@ -39,7 +39,7 @@ public abstract class AbstractLayer : ILayer
     /// <param name="visible">Whether layer is rendered</param>
     /// <param name="clear">Clear flags for layer</param>
     /// <param name="compose">Compositing mode for layer</param>
-    protected AbstractLayer(string name, int zIndex, bool enabled, bool visible, LayerClear clear, LayerComposeMode compose)
+    protected AbstractLayer(string name, int zIndex, bool enabled, bool visible, LayerClear clear, LayerCompositeMode compose)
     {
         Name = name;
         ZIndex = zIndex;
@@ -84,7 +84,7 @@ public abstract class AbstractLayer : ILayer
     /// <summary>
     ///     Gets the compositing mode for blending this layer with previous layers
     /// </summary>
-    public LayerComposeMode Compose { get; protected set; }
+    public LayerCompositeMode Compose { get; protected set; }
 
     /// <summary>
     ///     Updates layer logic with fixed timestep
@@ -147,7 +147,7 @@ public abstract class AbstractLayer : ILayer
     ///     Sets the compositing mode for this layer
     /// </summary>
     /// <param name="compose">Compositing mode to set</param>
-    protected void SetCompose(LayerComposeMode compose)
+    protected void SetCompose(LayerCompositeMode compose)
     {
         Compose = compose;
     }

@@ -142,6 +142,69 @@ Tests mirror the source structure and cover:
 - Utility functions and extensions
 - Data structures and primitives
 
+## 📚 Documentation
+
+### API Documentation
+
+The project includes comprehensive API documentation that can be generated using DocFX:
+
+#### Prerequisites
+- [.NET 9.0+ SDK](https://dotnet.microsoft.com/download)
+- [Nuke Build](https://nuke.build/) (automatically installed by build scripts)
+
+#### Generate Documentation
+
+**Using Nuke Build (Cross-platform):**
+```bash
+# Build documentation only
+./build.sh Docs
+
+# Build and serve locally
+./build.sh ServeDocs
+
+# Clean and rebuild everything
+./build.sh All
+
+# Full CI build (clean, test, docs, pack)
+./build.sh Ci
+```
+
+**Using PowerShell (Windows):**
+```powershell
+# Build documentation only
+.\build.ps1 Docs
+
+# Build and serve locally
+.\build.ps1 ServeDocs
+
+# Clean and rebuild everything
+.\build.ps1 All
+```
+
+**Manual DocFX commands:**
+```bash
+# Install DocFX (if not already installed)
+dotnet tool install -g docfx
+
+# Build the documentation site
+docfx build
+
+# Serve documentation locally (opens browser)
+docfx serve _site
+```
+
+The generated documentation will be available at `http://localhost:8080` and includes:
+- Complete API reference with all classes, methods, and properties
+- Code examples and usage patterns
+- Interactive navigation and search
+- Cross-referenced documentation
+- Performance metrics and configuration guides
+
+#### Documentation Structure
+- **API Reference**: Auto-generated from XML comments in source code
+- **Guides**: Manual documentation for complex topics
+- **Examples**: Code samples and tutorials
+
 ## 📚 Key Components
 
 ### Event Loops

@@ -1,0 +1,138 @@
+name: Build
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'Build.cs'
+      - '.nuke'
+      - '.github/workflows/build.yml'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'Build.cs'
+      - '.nuke'
+      - '.github/workflows/build.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Setup GitVersion
+      uses: gittools/actions/gitversion/setup@v1.1.1
+      with:
+        versionSpec: '5.x'
+
+    - name: Install Task
+      run: |
+        curl -sL https://taskfile.dev/install.sh | sh
+        export PATH="$HOME/.local/bin:$PATH"
+
+    - name: Setup .NET tools
+      run: |
+        dotnet tool install -g dotnet-format
+        dotnet tool install -g dotnet-reportgenerator-globaltool
+
+    - name: Run Code Analysis
+      run: task analyze
+
+    - name: Run Tests with Coverage
+      run: |
+        dotnet test --configuration Release --no-restore --no-build --logger trx --results-directory artifacts --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
+        # Generate coverage report
+        reportgenerator -reports:"artifacts/**/coverage.cobertura.xml" -targetdir:"artifacts/coverage-report" -reporttypes:"Html;Badges;Cobertura"
+
+    - name: Upload Coverage to Codecov
+      uses: codecov/codecov-action@v4
+      with:
+        file: ./artifacts/coverage.cobertura.xml
+        flags: unittests
+        name: codecov-umbrella
+
+    - name: Quality Gate - Test Results
+      uses: dorny/test-reporter@v1
+      if: success() || failure()
+      with:
+        name: Test Results
+        path: 'artifacts/**/*.trx'
+        reporter: dotnet-trx
+        fail-on-error: true
+
+    - name: Quality Gate - Coverage
+      run: |
+        COVERAGE=$(grep -oP '(?<=<coverage line-rate=")[^"]*' artifacts/coverage.cobertura.xml | head -1)
+        COVERAGE_PERCENT=$(echo "scale=2; $COVERAGE * 100" | bc 2>/dev/null || echo "0")
+        echo "Code coverage: $COVERAGE_PERCENT%"
+        if (( $(echo "$COVERAGE_PERCENT < 80" | bc -l 2>/dev/null || echo "100") )); then
+          echo "Coverage is below 80% threshold"
+          exit 1
+        fi
+
+    - name: Build and Pack
+      run: task pack
+
+    - name: Publish to NuGet (main/develop branches)
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+      run: |
+        if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+          echo "Publishing stable release to NuGet..."
+          dotnet nuget push "artifacts/*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+        elif [ "${{ github.ref }}" == "refs/heads/develop" ]; then
+          echo "Publishing pre-release to NuGet..."
+          dotnet nuget push "artifacts/*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+        fi
+
+    - name: Create GitHub Release (main branch only)
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.run_number }}
+        release_name: Release ${{ github.run_number }}
+        body: |
+          ## Changes
+          - Automated release from CI pipeline
+          - All tests passed
+          - Code coverage: ${{ env.COVERAGE_PERCENT }}%
+        draft: false
+        prerelease: false
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results
+        path: |
+          **/test-results.trx
+          **/coverage.cobertura.xml
+        retention-days: 30
+
+    - name: Upload packages
+      uses: actions/upload-artifact@v4
+      with:
+        name: packages
+        path: artifacts/*.nupkg
+        retention-days: 30
+
+    - name: Upload documentation
+      uses: actions/upload-artifact@v4
+      with:
+        name: documentation
+        path: _site/
+        retention-days: 30

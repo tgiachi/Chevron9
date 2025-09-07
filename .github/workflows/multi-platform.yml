@@ -1,0 +1,146 @@
+name: Multi-Platform Build
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'Build.cs'
+      - '.nuke'
+      - '.github/workflows/multi-platform.yml'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'Build.cs'
+      - '.nuke'
+      - '.github/workflows/multi-platform.yml'
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Install Task
+      run: |
+        curl -sL https://taskfile.dev/install.sh | sh
+        export PATH="$HOME/.local/bin:$PATH"
+
+    - name: Build for Windows x64
+      run: task build RUNTIME=win-x64
+
+    - name: Test on Windows
+      run: task test RUNTIME=win-x64
+
+    - name: Upload Windows artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: windows-x64-artifacts
+        path: artifacts/
+        retention-days: 30
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Install Task
+      run: |
+        curl -sL https://taskfile.dev/install.sh | sh
+        export PATH="$HOME/.local/bin:$PATH"
+
+    - name: Build for Linux x64
+      run: task build RUNTIME=linux-x64
+
+    - name: Test on Linux
+      run: task test RUNTIME=linux-x64
+
+    - name: Upload Linux artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: linux-x64-artifacts
+        path: artifacts/
+        retention-days: 30
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Install Task
+      run: |
+        curl -sL https://taskfile.dev/install.sh | sh
+        export PATH="$HOME/.local/bin:$PATH"
+
+    - name: Build for macOS x64
+      run: task build RUNTIME=osx-x64
+
+    - name: Test on macOS
+      run: task test RUNTIME=osx-x64
+
+    - name: Upload macOS artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: macos-x64-artifacts
+        path: artifacts/
+        retention-days: 30
+
+  publish-multi-platform:
+    needs: [build-windows, build-linux, build-macos]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: ./all-artifacts
+
+    - name: Display structure of downloaded files
+      run: ls -la ./all-artifacts/
+
+    - name: Create release archives
+      run: |
+        cd ./all-artifacts
+        for dir in */; do
+          if [ -d "$dir" ]; then
+            echo "Creating archive for $dir"
+            tar -czf "${dir%/}.tar.gz" -C "$dir" .
+          fi
+        done
+
+    - name: Upload release archives
+      uses: actions/upload-artifact@v4
+      with:
+        name: multi-platform-releases
+        path: ./all-artifacts/*.tar.gz
+        retention-days: 30

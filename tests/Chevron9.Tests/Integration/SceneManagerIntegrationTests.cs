@@ -19,7 +19,7 @@ public class SceneManagerIntegrationTests
         public List<RenderCommand> RenderedCommands { get; } = new();
 
         public TestLayer(string name, int zIndex)
-            : base(name, zIndex, true, true, LayerClear.None, LayerComposeMode.Overwrite)
+            : base(name, zIndex, true, true, LayerClear.None, LayerCompositeMode.Overwrite)
         {
         }
 
@@ -235,6 +235,16 @@ public class SceneManagerIntegrationTests
         public void Clear()
         {
             Items.Clear();
+        }
+
+        public void SubmitRectangle(int layerZ, RectF bounds, Color color)
+        {
+            Submit(layerZ, 0, 0, new DrawRectangleCommand(bounds, color));
+        }
+
+        public void SubmitText(int layerZ, string text, Position position, Color color, float fontSize = 12.0f)
+        {
+            Submit(layerZ, 0, 0, new DrawTextCommand(text, position, color, fontSize));
         }
     }
 }
