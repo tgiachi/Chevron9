@@ -9,10 +9,12 @@ namespace Chevron9.Core.Scenes;
 ///     Default stack-based scene manager implementing ISceneManager
 ///     Provides thread-safe scene management with deferred operations during Update/Render cycles
 ///     Supports dependency injection scopes and proper resource cleanup
+///     Includes support for global layers that are always rendered on top of scenes
 /// </summary>
 public sealed class SceneManager : ISceneManager, IDisposable
 {
     private readonly Queue<Action> _pendingOps = new();
+    private readonly List<ILayer> _globalLayers = new();
 
     private readonly Stack<SceneEntry> _stack = new();
     private bool _disposed;
@@ -48,6 +50,12 @@ public sealed class SceneManager : ISceneManager, IDisposable
     /// </summary>
     public IScene? Current => _stack.Count > 0 ? _stack.Peek().Scene : null;
 
+    /// <summary>
+    ///     Gets the read-only list of global layers
+    ///     Global layers are always rendered on top of all scenes
+    /// </summary>
+    public IReadOnlyList<ILayer> GlobalLayers => _globalLayers;
+
     // ----------------- Public API -----------------
 
     /// <summary>
@@ -77,9 +85,63 @@ public sealed class SceneManager : ISceneManager, IDisposable
         Replace(scene, null);
     }
 
+    // ----------------- Global Layer Management -----------------
+
+    /// <summary>
+    ///     Adds a global layer that will be rendered on top of all scenes
+    ///     Global layers receive input after scene processing and are always updated
+    /// </summary>
+    /// <param name="layer">Global layer to add</param>
+    public void AddGlobalLayer(ILayer layer)
+    {
+        ArgumentNullException.ThrowIfNull(layer);
+
+        if (_globalLayers.Contains(layer))
+        {
+            throw new InvalidOperationException("Global layer is already added");
+        }
+
+        _globalLayers.Add(layer);
+
+        // Sort global layers by Z-index after adding
+        SortGlobalLayersByZIndex();
+    }
+
+    /// <summary>
+    ///     Removes a global layer
+    /// </summary>
+    /// <param name="layer">Global layer to remove</param>
+    /// <returns>True if the layer was removed</returns>
+    public bool RemoveGlobalLayer(ILayer layer)
+    {
+        ArgumentNullException.ThrowIfNull(layer);
+        return _globalLayers.Remove(layer);
+    }
+
+    /// <summary>
+    ///     Gets a global layer by name
+    /// </summary>
+    /// <param name="name">Name of the global layer to find</param>
+    /// <returns>The global layer with the specified name, or null if not found</returns>
+    public ILayer? GetGlobalLayer(string name)
+    {
+        return _globalLayers.FirstOrDefault(layer => layer.Name == name);
+    }
+
+    /// <summary>
+    ///     Gets a global layer by type
+    /// </summary>
+    /// <typeparam name="T">Type of global layer to find</typeparam>
+    /// <returns>The first global layer of the specified type, or null if not found</returns>
+    public T? GetGlobalLayer<T>() where T : class, ILayer
+    {
+        return _globalLayers.FirstOrDefault(layer => layer is T) as T;
+    }
+
     /// <summary>
     ///     Updates the current active scene with fixed timestep
     ///     Processes input first, then updates game logic
+    ///     Also updates all global layers
     ///     Defers any pending Push/Pop/Replace operations until after update
     /// </summary>
     /// <param name="fixedDt">Fixed delta time for consistent game logic</param>
@@ -97,6 +159,15 @@ public sealed class SceneManager : ISceneManager, IDisposable
             var top = Current;
             top?.HandleInput(input); // Handle input before logic update
             top?.Update(fixedDt, input);
+
+            // Update all enabled global layers
+            foreach (var layer in _globalLayers)
+            {
+                if (layer.Enabled)
+                {
+                    layer.Update(fixedDt, input);
+                }
+            }
         }
         finally
         {
@@ -108,6 +179,7 @@ public sealed class SceneManager : ISceneManager, IDisposable
     /// <summary>
     ///     Renders all scenes in the stack from bottom to top for proper layering
     ///     Background scenes render first, current scene renders on top
+    ///     Then renders all visible global layers on top of everything
     ///     Defers any pending Push/Pop/Replace operations until after render
     /// </summary>
     /// <param name="rq">Render command collector to submit commands to</param>
@@ -135,6 +207,15 @@ public sealed class SceneManager : ISceneManager, IDisposable
                     s.Render(rq, alpha);
                 }
             }
+
+            // Render all visible global layers on top
+            foreach (var layer in _globalLayers)
+            {
+                if (layer.Visible)
+                {
+                    layer.Render(rq, alpha);
+                }
+            }
         }
         finally
         {
@@ -144,14 +225,30 @@ public sealed class SceneManager : ISceneManager, IDisposable
     }
 
     /// <summary>
-    ///     Processes input through the current active scene only
+    ///     Processes input through the current active scene first, then global layers
+    ///     Global layers receive input after the scene, allowing them to override scene input
     /// </summary>
     /// <param name="input">Input device to process</param>
-    /// <returns>True if input was consumed by the current scene</returns>
+    /// <returns>True if input was consumed by the scene or any global layer</returns>
     public bool HandleInput(IInputDevice input)
     {
+        // First, let the current scene handle input
         var top = Current;
-        return top is not null && top.HandleInput(input);
+        if (top is not null && top.HandleInput(input))
+        {
+            return true;
+        }
+
+        // Then, let global layers handle input (processed from bottom to top by Z-index)
+        foreach (var layer in _globalLayers)
+        {
+            if (layer.Enabled && layer.HandleInput(input))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /// <summary>
@@ -282,5 +379,13 @@ public sealed class SceneManager : ISceneManager, IDisposable
             // Swallow exceptions during scope disposal
             // Production code should log these exceptions
         }
+    }
+
+    /// <summary>
+    ///     Sorts global layers by Z-index for proper rendering order
+    /// </summary>
+    private void SortGlobalLayersByZIndex()
+    {
+        _globalLayers.Sort((a, b) => a.ZIndex.CompareTo(b.ZIndex));
     }
 }

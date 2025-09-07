@@ -1,3 +1,4 @@
+using Chevron9.Core.Extensions;
 using Chevron9.Core.Interfaces;
 using Chevron9.Core.Layers;
 using Chevron9.Core.Render.Commands;
@@ -69,7 +70,7 @@ public class MenuLayer : AbstractLayer
         const float lineHeight = 30.0f;
 
         // Render title
-        rq.Submit(ZIndex, new DrawTextCommand("Chevron9 Demo Menu", new Position(50, 50), Color.White, fontSize * 1.5f));
+        rq.SubmitText(ZIndex, "Chevron9 Demo Menu", new Position(50, 50), Color.White, fontSize * 1.5f);
 
         // Render menu items
         for (int i = 0; i < _menuItems.Length; i++)
@@ -80,15 +81,15 @@ public class MenuLayer : AbstractLayer
             // Render selection indicator
             if (i == _selectedIndex)
             {
-                rq.Submit(ZIndex, new DrawTextCommand(">", new Position(30, startY + i * lineHeight), Color.Yellow, fontSize));
+                rq.SubmitText(ZIndex, ">", new Position(30, startY + i * lineHeight), Color.Yellow, fontSize);
             }
 
-            rq.Submit(ZIndex, new DrawTextCommand(_menuItems[i], position, color, fontSize));
+            rq.SubmitText(ZIndex, _menuItems[i], position, color, fontSize);
         }
 
         // Render instructions
-        rq.Submit(ZIndex, new DrawTextCommand("Use UP/DOWN arrows to navigate, ENTER to select",
+        rq.SubmitText(ZIndex, "Use UP/DOWN arrows to navigate, ENTER to select",
             new Position(50, startY + _menuItems.Length * lineHeight + 20),
-            Color.Gray, fontSize * 0.8f));
+            Color.Gray, fontSize * 0.8f);
     }
 }

@@ -1,3 +1,4 @@
+using Chevron9.Core.Extensions;
 using Chevron9.Core.Interfaces;
 using Chevron9.Core.Layers;
 using Chevron9.Core.Render.Commands;
@@ -51,24 +52,24 @@ public class RectangleLayer : AbstractLayer
     public override void Render(IRenderCommandCollector rq, float alpha)
     {
         // Render the main rectangle
-        rq.Submit(ZIndex, new DrawRectangleCommand(_rectangleBounds, _rectangleColor));
+        rq.SubmitRectangle(ZIndex, _rectangleBounds, _rectangleColor);
 
         // Render a rotating outline
         var outlineColor = new Color(255, 255, 255, 128); // Semi-transparent white
-        rq.Submit(ZIndex, new DrawRectangleOutlineCommand(_rectangleBounds, outlineColor, 2.0f));
+        rq.SubmitRectangleOutline(ZIndex, _rectangleBounds, outlineColor, 2.0f);
 
         // Render center point
         var centerX = _rectangleBounds.X + _rectangleBounds.Width / 2;
         var centerY = _rectangleBounds.Y + _rectangleBounds.Height / 2;
         var centerPoint = new Position(centerX, centerY);
-        rq.Submit(ZIndex, new DrawRectangleCommand(new RectF(centerX - 5, centerY - 5, 10, 10), Color.Red));
+        rq.SubmitRectangle(ZIndex, new RectF(centerX - 5, centerY - 5, 10, 10), Color.Red);
 
         // Render info text
         var infoText = $"Rectangle Demo - Rotation: {_rotationAngle:F1}°";
-        rq.Submit(ZIndex, new DrawTextCommand(infoText, new Position(20, 20), Color.White, 14.0f));
+        rq.SubmitText(ZIndex, infoText, new Position(20, 20), Color.White, 14.0f);
 
         // Render bounds info
         var boundsText = $"Bounds: ({_rectangleBounds.X:F0}, {_rectangleBounds.Y:F0}) Size: {_rectangleBounds.Width:F0}x{_rectangleBounds.Height:F0}";
-        rq.Submit(ZIndex, new DrawTextCommand(boundsText, new Position(20, 50), Color.Gray, 12.0f));
+        rq.SubmitText(ZIndex, boundsText, new Position(20, 50), Color.Gray, 12.0f);
     }
 }
